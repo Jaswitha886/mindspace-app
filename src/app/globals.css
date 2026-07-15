@@ -1,26 +1,258 @@
 @import "tailwindcss";
 
+/* ============================================================================
+   MindSpace — "Dusk"
+
+   Warm without earth-tones, soft without going clinical. The warmth lives in
+   the *neutrals*, not the accent: the off-white carries a faint plum wash and
+   the "black" is a deep aubergine, so every surface inherits it quietly. The
+   accent stays a rich plum rather than a product-blue — cool-grey + blue is the
+   uniform of clinical software, which is exactly what this app must not feel
+   like. Gold appears only as dusk's counterpoint (sunset, not terracotta).
+
+   Reference by token name, never raw hex.
+   ========================================================================== */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- plum: the one accent ---------------------------------------------- */
+  --brand: #6d2e5b; /* primary fill — white label, 9.6:1 */
+  --brand-hover: #58254a;
+  --brand-light: #b96aa0; /* orchid: fills that carry no text */
+  --brand-light-hover: #a85b90;
+  --brand-ink: #7b3466; /* plum as AA text: links, figures (7.4:1) */
+  --brand-tint: #f7edf4; /* plum-wash card fill */
+  --brand-tint-2: #fcf7fa; /* faintest wash */
+  --brand-disabled: #d9bdd0;
+
+  /* --- supporting hues ---------------------------------------------------- */
+  /* Dusk teal, deliberately blue-leaning — a sage green here would land back in
+     the palette the user rejected. */
+  --teal: #8fb8bf; /* the counsellor "check-ins" block (ink type) */
+  --success: #2e6b50; /* Active/success — white label, 5.3:1 */
+  --success-tint: #e6f2eb;
+  --success-ink: #1f4a37;
+
+  /* Gold: plum's dusk counterpoint. Warm, but yellow-gold, not orange-brown. */
+  --gold: #f5e6c8; /* upcoming-appointment card */
+  --gold-strong: #e0a93f;
+  --gold-ink: #6b4e0a;
+
+  --red: #b3243f; /* destructive fill — white label, 6.4:1 */
+  --red-light: #d9435f; /* fills only */
+  --red-tint: #fbebee;
+  --red-ink: #a81e38;
+
+  /* --- neutrals (plum-tinted, never grey) --------------------------------- */
+  --ink: #3a2b3d; /* body + headings (11.4:1) */
+  --ink-strong: #241826; /* display headings (15.3:1) */
+  --ink-secondary: #5f4e63; /* supporting copy (7.6:1) */
+  /* Meta lands on the plum card as often as on white, so this is tuned to clear
+     4.5:1 on --brand-tint (4.9:1), not just on white (5.7:1). */
+  --ink-muted: #716275;
+  --page: #fbf9fb;
+  --surface: #ffffff;
+  --sunken: #f5f1f5; /* secondary buttons, wells */
+  --sunken-2: #faf7fa;
+  --border: #ebe3ec;
+  --border-strong: #d3c6d4;
+
+  /* --- clinical severity (counsellor/admin only) -------------------------- */
+  /* ONE colour language for severity everywhere — green/amber/red — retuned
+     into dusk but never re-hued: critical must not be berry here and gold three
+     cards away. The deep variant carries a white label (AA); the -fill variant
+     is for bars and dots, which carry no text. */
+  --sev-mild: #2e6b50; /* pill, white label — 5.3:1 */
+  --sev-moderate: #8a5a00; /* pill, white label — 4.6:1 */
+  --sev-critical: #b3243f; /* pill, white label — 6.4:1 */
+  --sev-mild-fill: #5fa37f; /* chart bars, legend dots */
+  --sev-moderate-fill: #e0a93f;
+  --sev-critical-fill: #d9435f;
+
+  /* --- charts (non-severity only) ----------------------------------------- */
+  --chart-1: #6d2e5b;
+  --chart-2: #b96aa0;
+  --chart-3: #4a4478;
+  --chart-4: #e0a93f;
+  --chart-5: #8fb8bf;
+
+  --focus-ring: #7b3466;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-light: var(--brand-light);
+  --color-brand-light-hover: var(--brand-light-hover);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-tint: var(--brand-tint);
+  --color-brand-tint-2: var(--brand-tint-2);
+  --color-brand-disabled: var(--brand-disabled);
+
+  --color-teal: var(--teal);
+  --color-success: var(--success);
+  --color-success-tint: var(--success-tint);
+  --color-success-ink: var(--success-ink);
+
+  --color-gold: var(--gold);
+  --color-gold-strong: var(--gold-strong);
+  --color-gold-ink: var(--gold-ink);
+
+  --color-red: var(--red);
+  --color-red-light: var(--red-light);
+  --color-red-tint: var(--red-tint);
+  --color-red-ink: var(--red-ink);
+
+  --color-ink: var(--ink);
+  --color-ink-strong: var(--ink-strong);
+  --color-ink-secondary: var(--ink-secondary);
+  --color-ink-muted: var(--ink-muted);
+  --color-page: var(--page);
+  --color-surface: var(--surface);
+  --color-sunken: var(--sunken);
+  --color-sunken-2: var(--sunken-2);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+
+  --color-mild: var(--sev-mild);
+  --color-moderate: var(--sev-moderate);
+  --color-critical: var(--sev-critical);
+  --color-mild-fill: var(--sev-mild-fill);
+  --color-moderate-fill: var(--sev-moderate-fill);
+  --color-critical-fill: var(--sev-critical-fill);
+
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+
+  /* One family. Weight carries the hierarchy. */
+  --font-sans: var(--font-figtree), sans-serif;
+
+  /* Generous rounding is most of the "soft" — it's what keeps plum from
+     reading gothic. */
+  --radius-card: 16px;
+  --radius-btn: 12px;
+  --radius-input: 10px;
+  --radius-pill: 999px;
+
+  /* Shadows tint plum, not black: a grey shadow over a warm off-white is what
+     makes a soft palette look dirty. */
+  --shadow-card: 0 1px 3px rgba(36, 24, 38, 0.05), 0 1px 2px rgba(36, 24, 38, 0.04);
+  --shadow-card-hover: 0 8px 20px rgba(36, 24, 38, 0.1), 0 2px 6px rgba(36, 24, 38, 0.05);
+  --shadow-btn: 0 1px 2px rgba(36, 24, 38, 0.09);
+  --shadow-pop: 0 12px 32px rgba(36, 24, 38, 0.16);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ---- Base ------------------------------------------------------------- */
+html {
+  background: var(--page);
+}
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-figtree), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* ---- Type scale (Figtree; the only face) ------------------------------- */
+.t-display {
+  font-weight: 700;
+  font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem);
+  line-height: 1.14;
+  letter-spacing: -0.028em;
+  color: var(--ink-strong);
+}
+.t-h1 {
+  font-weight: 700;
+  font-size: clamp(1.5rem, 1.25rem + 1vw, 1.9rem);
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+  color: var(--ink-strong);
+}
+.t-h2 {
+  font-weight: 600;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  letter-spacing: -0.016em;
+  color: var(--ink-strong);
+}
+.t-h3 {
+  font-weight: 600;
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--ink-strong);
+}
+.t-body {
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  color: var(--ink-secondary);
+}
+.t-meta {
+  font-size: 0.8125rem;
+  line-height: 1.45;
+  color: var(--ink-muted);
+}
+.t-figure {
+  font-weight: 700;
+  font-size: clamp(1.75rem, 1.4rem + 1.4vw, 2.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+/* ---- Coloured blocks --------------------------------------------------- */
+.block-plum {
+  background: var(--brand-tint);
+}
+.block-gold {
+  background: var(--gold);
+}
+.block-teal {
+  background: var(--teal);
+}
+
+/* ---- Interaction ------------------------------------------------------- */
+.lift {
+  transition:
+    transform 150ms ease-out,
+    box-shadow 150ms ease-out;
+}
+.lift:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card-hover);
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
+/* ---- Skeleton ---------------------------------------------------------- */
+.skeleton {
+  background: linear-gradient(90deg, #f0eaf1 25%, #f8f4f8 37%, #f0eaf1 63%);
+  background-size: 400% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: var(--radius-input);
+}
+@keyframes shimmer {
+  from {
+    background-position: 100% 50%;
+  }
+  to {
+    background-position: 0 50%;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .lift:hover {
+    transform: none;
+  }
 }

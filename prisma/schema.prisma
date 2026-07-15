@@ -1,0 +1,249 @@
+// MindSpace — campus counselling & wellness platform
+// See docs/DATABASE.md for the narrative version of these models.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Prisma 7: connection URLs live in prisma.config.ts, not here.
+  // Runtime uses the Neon driver adapter (src/lib/prisma.ts); Migrate uses NEON_DIRECT_URL.
+}
+
+// ---------- Enums ----------
+
+enum UserRole {
+  STUDENT
+  COUNSELLOR
+  ADMIN
+}
+
+enum AppointmentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+
+enum SeverityLevel {
+  MILD
+  MODERATE
+  CRITICAL
+}
+
+enum Mood {
+  HAPPY
+  CALM
+  NEUTRAL
+  ANXIOUS
+  SAD
+  STRESSED
+}
+
+enum NotificationType {
+  CRITICAL_SEVERITY
+  APPOINTMENT_REQUEST
+  APPOINTMENT_APPROVED
+  APPOINTMENT_REJECTED
+  APPOINTMENT_CANCELLED
+  GENERAL
+}
+
+enum AuditAction {
+  CRITICAL_SEVERITY_FLAG
+  ROLE_ASSIGNED
+  ROLE_CHANGED
+  USER_DEACTIVATED
+  USER_ACTIVATED
+}
+
+// ---------- Core ----------
+
+model Department {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+  users     User[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  password     String // bcrypt hash (12 rounds)
+  role         UserRole @default(STUDENT) // admin-only to change
+  isActive     Boolean  @default(true) // admin-only; false = cannot sign in
+  departmentId String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  department        Department?        @relation(fields: [departmentId], references: [id])
+  studentProfile    StudentProfile?
+  counsellorProfile CounsellorProfile?
+
+  studentAppointments    Appointment[]  @relation("StudentAppointments")
+  counsellorAppointments Appointment[]  @relation("CounsellorAppointments")
+  availabilities         Availability[] // as counsellor
+  moodLogs               MoodLog[]
+  journalEntries         JournalEntry[]
+  sessionNotes           SessionNote[] // as counsellor
+  authoredAffirmations   Affirmation[]  @relation("AffirmationAuthor")
+  receivedAffirmations   Affirmation[]  @relation("AffirmationTarget")
+  notifications          Notification[]
+  auditLogs              AuditLog[]     @relation("AuditActor")
+
+  @@index([role])
+  @@index([departmentId])
+  @@index([role, isActive])
+}
+
+model StudentProfile {
+  id             String   @id @default(cuid())
+  userId         String   @unique
+  registerNumber String   @unique
+  semester       Int?
+  phoneNumber    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  user           User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model CounsellorProfile {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  contactNumber     String?
+  yearsOfExperience Int?
+  specialization    String?
+  bio               String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ---------- Booking ----------
+
+model Availability {
+  id           String    @id @default(cuid())
+  counsellorId String
+  isRecurring  Boolean   @default(true)
+  dayOfWeek    Int? // 0–6, when recurring
+  specificDate DateTime? // when date-specific
+  startTime    String // "HH:mm", working hours 09:00–17:00
+  endTime      String // "HH:mm"
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+
+  counsellor   User          @relation(fields: [counsellorId], references: [id], onDelete: Cascade)
+  appointments Appointment[]
+
+  @@index([counsellorId])
+}
+
+model Appointment {
+  id              String            @id @default(cuid())
+  studentId       String
+  counsellorId    String
+  availabilityId  String?
+  appointmentDate DateTime
+  startTime       String // "HH:mm"
+  endTime         String // "HH:mm"
+  status          AppointmentStatus @default(PENDING)
+  reason          String? // student's note when booking, or counsellor's reschedule suggestion on reject
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  student      User          @relation("StudentAppointments", fields: [studentId], references: [id])
+  counsellor   User          @relation("CounsellorAppointments", fields: [counsellorId], references: [id])
+  availability Availability? @relation(fields: [availabilityId], references: [id])
+  sessionNote  SessionNote?
+
+  @@index([studentId])
+  @@index([counsellorId])
+  @@index([counsellorId, appointmentDate])
+}
+
+model SessionNote {
+  id            String        @id @default(cuid())
+  appointmentId String        @unique
+  counsellorId  String
+  content       String
+  severity      SeverityLevel @default(MILD)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  appointment Appointment @relation(fields: [appointmentId], references: [id], onDelete: Cascade)
+  counsellor  User        @relation(fields: [counsellorId], references: [id])
+
+  @@index([counsellorId])
+}
+
+// ---------- Wellness (student-owned) ----------
+
+model MoodLog {
+  id        String   @id @default(cuid())
+  studentId String
+  mood      Mood
+  note      String?
+  logDate   DateTime @db.Date // one per day
+  createdAt DateTime @default(now())
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, logDate])
+  @@index([studentId])
+}
+
+model JournalEntry {
+  id        String   @id @default(cuid())
+  studentId String
+  title     String?
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  student   User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  @@index([studentId])
+}
+
+model Affirmation {
+  id              String   @id @default(cuid())
+  counsellorId    String
+  message         String
+  targetStudentId String? // null = broadcast to counsellor's appointment students
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+
+  counsellor    User  @relation("AffirmationAuthor", fields: [counsellorId], references: [id], onDelete: Cascade)
+  targetStudent User? @relation("AffirmationTarget", fields: [targetStudentId], references: [id])
+
+  @@index([counsellorId])
+  @@index([targetStudentId])
+}
+
+// ---------- System ----------
+
+model Notification {
+  id          String           @id @default(cuid())
+  recipientId String
+  type        NotificationType
+  payload     Json
+  isRead      Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+  recipient   User             @relation(fields: [recipientId], references: [id], onDelete: Cascade)
+
+  @@index([recipientId, isRead])
+}
+
+model AuditLog {
+  id        String      @id @default(cuid())
+  actorId   String
+  action    AuditAction
+  targetId  String? // e.g. affected student's user id
+  metadata  Json? // e.g. { noteId, appointmentId }
+  createdAt DateTime    @default(now())
+  actor     User        @relation("AuditActor", fields: [actorId], references: [id])
+
+  @@index([actorId])
+  @@index([action])
+}
