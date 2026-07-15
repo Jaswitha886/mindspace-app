@@ -2,10 +2,12 @@
 
 Warm without earth-tones, soft without going clinical.
 
-**The Visily export in `design folder/` is historical, not the spec.** It was the
-authority until 2026-07-15, when the palette sampled from it (orange `#F09E54` /
-`#B85D0E`, Nunito Sans) was rejected for reading as the warm-earthy wellness
-cliché. Do not re-derive the design from those PNGs.
+**The Visily export is gone, and is not the spec.** It was the authority until
+2026-07-15, when the palette sampled from it (orange `#F09E54` / `#B85D0E`,
+Nunito Sans) was rejected for reading as the warm-earthy wellness cliché. The 23
+PNGs lived in `design folder/` and were deleted in the commit following
+`2065cfd` — recover them from that commit's history if you ever need to look,
+but do not re-derive the design from them.
 
 Reference by token name, never raw hex (`src/app/globals.css`).
 
