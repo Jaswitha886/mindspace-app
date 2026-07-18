@@ -29,27 +29,23 @@ export const MOODS_IN_ORDER: Mood[] = [
   "STRESSED",
 ];
 
-/** Emoji shown alongside labels — severity/meaning must never be color-only. */
-export const MOOD_EMOJI: Record<Mood, string> = {
-  HAPPY: "😊",
-  CALM: "😌",
-  NEUTRAL: "😐",
-  ANXIOUS: "😟",
-  SAD: "😢",
-  STRESSED: "😣",
-};
-
 /**
- * Circle fills for the mood buttons: a dusk spectrum running gold → teal →
- * lilac → orchid → indigo → berry. Decorative only — every circle carries an
- * emoji and a text label, so meaning never rides on colour. (This is why the
- * set is free to be harmonised to the palette rather than a green→red key.)
+ * Soft tinted circles for the mood swatches — muted, distinct hues, deliberately
+ * *light* so a single fixed dark face reads on every one of them (see
+ * MOOD_FACE_INK). The face is drawn by MoodFace, not an emoji; the tint is
+ * decorative and the text label always accompanies it, so meaning never rides
+ * on colour. Fixed values (not theme tokens): a swatch is a self-contained chip
+ * — light circle + dark face — that looks the same in light and dark mode.
  */
 export const MOOD_COLOR: Record<Mood, string> = {
-  HAPPY: "#E8B04B",
-  CALM: "#8FB8BF",
-  NEUTRAL: "#C9BBD1",
-  ANXIOUS: "#B96AA0",
-  SAD: "#6E6BB8",
-  STRESSED: "#C4455E",
+  HAPPY: "#F7E3BE", // warm honey
+  CALM: "#CFE8DE", // soft green
+  NEUTRAL: "#E1E7E1", // quiet sage-grey
+  ANXIOUS: "#E7DEF1", // muted lilac
+  SAD: "#D7E2F1", // soft blue
+  STRESSED: "#F3D8D8", // muted rose
 };
+
+/** The face stroke on every swatch — one fixed dark ink that clears the soft
+ *  tints above in both themes. */
+export const MOOD_FACE_INK = "#26352b";

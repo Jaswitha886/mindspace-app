@@ -17,58 +17,70 @@
    light-dark() rather than a duplicated media-query block means the two palettes
    sit on the same line and can't drift apart.
 
-   Dark is a re-picked palette, not an inversion: plum stays plum, and the
-   neutrals stay aubergine rather than sliding to grey. The one value that has to
-   move is --brand: a 9.6:1 deep plum is invisible on a dark page, so it lightens
-   to a mid-plum still carrying a white label (5.9:1) and clearing 3:1 against
-   the page. Keeping white-on-brand in both themes is why no button needed an
-   --on-brand token.
+   Dark is a re-picked palette, not an inversion: green stays green, and the
+   neutrals stay green-charcoal rather than sliding to grey. --brand keeps a
+   white label in both themes (that's why no button needs an --on-brand token),
+   so on the dark page it lifts just enough to clear 3:1 against it while staying
+   dark enough for AA white text.
    ========================================================================== */
 :root {
   color-scheme: light dark;
-  /* --- plum: the one accent ---------------------------------------------- */
-  --brand: light-dark(#6d2e5b, #9b4482); /* primary fill — white label */
-  --brand-hover: light-dark(#58254a, #ae5494);
-  --brand-light: light-dark(#b96aa0, #c77fb0); /* orchid: fills with no text */
-  --brand-light-hover: light-dark(#a85b90, #d492c1);
-  --brand-ink: light-dark(#7b3466, #e8a9ce); /* plum as AA text: links, figures */
-  --brand-tint: light-dark(#f7edf4, #2c1f2e); /* plum-wash card fill */
-  --brand-tint-2: light-dark(#fcf7fa, #241a26); /* faintest wash */
-  --brand-disabled: light-dark(#d9bdd0, #4a3548);
+  /* --- Grove: green, mid-tone — the leaf/emerald of the references, neither
+     the lime-bright of one nor washed sage. Token names are inherited from the
+     previous system so every screen moves at once; --teal now holds a soft
+     green block and --gold a warm counterpoint, kept for continuity. --------- */
+  /* Dark keeps white-on-brand legible (AA) while still clearing 3:1 against the
+     dark page — a lighter emerald reads livelier but drops white text below AA. */
+  --brand: light-dark(#15803d, #16843f); /* primary fill — white label */
+  --brand-hover: light-dark(#116632, #12722f);
+  --brand-light: light-dark(#3ccb72, #37bd6a); /* leaf: fills with no text */
+  --brand-light-hover: light-dark(#2fb865, #45cd78);
+  --brand-ink: light-dark(#12692f, #62db94); /* green as AA text: links, figures */
+  --brand-tint: light-dark(#e4f5ea, #182a1e); /* mint card fill */
+  --brand-tint-2: light-dark(#f1faf4, #121f16); /* faintest wash */
+  --brand-disabled: light-dark(#b6ddc4, #2b4634);
 
   /* --- supporting hues ---------------------------------------------------- */
-  /* Dusk teal, deliberately blue-leaning — a sage green here would land back in
-     the palette the user rejected. Ink type on it in both themes. */
-  --teal: light-dark(#8fb8bf, #2e5057); /* the counsellor "check-ins" block */
-  --success: light-dark(#2e6b50, #2e6b50); /* Active/success — white label */
-  --success-tint: light-dark(#e6f2eb, #1b2e24);
-  --success-ink: light-dark(#1f4a37, #86d3ab);
+  /* Soft green block (the counsellor "check-ins" / "in session" card). A mid
+     tone that carries dark ink type in light and light ink in dark. */
+  --teal: light-dark(#a7d8b4, #2c5540);
+  --success: light-dark(#15803d, #15803d); /* Active/success — white label */
+  --success-tint: light-dark(#e4f5ea, #16281d);
+  --success-ink: light-dark(#146a34, #74d69d);
 
-  /* Gold: plum's dusk counterpoint. Warm, but yellow-gold, not orange-brown. */
-  --gold: light-dark(#f5e6c8, #3a2f1c); /* upcoming-appointment card */
-  --gold-strong: light-dark(#e0a93f, #e0a93f);
-  --gold-ink: light-dark(#6b4e0a, #eccb84);
+  /* Gold: the one warm counterpoint, so a green-dominant system isn't a wall of
+     green. Muted honey, not orange-brown — the upcoming-appointment card. */
+  --gold: light-dark(#f4e7c6, #38301c);
+  --gold-strong: light-dark(#d9a93c, #d9a93c);
+  --gold-ink: light-dark(#6b4e0a, #ecc978);
 
-  /* Dark lifts the fill so it still clears 3:1 against the dark page while
-     keeping a white label (5.4:1). */
-  --red: light-dark(#b3243f, #c0334d); /* destructive fill — white label */
-  --red-light: light-dark(#d9435f, #d9435f); /* fills only */
-  --red-tint: light-dark(#fbebee, #33161d);
-  --red-ink: light-dark(#a81e38, #f4949f);
+  --red: light-dark(#c62828, #d6404a); /* destructive fill — white label */
+  --red-light: light-dark(#e24b4a, #e24b4a); /* fills only */
+  --red-tint: light-dark(#fdecec, #331717);
+  --red-ink: light-dark(#b3261e, #f59d97);
 
-  /* --- neutrals (plum-tinted, never grey) --------------------------------- */
-  --ink: light-dark(#3a2b3d, #ece2eb); /* body + headings */
-  --ink-strong: light-dark(#241826, #faf5f9); /* display headings */
-  --ink-secondary: light-dark(#5f4e63, #c6b4c4); /* supporting copy */
-  /* Meta lands on the plum-tint card as often as on the page, so this is tuned
-     to clear 4.5:1 on --brand-tint in BOTH themes, not just on the page. */
-  --ink-muted: light-dark(#716275, #a596a6);
-  --page: light-dark(#fbf9fb, #171018);
-  --surface: light-dark(#ffffff, #211823);
-  --sunken: light-dark(#f5f1f5, #2a1f2c); /* secondary buttons, wells */
-  --sunken-2: light-dark(#faf7fa, #1e1520);
-  --border: light-dark(#ebe3ec, #3a2c3d);
-  --border-strong: light-dark(#d3c6d4, #524156);
+  /* --- neutrals (green-charcoal, never flat grey) ------------------------- */
+  --ink: light-dark(#24352a, #e2ede5); /* body + headings */
+  --ink-strong: light-dark(#12241a, #f4faf5); /* display headings */
+  --ink-secondary: light-dark(#48594e, #bcd0c1); /* supporting copy */
+  /* Meta lands on the mint card and the warm gold card as often as on the page,
+     so this is tuned to clear 4.5:1 on the *gold* card (the lightest/warmest
+     surface) in both themes, not just on the page. */
+  --ink-muted: light-dark(#4e6149, #9bb2a2);
+  --page: light-dark(#f0f7f2, #101711); /* mint-white, from the references */
+  --surface: light-dark(#ffffff, #18211b);
+  --sunken: light-dark(#e8f2ea, #1f2a22); /* secondary buttons, wells */
+  --sunken-2: light-dark(#f3faf5, #16201a);
+  --border: light-dark(#dae8de, #2c3a30);
+  --border-strong: light-dark(#c1d5c6, #435043);
+
+  /* Deep forest "feature" surface — the dark card both references lead with
+     (the revenue card, the KVA tile, the sidebar). Dark in both themes, so its
+     mint text stays put; --on-forest is near-white for AA either way. */
+  --forest: light-dark(#14532d, #0f3d22);
+  --forest-2: light-dark(#1c6b3b, #17542e); /* a lifted panel inside forest */
+  --on-forest: #eafaf0;
+  --on-forest-muted: #a9cfb7;
 
   /* --- clinical severity (counsellor/admin only) -------------------------- */
   /* ONE colour language for severity everywhere — green/amber/red — retuned
@@ -87,16 +99,16 @@
   --sev-critical-fill: #d9435f;
 
   /* --- charts (non-severity only) ----------------------------------------- */
-  /* Only chart-1 and chart-3 move: a deep plum and a dark indigo both vanish
-     against the dark page. The mid-tones read on either. */
-  --chart-1: light-dark(#6d2e5b, #c77fb0);
-  --chart-2: #b96aa0;
-  --chart-3: light-dark(#4a4478, #8d86c9);
-  --chart-4: #e0a93f;
-  --chart-5: #8fb8bf;
+  /* Green-forward, with the warm amber and a teal-green for separation. The
+     darkest greens lift on the dark page so they don't vanish. */
+  --chart-1: light-dark(#15803d, #34c76a);
+  --chart-2: #3ccb72;
+  --chart-3: light-dark(#0f5c2e, #7fe0a5);
+  --chart-4: #d9a93c;
+  --chart-5: light-dark(#2a7d6b, #6fc9b5);
 
   /* The focus ring must be visible against the *page*, so it inverts with it. */
-  --focus-ring: light-dark(#7b3466, #e8a9ce);
+  --focus-ring: light-dark(#157a3b, #62db94);
 }
 
 /* The profile toggle. Setting color-scheme is the whole override: every
@@ -122,6 +134,10 @@
   --color-brand-disabled: var(--brand-disabled);
 
   --color-teal: var(--teal);
+  --color-forest: var(--forest);
+  --color-forest-2: var(--forest-2);
+  --color-on-forest: var(--on-forest);
+  --color-on-forest-muted: var(--on-forest-muted);
   --color-success: var(--success);
   --color-success-tint: var(--success-tint);
   --color-success-ink: var(--success-ink);

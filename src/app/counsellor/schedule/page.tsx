@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requirePageRole } from "@/lib/auth";
 import { PageTitle } from "@/components/ui/page-title";
@@ -134,15 +133,9 @@ export default async function CounsellorSchedulePage() {
                         </p>
                       )}
                     </div>
-                    <div className="flex shrink-0 items-center gap-3">
-                      <StatusChip status={a.status} />
-                      <Link
-                        href={`/counsellor/notes/${a.id}`}
-                        className="text-sm font-semibold text-brand-ink hover:underline"
-                      >
-                        {a.sessionNote ? "Edit note" : "Add note"}
-                      </Link>
-                    </div>
+                    {/* No note link here — notes are written on History, once
+                        the session is done. Schedule is for what's ahead. */}
+                    <StatusChip status={a.status} />
                   </li>
                 ))}
               </ul>

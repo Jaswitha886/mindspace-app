@@ -5,7 +5,8 @@ import { PageTitle } from "@/components/ui/page-title";
 import { MoodEntryForm } from "@/features/moods/MoodEntryForm";
 import { MoodTrendChart } from "@/features/moods/MoodTrendChart";
 import { DeleteMoodButton } from "@/features/moods/DeleteMoodButton";
-import { MOOD_COLOR, MOOD_EMOJI, MOOD_LABEL } from "@/features/moods/mood-meta";
+import { MOOD_COLOR, MOOD_FACE_INK, MOOD_LABEL } from "@/features/moods/mood-meta";
+import { MoodFace } from "@/features/moods/MoodFace";
 import { formatDate } from "@/lib/format";
 
 export default async function MoodPage() {
@@ -57,10 +58,10 @@ export default async function MoodPage() {
                   >
                     <div className="flex min-w-0 items-start gap-2.5">
                       <span
-                        className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full text-sm"
-                        style={{ backgroundColor: MOOD_COLOR[m.mood] }}
+                        className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full"
+                        style={{ backgroundColor: MOOD_COLOR[m.mood], color: MOOD_FACE_INK }}
                       >
-                        <span aria-hidden>{MOOD_EMOJI[m.mood]}</span>
+                        <MoodFace mood={m.mood} className="h-[1.1rem] w-[1.1rem]" />
                       </span>
                       <div className="min-w-0">
                         <p className="text-[0.9375rem]">
