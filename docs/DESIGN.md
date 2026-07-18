@@ -58,6 +58,40 @@ tokens.
 `--teal` is deliberately blue-leaning. A sage green here lands straight back in
 the rejected palette.
 
+## Dark mode
+
+Every themed token is `light-dark(light, dark)` in one declaration, so the two
+palettes sit on the same line and cannot drift apart. **Reference tokens by
+name and both themes come free; hard-code a hex and you break one of them.**
+
+Dark is a re-picked palette, not an inversion — plum stays plum and the
+neutrals stay aubergine rather than sliding to grey. Two values have to move:
+
+| Token | Why it moves |
+|---|---|
+| `--brand` `#6D2E5B` → `#9B4482` | a 9.6:1 deep plum is invisible on a dark page. The lighter mid-plum still carries a **white** label (5.9:1) and clears 3:1 against the page — which is why no button needed an `--on-brand` token. |
+| `--chart-1`, `--chart-3` | a deep plum and a dark indigo both vanish on the dark page. |
+
+**Severity is deliberately NOT themed.** `--sev-*` are fixed hexes in both
+modes: it is clinical data, and "critical" must be the same red for a counsellor
+in dark as for an admin in light. They already clear white-label AA and 3:1
+against both pages.
+
+Two more things that stay light on purpose:
+- **The QR plate** (`bg-white`, `margin: 3`). A QR must be dark-modules-on-light
+  with a light quiet zone — many readers won't decode an inverted one.
+- **Shadows.** `box-shadow` isn't a `<color>`, so `light-dark()` can't reach
+  inside it. It doesn't need to: in dark, elevation comes from `--surface`
+  sitting lighter than `--page` plus the hairline border. A heavy drop shadow on
+  near-black just reads as grime.
+
+**Preference:** a `mindspace-theme` cookie, read in the root layout so
+`data-theme` is in the first byte — no flash. *No cookie means no attribute*,
+leaving `color-scheme: light dark` to follow the OS; that absence is what
+"System" means, so the OS switching at sunset is followed rather than frozen.
+`:root[data-theme]` only sets `color-scheme`, which is what every `light-dark()`
+resolves from — and it steers the browser's own scrollbars and form controls too.
+
 Hard rules:
 - Severity never appears in student UI and is never conveyed by colour alone.
 - **Severity has exactly one colour language app-wide — green/amber/red.**
@@ -110,6 +144,23 @@ counsellor and admin wear the same chrome as the student, only the tabs differ.
   the bottom of a 1440px window. Same items, same active treatment.
 
 Nav lists **only routes that exist** — a tab that 404s is worse than no tab.
+
+**Back, top-left, on every page except each role's home.** `BackButton` lives in
+the shell rather than per-page, so it sits in the same place on all three roles'
+screens. Home is the root of a role's area: there is nowhere up from it, the nav
+already puts every top-level page one tap away, and a Back button there could
+only walk you out of the app — which is what the browser's own control is for.
+
+It is `router.back()`, which means it goes wherever you actually came from and
+so can't name its destination. That is the deliberate trade: an earlier version
+used labelled per-page "up" links to a fixed parent, but only two screens in the
+app are sub-pages (`/student/appointments/new`, `/counsellor/notes/[id]`), which
+left every other page — the dashboards included — with no back affordance at
+all. A consistent control everywhere beat a better-labelled one almost nowhere.
+
+It renders **nothing** when `history.length <= 1`. A Back button that doesn't
+move is worse than no button: you press it, nothing happens, and you stop
+trusting the control.
 
 **Hierarchy over uniformity.** The student dashboard is the pattern: one wide
 focal card carrying the single daily action, everything else demoted to a

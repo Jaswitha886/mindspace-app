@@ -10,56 +10,75 @@
    uniform of clinical software, which is exactly what this app must not feel
    like. Gold appears only as dusk's counterpoint (sunset, not terracotta).
 
-   Reference by token name, never raw hex.
+   Reference by token name, never raw hex — that is what makes dark mode free.
+
+   DARK MODE: every themed token is light-dark(light, dark). No cookie means the
+   OS setting wins; the profile toggle sets [data-theme] to override it. Using
+   light-dark() rather than a duplicated media-query block means the two palettes
+   sit on the same line and can't drift apart.
+
+   Dark is a re-picked palette, not an inversion: plum stays plum, and the
+   neutrals stay aubergine rather than sliding to grey. The one value that has to
+   move is --brand: a 9.6:1 deep plum is invisible on a dark page, so it lightens
+   to a mid-plum still carrying a white label (5.9:1) and clearing 3:1 against
+   the page. Keeping white-on-brand in both themes is why no button needed an
+   --on-brand token.
    ========================================================================== */
 :root {
+  color-scheme: light dark;
   /* --- plum: the one accent ---------------------------------------------- */
-  --brand: #6d2e5b; /* primary fill — white label, 9.6:1 */
-  --brand-hover: #58254a;
-  --brand-light: #b96aa0; /* orchid: fills that carry no text */
-  --brand-light-hover: #a85b90;
-  --brand-ink: #7b3466; /* plum as AA text: links, figures (7.4:1) */
-  --brand-tint: #f7edf4; /* plum-wash card fill */
-  --brand-tint-2: #fcf7fa; /* faintest wash */
-  --brand-disabled: #d9bdd0;
+  --brand: light-dark(#6d2e5b, #9b4482); /* primary fill — white label */
+  --brand-hover: light-dark(#58254a, #ae5494);
+  --brand-light: light-dark(#b96aa0, #c77fb0); /* orchid: fills with no text */
+  --brand-light-hover: light-dark(#a85b90, #d492c1);
+  --brand-ink: light-dark(#7b3466, #e8a9ce); /* plum as AA text: links, figures */
+  --brand-tint: light-dark(#f7edf4, #2c1f2e); /* plum-wash card fill */
+  --brand-tint-2: light-dark(#fcf7fa, #241a26); /* faintest wash */
+  --brand-disabled: light-dark(#d9bdd0, #4a3548);
 
   /* --- supporting hues ---------------------------------------------------- */
   /* Dusk teal, deliberately blue-leaning — a sage green here would land back in
-     the palette the user rejected. */
-  --teal: #8fb8bf; /* the counsellor "check-ins" block (ink type) */
-  --success: #2e6b50; /* Active/success — white label, 5.3:1 */
-  --success-tint: #e6f2eb;
-  --success-ink: #1f4a37;
+     the palette the user rejected. Ink type on it in both themes. */
+  --teal: light-dark(#8fb8bf, #2e5057); /* the counsellor "check-ins" block */
+  --success: light-dark(#2e6b50, #2e6b50); /* Active/success — white label */
+  --success-tint: light-dark(#e6f2eb, #1b2e24);
+  --success-ink: light-dark(#1f4a37, #86d3ab);
 
   /* Gold: plum's dusk counterpoint. Warm, but yellow-gold, not orange-brown. */
-  --gold: #f5e6c8; /* upcoming-appointment card */
-  --gold-strong: #e0a93f;
-  --gold-ink: #6b4e0a;
+  --gold: light-dark(#f5e6c8, #3a2f1c); /* upcoming-appointment card */
+  --gold-strong: light-dark(#e0a93f, #e0a93f);
+  --gold-ink: light-dark(#6b4e0a, #eccb84);
 
-  --red: #b3243f; /* destructive fill — white label, 6.4:1 */
-  --red-light: #d9435f; /* fills only */
-  --red-tint: #fbebee;
-  --red-ink: #a81e38;
+  /* Dark lifts the fill so it still clears 3:1 against the dark page while
+     keeping a white label (5.4:1). */
+  --red: light-dark(#b3243f, #c0334d); /* destructive fill — white label */
+  --red-light: light-dark(#d9435f, #d9435f); /* fills only */
+  --red-tint: light-dark(#fbebee, #33161d);
+  --red-ink: light-dark(#a81e38, #f4949f);
 
   /* --- neutrals (plum-tinted, never grey) --------------------------------- */
-  --ink: #3a2b3d; /* body + headings (11.4:1) */
-  --ink-strong: #241826; /* display headings (15.3:1) */
-  --ink-secondary: #5f4e63; /* supporting copy (7.6:1) */
-  /* Meta lands on the plum card as often as on white, so this is tuned to clear
-     4.5:1 on --brand-tint (4.9:1), not just on white (5.7:1). */
-  --ink-muted: #716275;
-  --page: #fbf9fb;
-  --surface: #ffffff;
-  --sunken: #f5f1f5; /* secondary buttons, wells */
-  --sunken-2: #faf7fa;
-  --border: #ebe3ec;
-  --border-strong: #d3c6d4;
+  --ink: light-dark(#3a2b3d, #ece2eb); /* body + headings */
+  --ink-strong: light-dark(#241826, #faf5f9); /* display headings */
+  --ink-secondary: light-dark(#5f4e63, #c6b4c4); /* supporting copy */
+  /* Meta lands on the plum-tint card as often as on the page, so this is tuned
+     to clear 4.5:1 on --brand-tint in BOTH themes, not just on the page. */
+  --ink-muted: light-dark(#716275, #a596a6);
+  --page: light-dark(#fbf9fb, #171018);
+  --surface: light-dark(#ffffff, #211823);
+  --sunken: light-dark(#f5f1f5, #2a1f2c); /* secondary buttons, wells */
+  --sunken-2: light-dark(#faf7fa, #1e1520);
+  --border: light-dark(#ebe3ec, #3a2c3d);
+  --border-strong: light-dark(#d3c6d4, #524156);
 
   /* --- clinical severity (counsellor/admin only) -------------------------- */
   /* ONE colour language for severity everywhere — green/amber/red — retuned
      into dusk but never re-hued: critical must not be berry here and gold three
      cards away. The deep variant carries a white label (AA); the -fill variant
-     is for bars and dots, which carry no text. */
+     is for bars and dots, which carry no text.
+     **Deliberately NOT light-dark().** Severity is clinical data, and it must
+     mean exactly one thing regardless of theme — a counsellor reading "critical"
+     in dark mode must see the same red as the admin reading it in light. These
+     values already clear white-label AA and 3:1 against both pages. */
   --sev-mild: #2e6b50; /* pill, white label — 5.3:1 */
   --sev-moderate: #8a5a00; /* pill, white label — 4.6:1 */
   --sev-critical: #b3243f; /* pill, white label — 6.4:1 */
@@ -68,13 +87,28 @@
   --sev-critical-fill: #d9435f;
 
   /* --- charts (non-severity only) ----------------------------------------- */
-  --chart-1: #6d2e5b;
+  /* Only chart-1 and chart-3 move: a deep plum and a dark indigo both vanish
+     against the dark page. The mid-tones read on either. */
+  --chart-1: light-dark(#6d2e5b, #c77fb0);
   --chart-2: #b96aa0;
-  --chart-3: #4a4478;
+  --chart-3: light-dark(#4a4478, #8d86c9);
   --chart-4: #e0a93f;
   --chart-5: #8fb8bf;
 
-  --focus-ring: #7b3466;
+  /* The focus ring must be visible against the *page*, so it inverts with it. */
+  --focus-ring: light-dark(#7b3466, #e8a9ce);
+}
+
+/* The profile toggle. Setting color-scheme is the whole override: every
+   light-dark() above resolves from it, and the browser's own form controls,
+   scrollbars and canvas follow too — which is why this beats a class that only
+   our own CSS knows about. No cookie at all leaves `light dark` in place, so a
+   first-time visitor silently gets their OS preference with no flash. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
 }
 
 @theme inline {
@@ -136,7 +170,12 @@
   --radius-pill: 999px;
 
   /* Shadows tint plum, not black: a grey shadow over a warm off-white is what
-     makes a soft palette look dirty. */
+     makes a soft palette look dirty.
+     These stay light-mode values on purpose. box-shadow isn't a <color>, so
+     light-dark() can't reach inside it — and it doesn't need to: in dark mode
+     these all but vanish, and elevation instead comes from --surface sitting
+     lighter than --page plus the hairline border. That is how dark UIs signal
+     depth anyway; a heavier drop shadow on near-black just reads as grime. */
   --shadow-card: 0 1px 3px rgba(36, 24, 38, 0.05), 0 1px 2px rgba(36, 24, 38, 0.04);
   --shadow-card-hover: 0 8px 20px rgba(36, 24, 38, 0.1), 0 2px 6px rgba(36, 24, 38, 0.05);
   --shadow-btn: 0 1px 2px rgba(36, 24, 38, 0.09);
@@ -231,7 +270,12 @@ body {
 
 /* ---- Skeleton ---------------------------------------------------------- */
 .skeleton {
-  background: linear-gradient(90deg, #f0eaf1 25%, #f8f4f8 37%, #f0eaf1 63%);
+  background: linear-gradient(
+    90deg,
+    light-dark(#f0eaf1, #2a1f2c) 25%,
+    light-dark(#f8f4f8, #362839) 37%,
+    light-dark(#f0eaf1, #2a1f2c) 63%
+  );
   background-size: 400% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
   border-radius: var(--radius-input);

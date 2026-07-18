@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { AppointmentStatus } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requirePageRole } from "@/lib/auth";
 import { PageTitle } from "@/components/ui/page-title";
@@ -8,13 +8,16 @@ import { EmptyState } from "@/components/ui/states";
 import { HistoryIcon, PlusIcon } from "@/components/icons";
 import { CancelAppointmentButton } from "@/features/appointments/CancelAppointmentButton";
 
-const FILTERS: Array<{ label: string; value?: AppointmentStatus }> = [
-  { label: "All" },
-  { label: "Pending", value: "PENDING" },
-  { label: "Confirmed", value: "APPROVED" },
-  { label: "Completed", value: "COMPLETED" },
-  { label: "Declined", value: "REJECTED" },
-  { label: "Cancelled", value: "CANCELLED" },
+// Three views, not six status filters. A student thinks in "what's coming" and
+// "what happened" — not in the schema's five statuses. Nothing is lost by
+// collapsing them: every card's StatusChip still says exactly which status it
+// is, so the filter only has to answer the coarse question.
+type View = "all" | "upcoming" | "past";
+
+const VIEWS: Array<{ label: string; value: View }> = [
+  { label: "All", value: "all" },
+  { label: "Upcoming", value: "upcoming" },
+  { label: "Past", value: "past" },
 ];
 
 const PAGE_SIZE = 10;
@@ -22,19 +25,37 @@ const PAGE_SIZE = 10;
 export default async function AppointmentsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; page?: string }>;
+  searchParams: Promise<{ view?: string; page?: string }>;
 }) {
   const session = await requirePageRole("STUDENT");
   const params = await searchParams;
-  const status = FILTERS.find((f) => f.value === params.status)?.value;
+  const view: View =
+    VIEWS.find((v) => v.value === params.view)?.value ?? "all";
   const page = Math.max(Number(params.page) || 1, 1);
 
-  const where = { studentId: session.userId, ...(status ? { status } : {}) };
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+
+  // "Upcoming" is a live booking still ahead of you. Everything else is past:
+  // finished, declined, cancelled — or a booking whose day has been and gone.
+  const upcoming: Prisma.AppointmentWhereInput = {
+    status: { in: ["PENDING", "APPROVED"] },
+    appointmentDate: { gte: today },
+  };
+  const where: Prisma.AppointmentWhereInput = {
+    studentId: session.userId,
+    ...(view === "upcoming" ? upcoming : view === "past" ? { NOT: upcoming } : {}),
+  };
+
+  // Soonest-first when looking ahead, most-recent-first when looking back —
+  // otherwise "Upcoming" leads with the session furthest away.
+  const order: Prisma.SortOrder = view === "upcoming" ? "asc" : "desc";
+
   const [total, appointments] = await Promise.all([
     prisma.appointment.count({ where }),
     prisma.appointment.findMany({
       where,
-      orderBy: [{ appointmentDate: "desc" }, { startTime: "desc" }],
+      orderBy: [{ appointmentDate: order }, { startTime: order }],
       skip: (page - 1) * PAGE_SIZE,
       take: PAGE_SIZE,
       include: {
@@ -49,8 +70,10 @@ export default async function AppointmentsPage({
   ]);
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
-  const filterHref = (value?: AppointmentStatus) =>
-    value ? `/student/appointments?status=${value}` : "/student/appointments";
+  const filterHref = (value: View) =>
+    value === "all"
+      ? "/student/appointments"
+      : `/student/appointments?view=${value}`;
 
   return (
     <div className="flex flex-col gap-5">
@@ -65,13 +88,13 @@ export default async function AppointmentsPage({
         </Link>
       </div>
 
-      <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by status">
-        {FILTERS.map((f) => {
-          const active = f.value === status;
+      <div className="flex flex-wrap gap-2" role="group" aria-label="Filter appointments">
+        {VIEWS.map((v) => {
+          const active = v.value === view;
           return (
             <Link
-              key={f.label}
-              href={filterHref(f.value)}
+              key={v.value}
+              href={filterHref(v.value)}
               aria-current={active ? "true" : undefined}
               className={`rounded-(--radius-pill) px-4 py-1.5 text-sm font-semibold transition-colors duration-150 ${
                 active
@@ -79,7 +102,7 @@ export default async function AppointmentsPage({
                   : "bg-sunken text-ink-secondary hover:bg-line hover:text-ink"
               }`}
             >
-              {f.label}
+              {v.label}
             </Link>
           );
         })}
@@ -88,11 +111,19 @@ export default async function AppointmentsPage({
       {appointments.length === 0 ? (
         <EmptyState
           icon={<HistoryIcon className="h-12 w-12" />}
-          title={status ? "Nothing with this status" : "No appointments yet"}
+          title={
+            view === "upcoming"
+              ? "Nothing booked yet"
+              : view === "past"
+                ? "No past sessions"
+                : "No appointments yet"
+          }
           body={
-            status
-              ? "Try another filter to see your other sessions."
-              : "Whenever you're ready, booking one takes three small choices."
+            view === "all"
+              ? "Whenever you're ready, booking one takes three small choices."
+              : view === "upcoming"
+                ? "When you book a session, it'll appear here until it's done."
+                : "Sessions move here once they're finished, declined, or cancelled."
           }
         />
       ) : (
@@ -129,7 +160,7 @@ export default async function AppointmentsPage({
           {page > 1 && (
             <Link
               className="font-semibold text-brand-ink hover:underline"
-              href={`${filterHref(status)}${status ? "&" : "?"}page=${page - 1}`}
+              href={`${filterHref(view)}${view === "all" ? "?" : "&"}page=${page - 1}`}
             >
               Newer
             </Link>
@@ -140,7 +171,7 @@ export default async function AppointmentsPage({
           {page < totalPages && (
             <Link
               className="font-semibold text-brand-ink hover:underline"
-              href={`${filterHref(status)}${status ? "&" : "?"}page=${page + 1}`}
+              href={`${filterHref(view)}${view === "all" ? "?" : "&"}page=${page + 1}`}
             >
               Older
             </Link>

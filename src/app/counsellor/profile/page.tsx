@@ -3,6 +3,7 @@ import { requirePageRole } from "@/lib/auth";
 import { Card } from "@/components/ui/card";
 import { PageTitle } from "@/components/ui/page-title";
 import { CounsellorProfileForm } from "@/features/profile/CounsellorProfileForm";
+import { ThemeToggle } from "@/features/theme/ThemeToggle";
 
 export default async function CounsellorProfilePage() {
   const session = await requirePageRole("COUNSELLOR");
@@ -42,6 +43,14 @@ export default async function CounsellorProfilePage() {
           department={user?.department?.name ?? null}
           specialization={user?.counsellorProfile?.specialization ?? null}
         />
+      </Card>
+
+      <Card>
+        <h2 className="t-h2">Appearance</h2>
+        <p className="t-body mt-1 mb-3">
+          Applies to this browser only, not your account.
+        </p>
+        <ThemeToggle />
       </Card>
     </div>
   );

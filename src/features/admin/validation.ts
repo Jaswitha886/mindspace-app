@@ -1,21 +1,7 @@
 import { z } from "zod";
 
-export const userListQuerySchema = z.object({
-  q: z.string().trim().max(100).optional(),
-  role: z.enum(["STUDENT", "COUNSELLOR", "ADMIN"]).optional(),
-  status: z.enum(["active", "inactive"]).optional(),
-  page: z.coerce.number().int().min(1).default(1),
-  limit: z.coerce.number().int().min(1).max(50).default(20),
-});
-
-export const updateUserSchema = z
-  .object({
-    role: z.enum(["STUDENT", "COUNSELLOR", "ADMIN"]).optional(),
-    isActive: z.boolean().optional(),
-  })
-  .refine((v) => v.role !== undefined || v.isActive !== undefined, {
-    message: "Nothing to update",
-  });
+// User-management schemas (userListQuerySchema, updateUserSchema) were removed
+// with the Users page: the admin is analytics-only now and manages no accounts.
 
 /** Shared by the analytics endpoints: a date window plus an optional department. */
 export const analyticsQuerySchema = z

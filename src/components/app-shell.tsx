@@ -2,6 +2,7 @@ import Link from "next/link";
 import { LogoutButton } from "@/features/auth/LogoutButton";
 import { WordmarkMark, Wordmark } from "@/components/wordmark";
 import { BottomNav, SideNav, type NavItem } from "@/components/app-nav";
+import { BackButton } from "@/components/ui/back-button";
 import type { SessionPayload } from "@/lib/session";
 
 // One shell for every role — counsellor and admin wear the same chrome as the
@@ -66,7 +67,12 @@ export function AppShell({
           </div>
         </header>
 
+        {/* Back lives in the shell, not per-page, so it sits in the same place
+            on every screen in every role. It renders nothing on `home` (there's
+            nowhere up from the root of a role's area) or when there's no
+            history behind it. */}
         <main className="mx-auto w-full max-w-[1180px] flex-1 px-4 pb-24 pt-5 sm:px-6 lg:pb-8 lg:pt-7">
+          <BackButton home={home} />
           {children}
         </main>
       </div>

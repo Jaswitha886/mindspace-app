@@ -2,11 +2,13 @@ import { requirePageRole } from "@/lib/auth";
 import { AppShell } from "@/components/app-shell";
 import type { NavItem } from "@/components/app-nav";
 
-// Phase 4 landed these routes, so the tab bar can name them honestly.
+// The admin is for management to read aggregate patterns and act on a spike in
+// critical flags — not a control system over student accounts. No Users tab:
+// that page and its APIs were removed, and no admin manages accounts here.
 const NAV_ITEMS: NavItem[] = [
   { href: "/admin", label: "Analytics", icon: "chart", exact: true },
-  { href: "/admin/users", label: "Users", icon: "users" },
   { href: "/admin/notifications", label: "Alerts", icon: "affirmation" },
+  { href: "/admin/profile", label: "Profile", icon: "user" },
 ];
 
 export default async function AdminLayout({
