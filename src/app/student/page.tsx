@@ -12,6 +12,8 @@ import {
   UsersIcon,
 } from "@/components/icons";
 import { MOOD_COLOR, MOOD_EMOJI, MOOD_LABEL } from "@/features/moods/mood-meta";
+import { CheckInCode, CheckedInNotice } from "@/features/checkin/CheckInCode";
+import { isWithinCheckInWindow } from "@/features/checkin/checkin";
 import { formatDate, formatDateLong, formatTimeRange } from "@/lib/format";
 
 export default async function StudentDashboard() {
@@ -105,6 +107,27 @@ export default async function StudentDashboard() {
                 View Details
                 <ArrowRightIcon className="h-4 w-4" />
               </Link>
+
+              {/* The code only exists while it can be used: from 15 min before
+                  the slot until 30 min after. A QR that lives from the moment
+                  you book is a long-lived credential for a one-off door. */}
+              {upcoming.status === "APPROVED" &&
+                (upcoming.checkedInAt ? (
+                  <CheckedInNotice checkedInAt={upcoming.checkedInAt} />
+                ) : isWithinCheckInWindow(upcoming) ? (
+                  <CheckInCode
+                    appointmentId={upcoming.id}
+                    studentId={session.userId}
+                    appointmentDate={upcoming.appointmentDate}
+                    startTime={upcoming.startTime}
+                    endTime={upcoming.endTime}
+                  />
+                ) : (
+                  <p className="t-meta mt-3">
+                    Your check-in code appears here 15 minutes before the session
+                    starts.
+                  </p>
+                ))}
             </Card>
           ) : (
             <Card tone="gold">

@@ -6,6 +6,7 @@ import type { NavItem } from "@/components/app-nav";
 const NAV_ITEMS: NavItem[] = [
   { href: "/counsellor", label: "Home", icon: "home", exact: true },
   { href: "/counsellor/schedule", label: "Schedule", icon: "calendar" },
+  { href: "/counsellor/history", label: "History", icon: "history" },
   { href: "/counsellor/availability", label: "Availability", icon: "clock" },
   { href: "/counsellor/profile", label: "Profile", icon: "user" },
 ];

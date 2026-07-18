@@ -5,6 +5,8 @@ import { SeverityTrendChart } from "@/features/counsellor/SeverityTrendChart";
 import { RequestActions } from "@/features/counsellor/RequestActions";
 import { Card } from "@/components/ui/card";
 import { SEVERITY_META } from "@/features/notes/severity-meta";
+import { EndSessionButton } from "@/features/checkin/ScanCheckIn";
+import { isInSession } from "@/features/checkin/checkin";
 import { ArrowRightIcon, CalendarIcon, UsersIcon } from "@/components/icons";
 import { formatDateLong, formatTime, formatTimeRange } from "@/lib/format";
 
@@ -30,7 +32,13 @@ export default async function CounsellorDashboard() {
   } = await getCounsellorDashboardData(session.userId);
 
   const firstName = session.name.split(" ").slice(0, 2).join(" ");
-  const next = todaysSessions[0];
+  const next = todaysSessions.find((s) => s.status === "APPROVED");
+
+  // Derived, never stored: the counsellor is in session if one of today's is
+  // checked in, unclosed, and still inside its window. A forgotten "End
+  // session" therefore expires on its own instead of stranding them as busy.
+  const now = new Date();
+  const live = todaysSessions.find((s) => isInSession(s, now));
 
   return (
     <div className="flex flex-col gap-5">
@@ -38,6 +46,40 @@ export default async function CounsellorDashboard() {
         <h1 className="t-display">Welcome, {firstName}</h1>
         <p className="t-meta mt-1">{longDate()}</p>
       </header>
+
+      {/* Your status — the one thing that changes when a student checks in, and
+          the thing students see the other side of in "Counsellors Available
+          Now". Teal block carries ink type, never white. */}
+      <Card tone={live ? "teal" : "plum"}>
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="text-[0.9375rem] font-semibold text-ink-secondary">
+              Your status
+            </p>
+            <p className="t-figure mt-1 text-ink-strong">
+              {live ? "In session" : "Available"}
+            </p>
+            <p className="t-meta mt-1">
+              {live
+                ? `With ${live.student.name} until ${formatTime(live.endTime)} — hidden from “Counsellors Available Now”.`
+                : "Shown in “Counsellors Available Now”."}
+            </p>
+          </div>
+          {/* Check-in itself lives on Schedule, next to the list of who's due.
+              This card only reports the state and offers the way out of it. */}
+          {live ? (
+            <EndSessionButton appointmentId={live.id} />
+          ) : (
+            <Link
+              href="/counsellor/schedule"
+              className="inline-flex shrink-0 items-center gap-1.5 self-start rounded-(--radius-btn) border border-brand/25 px-4 py-2 text-sm font-semibold text-brand-ink transition-colors hover:bg-brand/5"
+            >
+              Check a student in
+              <ArrowRightIcon className="h-4 w-4" />
+            </Link>
+          )}
+        </div>
+      </Card>
 
       {/* Sessions this week + the plum schedule block. */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -148,7 +190,17 @@ export default async function CounsellorDashboard() {
                     <p className="truncate text-[0.9375rem] font-semibold text-ink">
                       {s.student.name}
                     </p>
-                    <p className="t-meta">{formatTimeRange(s.startTime, s.endTime)}</p>
+                    <p className="t-meta">
+                      {formatTimeRange(s.startTime, s.endTime)}
+                      {/* Attendance in words, never colour alone. */}
+                      {s.status === "COMPLETED"
+                        ? " · Completed"
+                        : isInSession(s, now)
+                          ? " · In session"
+                          : s.checkedInAt
+                            ? " · Checked in, not closed"
+                            : ""}
+                    </p>
                   </div>
                   <Link
                     href={`/counsellor/notes/${s.id}`}

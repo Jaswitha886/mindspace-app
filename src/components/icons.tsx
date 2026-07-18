@@ -39,6 +39,18 @@ export function CalendarIcon(p: IconProps) {
   );
 }
 
+// Session check-in — three finder squares and a scattered module, read as a QR.
+export function QrIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" />
+      <path d="M14 14h2.5v2.5M20.5 14v.01M20.5 17.5v3M14 20.5h3M17.5 20.5v.01" />
+    </Svg>
+  );
+}
+
 // "Affirmation" — a sparkle cluster.
 export function SparkleIcon(p: IconProps) {
   return (

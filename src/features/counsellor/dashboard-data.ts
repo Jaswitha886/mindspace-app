@@ -69,7 +69,10 @@ export async function getCounsellorDashboardData(counsellorId: string) {
       prisma.appointment.findMany({
         where: {
           counsellorId,
-          status: "APPROVED",
+          // COMPLETED belongs here: ending a session must not erase it from the
+          // day, or the counsellor loses the row — and its "Add note" link —
+          // the moment they close it.
+          status: { in: ["APPROVED", "COMPLETED"] },
           appointmentDate: { gte: today, lt: tomorrow },
         },
         orderBy: { startTime: "asc" },
@@ -77,6 +80,11 @@ export async function getCounsellorDashboardData(counsellorId: string) {
           id: true,
           startTime: true,
           endTime: true,
+          // Needed by isInSession() — it derives "in session" from the status,
+          // the check-in stamp, and the slot window together.
+          status: true,
+          checkedInAt: true,
+          appointmentDate: true,
           student: { select: { name: true } },
           sessionNote: { select: { id: true, severity: true } },
         },

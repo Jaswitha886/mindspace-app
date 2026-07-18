@@ -151,6 +151,12 @@ model Appointment {
   endTime         String // "HH:mm"
   status          AppointmentStatus @default(PENDING)
   reason          String? // student's note when booking, or counsellor's reschedule suggestion on reject
+  // Set when the counsellor scans the student's check-in code. Kept after the
+  // session is COMPLETED — it records that the student actually attended, which
+  // is not the same fact as the counsellor having closed the session.
+  // "In session" is derived from this + status + the slot window; it is never
+  // stored on User. See docs/superpowers/specs/2026-07-17-qr-session-checkin-design.md
+  checkedInAt     DateTime?
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
