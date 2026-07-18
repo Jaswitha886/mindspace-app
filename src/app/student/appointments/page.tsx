@@ -81,13 +81,14 @@ export default async function AppointmentsPage({
         <PageTitle sub="Your booked and past sessions.">My Appointments</PageTitle>
         <Link
           href="/student/appointments/new"
-          className="inline-flex items-center gap-2 rounded-(--radius-btn) bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-(--shadow-btn) transition-colors hover:bg-brand-hover"
+          className="inline-flex shrink-0 items-center gap-2 rounded-(--radius-btn) bg-brand px-5 py-2.5 text-sm font-semibold text-white shadow-(--shadow-btn) transition-colors hover:bg-brand-hover"
         >
           <PlusIcon className="h-[1.05rem] w-[1.05rem]" />
           Book Session
         </Link>
       </div>
 
+      {/* Filter pills */}
       <div className="flex flex-wrap gap-2" role="group" aria-label="Filter appointments">
         {VIEWS.map((v) => {
           const active = v.value === view;
@@ -108,6 +109,7 @@ export default async function AppointmentsPage({
         })}
       </div>
 
+      {/* Appointment cards */}
       {appointments.length === 0 ? (
         <EmptyState
           icon={<HistoryIcon className="h-12 w-12" />}
@@ -155,6 +157,7 @@ export default async function AppointmentsPage({
         </ul>
       )}
 
+      {/* Pagination */}
       {totalPages > 1 && (
         <nav aria-label="Pagination" className="flex items-center gap-3 text-sm">
           {page > 1 && (

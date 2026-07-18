@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { PageTitle } from "@/components/ui/page-title";
 import { CounsellorProfileForm } from "@/features/profile/CounsellorProfileForm";
 import { ThemeToggle } from "@/features/theme/ThemeToggle";
+import { GoogleCalendarCard } from "@/features/google-calendar/GoogleCalendarCard";
 
 export default async function CounsellorProfilePage() {
   const session = await requirePageRole("COUNSELLOR");
@@ -20,6 +21,7 @@ export default async function CounsellorProfilePage() {
           contactNumber: true,
           yearsOfExperience: true,
           specialization: true,
+          googleAccessToken: true,
         },
       },
     },
@@ -51,6 +53,12 @@ export default async function CounsellorProfilePage() {
           Applies to this browser only, not your account.
         </p>
         <ThemeToggle />
+      </Card>
+
+      <Card>
+        <GoogleCalendarCard
+          connected={!!user?.counsellorProfile?.googleAccessToken}
+        />
       </Card>
     </div>
   );

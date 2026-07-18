@@ -23,8 +23,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // Rendered server-side so the palette is correct in the first byte — no
-  // flash of the wrong theme. No cookie means no attribute, which leaves
-  // `color-scheme: light dark` in globals.css to follow the OS.
+  // flash of the wrong theme. No cookie means light mode (the default);
+  // dark is only applied when the user explicitly chooses it.
   const stored = (await cookies()).get(THEME_COOKIE)?.value;
   const theme = isTheme(stored) ? stored : undefined;
 

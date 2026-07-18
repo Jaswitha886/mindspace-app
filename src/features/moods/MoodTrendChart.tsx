@@ -9,7 +9,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { MOOD_EMOJI, MOOD_LABEL, MOOD_ORDINAL } from "@/features/moods/mood-meta";
+import { MOOD_FACE_INK, MOOD_LABEL, MOOD_ORDINAL } from "@/features/moods/mood-meta";
+import { MoodFace } from "@/features/moods/MoodFace";
 
 export type MoodPoint = { logDate: string; mood: Mood };
 
@@ -36,7 +37,7 @@ function MoodTooltip({
   return (
     <div className="rounded-(--radius-input) border border-line bg-surface px-3 py-2 shadow-(--shadow-pop)">
       <p className="text-sm font-semibold text-ink">
-        <span aria-hidden>{MOOD_EMOJI[point.mood]}</span> {MOOD_LABEL[point.mood]}
+        <MoodFace mood={point.mood} className="inline-block h-4 w-4 align-middle" /> {MOOD_LABEL[point.mood]}
       </p>
       <p className="text-xs text-ink-muted">{shortDate(point.date)}</p>
     </div>

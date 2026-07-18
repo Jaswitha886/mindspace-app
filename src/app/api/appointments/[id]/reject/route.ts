@@ -3,6 +3,7 @@ import { z } from "zod";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/auth";
 import { apiError, fail, forbidden, notFound, ok, validationError } from "@/lib/api";
+import { syncCalendarEvent } from "@/features/google-calendar/sync-calendar";
 
 // Per schema, Appointment.reason doubles as the counsellor's note when
 // declining (e.g. a reschedule suggestion). Optional — a decline needn't
@@ -59,6 +60,9 @@ export async function PATCH(
         },
       }),
     ]);
+
+    // Remove Google Calendar event if one was created.
+    syncCalendarEvent(id).catch(console.error);
 
     return ok({ appointment: updated }, { message: "Appointment declined" });
   } catch (error) {

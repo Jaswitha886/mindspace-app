@@ -22,7 +22,7 @@ function useActive() {
 }
 
 // Bottom tab bar for small screens: icon over a small label, active tab in
-// plum. Hidden once a sidebar fits.
+// green. Hidden once a sidebar fits.
 export function BottomNav({ items }: NavProps) {
   const isActive = useActive();
   return (

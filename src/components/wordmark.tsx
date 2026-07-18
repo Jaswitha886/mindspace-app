@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-// A circular badge holding a mind glyph, drawn in plum so the mark belongs to
+// A circular badge holding a mind glyph, drawn in green so the mark belongs to
 // the palette rather than importing a second, unrelated hue.
 function Glyph({ className = "h-5 w-5" }: { className?: string }) {
   return (

@@ -1,61 +1,55 @@
 import type { Mood } from "@prisma/client";
 import type { ReactNode } from "react";
 
-// Line-art mood faces on the same 24-grid, rounded-stroke system as the app's
-// other icons — a grown-up replacement for the emoji. Drawn in currentColor, so
-// the swatch sets the (fixed dark) stroke; meaning still rides on the text
-// label beside it, never on the face alone.
-
-const EYES = (
-  <>
-    <circle cx="9" cy="10.4" r="0.75" fill="currentColor" stroke="none" />
-    <circle cx="15" cy="10.4" r="0.75" fill="currentColor" stroke="none" />
-  </>
-);
+// Bold, minimal mood faces on a 24×24 grid. Stroke-based with clear features
+// that read at small sizes (28px+). The swatch provides the coloured circle;
+// we draw only the expression inside.
 
 const FACES: Record<Mood, ReactNode> = {
   HAPPY: (
     <>
-      {EYES}
-      <path d="M8 14 Q12 17.8 16 14" />
+      <circle cx="9.5" cy="10" r="1.2" />
+      <circle cx="14.5" cy="10" r="1.2" />
+      <path d="M8.5 14.2 Q12 17 15.5 14.2" />
     </>
   ),
   CALM: (
     <>
-      {/* Relaxed, closed eyes — gentle downward arcs. */}
-      <path d="M7.9 10.6 Q9 11.7 10.1 10.6" />
-      <path d="M13.9 10.6 Q15 11.7 16.1 10.6" />
-      <path d="M9 14.6 Q12 16.4 15 14.6" />
+      <path d="M8 10.5 Q9.5 12 11 10.5" />
+      <path d="M13 10.5 Q14.5 12 16 10.5" />
+      <path d="M9.5 14.8 Q12 16.2 14.5 14.8" />
     </>
   ),
   NEUTRAL: (
     <>
-      {EYES}
-      <path d="M9 15 H15" />
+      <circle cx="9.5" cy="10" r="1.2" />
+      <circle cx="14.5" cy="10" r="1.2" />
+      <path d="M10 15 L14 15" />
     </>
   ),
   ANXIOUS: (
     <>
-      {/* Raised inner brows + a small worried mouth. */}
-      <path d="M7.6 8.9 L10.1 8.1" />
-      <path d="M16.4 8.9 L13.9 8.1" />
-      {EYES}
-      <path d="M9.2 15.6 Q12 14.2 14.8 15.6" />
+      <path d="M7.5 8.5 L10.5 8" />
+      <path d="M16.5 8.5 L13.5 8" />
+      <circle cx="9.5" cy="10.5" r="1.2" />
+      <circle cx="14.5" cy="10.5" r="1.2" />
+      <path d="M10 15.5 Q12 14 14 15.5" />
     </>
   ),
   SAD: (
     <>
-      {EYES}
-      <path d="M8.4 16 Q12 12.9 15.6 16" />
+      <circle cx="9.5" cy="10" r="1.2" />
+      <circle cx="14.5" cy="10" r="1.2" />
+      <path d="M9 15.8 Q12 13.5 15 15.8" />
     </>
   ),
   STRESSED: (
     <>
-      {/* Brows angled down + a tense, gritted mouth. */}
-      <path d="M7.7 8.2 L10.2 9.3" />
-      <path d="M16.3 8.2 L13.8 9.3" />
-      {EYES}
-      <path d="M9 15.4 H15 M11 14.6 V16.2 M13 14.6 V16.2" />
+      <path d="M7.5 8 L10.5 9.2" />
+      <path d="M16.5 8 L13.5 9.2" />
+      <circle cx="9.5" cy="10.5" r="1.2" />
+      <circle cx="14.5" cy="10.5" r="1.2" />
+      <path d="M10 15.5 L14 15.5" />
     </>
   ),
 };
@@ -72,7 +66,7 @@ export function MoodFace({
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.6"
+      strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
       className={className}

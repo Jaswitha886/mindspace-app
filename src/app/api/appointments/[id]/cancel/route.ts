@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/auth";
 import { apiError, fail, forbidden, notFound, ok } from "@/lib/api";
+import { syncCalendarEvent } from "@/features/google-calendar/sync-calendar";
 
 // Students cancel their own PENDING appointments only.
 export async function PATCH(
@@ -41,6 +42,9 @@ export async function PATCH(
         },
       }),
     ]);
+
+    // Remove Google Calendar event if one was created.
+    syncCalendarEvent(id).catch(console.error);
 
     return ok(
       { appointment: updated },

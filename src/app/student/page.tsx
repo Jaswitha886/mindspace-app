@@ -16,6 +16,7 @@ import { MoodFace } from "@/features/moods/MoodFace";
 import { CheckInCode, CheckedInNotice } from "@/features/checkin/CheckInCode";
 import { isWithinCheckInWindow } from "@/features/checkin/checkin";
 import { formatDate, formatDateLong, formatTimeRange } from "@/lib/format";
+import { OnboardingSlides } from "@/features/student/OnboardingSlides";
 
 // Rotating avatar tints so the counsellor list reads as a row of people, not a
 // column of identical grey discs. Decorative — never the only signal.
@@ -36,7 +37,7 @@ function initials(name: string): string {
 
 export default async function StudentDashboard() {
   const session = await requirePageRole("STUDENT");
-  const { upcoming, recentMoods, affirmations, counsellors } =
+  const { upcoming, recentMoods, affirmations, counsellors, isNewUser } =
     await getStudentDashboardData(session.userId);
 
   const firstName = session.name.split(" ")[0];
@@ -51,6 +52,8 @@ export default async function StudentDashboard() {
         <h1 className="t-display">Hello, {firstName}</h1>
         <p className="t-meta mt-1">{formatDateLong(today)}</p>
       </header>
+
+      {isNewUser && <OnboardingSlides />}
 
       {/* The focal card — a soft mint panel, dark type, with the one bold pop on
           the page: the emerald CTA. Calm surface, not a heavy block. A single
@@ -67,7 +70,7 @@ export default async function StudentDashboard() {
                 className="grid h-14 w-14 shrink-0 place-items-center rounded-full shadow-(--shadow-btn)"
                 style={{ backgroundColor: MOOD_COLOR[todaysMood], color: MOOD_FACE_INK }}
               >
-                <MoodFace mood={todaysMood} className="h-7 w-7" />
+                <MoodFace mood={todaysMood} className="h-8 w-8" />
               </span>
               <div>
                 <h2 className="text-xl font-semibold text-ink-strong">

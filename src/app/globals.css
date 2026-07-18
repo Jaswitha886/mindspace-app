@@ -4,11 +4,11 @@
    MindSpace — "Dusk"
 
    Warm without earth-tones, soft without going clinical. The warmth lives in
-   the *neutrals*, not the accent: the off-white carries a faint plum wash and
-   the "black" is a deep aubergine, so every surface inherits it quietly. The
-   accent stays a rich plum rather than a product-blue — cool-grey + blue is the
-   uniform of clinical software, which is exactly what this app must not feel
-   like. Gold appears only as dusk's counterpoint (sunset, not terracotta).
+   the *neutrals*, not the accent: the off-white carries a faint green wash and
+   the "black" is a deep forest, so every surface inherits it quietly. The
+   accent stays a rich emerald rather than a product-blue — cool-grey + blue is
+   the uniform of clinical software, which is exactly what this app must not
+   feel like. Gold appears only as dusk's counterpoint (sunset, not terracotta).
 
    Reference by token name, never raw hex — that is what makes dark mode free.
 
@@ -24,7 +24,7 @@
    dark enough for AA white text.
    ========================================================================== */
 :root {
-  color-scheme: light dark;
+  color-scheme: light;
   /* --- Grove: green, mid-tone — the leaf/emerald of the references, neither
      the lime-bright of one nor washed sage. Token names are inherited from the
      previous system so every screen moves at once; --teal now holds a soft
@@ -114,11 +114,8 @@
 /* The profile toggle. Setting color-scheme is the whole override: every
    light-dark() above resolves from it, and the browser's own form controls,
    scrollbars and canvas follow too — which is why this beats a class that only
-   our own CSS knows about. No cookie at all leaves `light dark` in place, so a
-   first-time visitor silently gets their OS preference with no flash. */
-:root[data-theme="light"] {
-  color-scheme: light;
-}
+   our own CSS knows about. Default is light; dark is only applied when the
+   user explicitly chooses it via the profile toggle. */
 :root[data-theme="dark"] {
   color-scheme: dark;
 }
@@ -178,15 +175,15 @@
   /* One family. Weight carries the hierarchy. */
   --font-sans: var(--font-figtree), sans-serif;
 
-  /* Generous rounding is most of the "soft" — it's what keeps plum from
-     reading gothic. */
+   /* Generous rounding is most of the "soft" — it's what keeps green from
+      reading clinical. */
   --radius-card: 16px;
   --radius-btn: 12px;
   --radius-input: 10px;
   --radius-pill: 999px;
 
-  /* Shadows tint plum, not black: a grey shadow over a warm off-white is what
-     makes a soft palette look dirty.
+   /* Shadows tint green, not black: a grey shadow over a warm off-white is what
+      makes a soft palette look dirty.
      These stay light-mode values on purpose. box-shadow isn't a <color>, so
      light-dark() can't reach inside it — and it doesn't need to: in dark mode
      these all but vanish, and elevation instead comes from --surface sitting

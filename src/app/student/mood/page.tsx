@@ -61,7 +61,7 @@ export default async function MoodPage() {
                         className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-full"
                         style={{ backgroundColor: MOOD_COLOR[m.mood], color: MOOD_FACE_INK }}
                       >
-                        <MoodFace mood={m.mood} className="h-[1.1rem] w-[1.1rem]" />
+                        <MoodFace mood={m.mood} className="h-[1.3rem] w-[1.3rem]" />
                       </span>
                       <div className="min-w-0">
                         <p className="text-[0.9375rem]">

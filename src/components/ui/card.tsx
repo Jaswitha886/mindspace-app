@@ -1,4 +1,4 @@
-// A white panel with a hairline and a soft plum-tinted shadow, rounded to
+// A white panel with a hairline and a soft green-tinted shadow, rounded to
 // --radius-card. `tone` swaps the fill for one of the palette's blocks.
 
 type Tone = "paper" | "plum" | "gold" | "teal" | "sunken";

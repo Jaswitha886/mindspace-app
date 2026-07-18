@@ -81,7 +81,7 @@ export default async function CounsellorDashboard() {
         </div>
       </Card>
 
-      {/* Sessions this week + the plum schedule block. */}
+      {/* Sessions this week + the mint schedule block. */}
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
         <Card tone="plum">
           <div className="flex items-center gap-2 text-brand-ink">

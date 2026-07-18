@@ -2,6 +2,7 @@ import { z } from "zod";
 import { requireRole } from "@/lib/auth";
 import { apiError, fail, ok, validationError } from "@/lib/api";
 import { startWalkIn } from "@/features/checkin/walk-in";
+import { syncCalendarEvent } from "@/features/google-calendar/sync-calendar";
 
 // Start a live walk-in session (counsellor-only). The counsellor picked a
 // student who arrived without a booking; this opens the session immediately.
@@ -18,6 +19,9 @@ export async function POST(request: Request) {
 
     const result = await startWalkIn(session.userId, parsed.data.studentId);
     if (!result.ok) return fail(result.message, result.status);
+
+    // Walk-in is created as APPROVED — sync to Google Calendar.
+    syncCalendarEvent(result.appointmentId).catch(console.error);
 
     return ok(
       { appointmentId: result.appointmentId, studentName: result.studentName },

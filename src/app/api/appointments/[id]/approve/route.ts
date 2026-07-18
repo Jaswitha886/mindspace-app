@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/auth";
 import { apiError, fail, forbidden, notFound, ok } from "@/lib/api";
+import { syncCalendarEvent } from "@/features/google-calendar/sync-calendar";
 
 // Counsellors approve their own PENDING requests only.
 // No slot re-check is needed here: PENDING already blocks the slot
@@ -55,6 +56,10 @@ export async function PATCH(
         },
       }),
     ]);
+
+    // Sync to Google Calendar (non-blocking — don't await in production,
+    // but we await here for simplicity; a background queue is better at scale).
+    syncCalendarEvent(id).catch(console.error);
 
     return ok({ appointment: updated }, { message: "Appointment confirmed" });
   } catch (error) {

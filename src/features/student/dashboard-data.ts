@@ -88,7 +88,14 @@ export async function getStudentDashboardData(studentId: string) {
   const busy = await inSessionCounsellorIds(candidates.map((c) => c.id));
   const counsellors = candidates.filter((c) => !busy.has(c.id)).slice(0, 3);
 
-  return { upcoming, recentMoods, recentJournal, affirmations, counsellors };
+  return {
+    upcoming,
+    recentMoods,
+    recentJournal,
+    affirmations,
+    counsellors,
+    isNewUser: recentMoods.length === 0 && recentJournal.length === 0 && !upcoming,
+  };
 }
 
 /**

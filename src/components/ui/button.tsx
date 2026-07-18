@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes } from "react";
 
-// A filled plum primary, a quiet secondary, a filled red destructive, a white
+// A filled green primary, a quiet secondary, a filled red destructive, a white
 // outline, and a bare text link. Only one primary should appear per view — the
 // accent means "this is the action", and it stops meaning that if everything
 // wears it.
@@ -12,7 +12,7 @@ const base =
   "inline-flex items-center justify-center gap-2 font-semibold transition-colors duration-150 active:translate-y-px disabled:cursor-not-allowed disabled:active:translate-y-0";
 
 const variantClasses: Record<Variant, string> = {
-  // Disabled keeps the plum fill but swaps to plum ink: white on the light
+  // Disabled keeps the green fill but swaps to green ink: white on the light
   // disabled fill is 1.6:1. Inactive controls are exempt from WCAG 1.4.3, but
   // "Confirm Booking" you can't read is still a broken button.
   primary:
@@ -21,7 +21,7 @@ const variantClasses: Record<Variant, string> = {
     "rounded-(--radius-btn) bg-sunken text-ink hover:bg-line disabled:text-ink-muted",
   destructive:
     "rounded-(--radius-btn) bg-red text-white shadow-(--shadow-btn) hover:bg-red-ink disabled:bg-red-tint disabled:text-red-ink/60",
-  // Plum at 25% reads as a hairline the accent tinted, not a grey box.
+  // Green at 25% reads as a hairline the accent tinted, not a grey box.
   outline:
     "rounded-(--radius-btn) bg-surface text-brand-ink border border-brand/25 hover:bg-brand/5 disabled:text-ink-muted disabled:border-line",
   link: "text-brand-ink hover:underline underline-offset-4 disabled:text-ink-muted disabled:no-underline",

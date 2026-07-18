@@ -1,7 +1,8 @@
 "use client";
 
 import type { Mood } from "@prisma/client";
-import { MOOD_COLOR, MOOD_EMOJI, MOOD_LABEL, MOODS_IN_ORDER } from "@/features/moods/mood-meta";
+import { MOOD_COLOR, MOOD_FACE_INK, MOOD_LABEL, MOODS_IN_ORDER } from "@/features/moods/mood-meta";
+import { MoodFace } from "@/features/moods/MoodFace";
 
 // The reference's "How are you feeling today?" row: big circular colour
 // buttons carrying a face. The label under each is not decoration — it's what
@@ -37,9 +38,9 @@ export function MoodCircles({
                   ? "ring-2 ring-ink-strong ring-offset-2"
                   : "ring-0 ring-offset-2"
               }`}
-              style={{ backgroundColor: MOOD_COLOR[m] }}
+              style={{ backgroundColor: MOOD_COLOR[m], color: MOOD_FACE_INK }}
             >
-              <span aria-hidden>{MOOD_EMOJI[m]}</span>
+              <MoodFace mood={m} className="h-8 w-8" />
             </span>
             <span
               className={`text-[0.6875rem] leading-tight ${
