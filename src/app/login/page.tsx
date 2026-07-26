@@ -15,9 +15,9 @@ export default async function LoginPage({
       headline="Welcome to MindSpace"
       sub="Sign in or create an account to get started."
       footer={
-        <p className="t-body">
+        <p className="text-sm text-white/50">
           New to MindSpace?{" "}
-          <Link href="/register" className="font-semibold text-brand-ink hover:underline">
+          <Link href="/register" className="font-semibold text-[#a29bfe] hover:underline">
             Create an account
           </Link>
         </p>

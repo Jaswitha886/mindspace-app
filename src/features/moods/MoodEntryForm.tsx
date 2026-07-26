@@ -2,13 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
 import type { Mood } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { MoodCircles } from "@/features/moods/MoodCircles";
 import { CheckCircleIcon } from "@/components/icons";
 
-// The reference's "Log Mood" screen: the circle row under the question, an
-// "Optional Notes" well, then a full-width submit.
 export function MoodEntryForm({ todaysMood }: { todaysMood: Mood | null }) {
   const router = useRouter();
   const [mood, setMood] = useState<Mood | null>(todaysMood);
@@ -43,7 +42,13 @@ export function MoodEntryForm({ todaysMood }: { todaysMood: Mood | null }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-5">
+    <motion.form
+      onSubmit={onSubmit}
+      className="flex flex-col gap-5"
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, ease: "easeOut" }}
+    >
       <fieldset>
         <legend className="t-h2 mb-4">How are you feeling today?</legend>
         <MoodCircles value={mood} onSelect={setMood} disabled={busy} />
@@ -54,7 +59,12 @@ export function MoodEntryForm({ todaysMood }: { todaysMood: Mood | null }) {
         )}
       </fieldset>
 
-      <div className="rounded-(--radius-card) bg-sunken-2 p-4">
+      <motion.div
+        className="rounded-(--radius-card) bg-sunken-2 p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
         <label htmlFor="mood-note" className="text-[0.9375rem] font-semibold text-ink">
           Optional Notes
         </label>
@@ -67,29 +77,37 @@ export function MoodEntryForm({ todaysMood }: { todaysMood: Mood | null }) {
           value={note}
           onChange={(e) => setNote(e.target.value)}
         />
-      </div>
+      </motion.div>
 
-      {error && (
-        <p
-          role="alert"
-          className="rounded-(--radius-input) bg-red-tint px-3.5 py-2.5 text-sm font-semibold text-red-ink"
-        >
-          {error}
-        </p>
-      )}
-      {saved && (
-        <p
-          role="status"
-          className="flex items-center gap-2 rounded-(--radius-input) bg-success-tint px-3.5 py-2.5 text-sm font-semibold text-success-ink"
-        >
-          <CheckCircleIcon className="h-[1.15rem] w-[1.15rem]" />
-          Mood successfully logged!
-        </p>
-      )}
+      <AnimatePresence>
+        {error && (
+          <motion.p
+            role="alert"
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="rounded-(--radius-input) bg-red-tint px-3.5 py-2.5 text-sm font-semibold text-red-ink"
+          >
+            {error}
+          </motion.p>
+        )}
+        {saved && (
+          <motion.p
+            role="status"
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="flex items-center gap-2 rounded-(--radius-input) bg-success-tint px-3.5 py-2.5 text-sm font-semibold text-success-ink"
+          >
+            <CheckCircleIcon className="h-[1.15rem] w-[1.15rem]" />
+            Mood successfully logged!
+          </motion.p>
+        )}
+      </AnimatePresence>
 
       <Button type="submit" size="lg" fullWidth disabled={busy}>
         {busy ? "Saving…" : "Submit Mood Log"}
       </Button>
-    </form>
+    </motion.form>
   );
 }

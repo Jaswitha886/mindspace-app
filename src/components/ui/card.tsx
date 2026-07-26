@@ -1,4 +1,4 @@
-// A white panel with a hairline and a soft green-tinted shadow, rounded to
+// A white panel with a hairline and a soft shadow, rounded to
 // --radius-card. `tone` swaps the fill for one of the palette's blocks.
 
 type Tone = "paper" | "plum" | "gold" | "teal" | "sunken";
@@ -8,7 +8,6 @@ const toneClasses: Record<Tone, string> = {
   plum: "bg-brand-tint border border-transparent",
   gold: "bg-gold border border-transparent",
   teal: "bg-teal border border-transparent",
-  // The page itself is near-white, so a tinted panel needs an edge to exist.
   sunken: "bg-sunken border border-line",
 };
 
@@ -16,23 +15,21 @@ export function Card({
   className = "",
   interactive = false,
   tone = "paper",
-  as: Tag = "div",
   children,
 }: {
   className?: string;
   interactive?: boolean;
   tone?: Tone;
-  as?: React.ElementType;
   children: React.ReactNode;
 }) {
   return (
-    <Tag
+    <div
       className={`rounded-(--radius-card) p-5 shadow-(--shadow-card) ${
         toneClasses[tone]
       } ${interactive ? "lift" : ""} ${className}`}
     >
       {children}
-    </Tag>
+    </div>
   );
 }
 

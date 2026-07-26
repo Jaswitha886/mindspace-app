@@ -1,7 +1,5 @@
 import Link from "next/link";
 
-// A circular badge holding a mind glyph, drawn in green so the mark belongs to
-// the palette rather than importing a second, unrelated hue.
 function Glyph({ className = "h-5 w-5" }: { className?: string }) {
   return (
     <svg
@@ -26,7 +24,7 @@ export function WordmarkMark({ size = "md" }: { size?: "sm" | "md" }) {
   const glyph = size === "sm" ? "h-[1.15rem] w-[1.15rem]" : "h-[1.4rem] w-[1.4rem]";
   return (
     <span
-      className={`grid ${box} shrink-0 place-items-center rounded-full bg-brand text-white`}
+      className={`grid ${box} shrink-0 place-items-center rounded-full bg-gradient-to-br from-[#6c5ce7] to-[#4ecdc4] text-white shadow-lg shadow-[#6c5ce720]`}
     >
       <Glyph className={glyph} />
     </span>
@@ -41,7 +39,7 @@ export function Wordmark({ href = "/" }: { href?: string }) {
       aria-label="MindSpace home"
     >
       <WordmarkMark size="sm" />
-      <span className="text-lg font-bold tracking-[-0.03em] text-ink-strong">
+      <span className="text-lg font-bold tracking-[-0.03em] text-white/90">
         MindSpace
       </span>
     </Link>

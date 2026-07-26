@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { NAV_ICONS, type IconKey } from "@/components/icons";
 
 export type NavItem = {
@@ -21,14 +22,12 @@ function useActive() {
       : pathname === item.href || pathname.startsWith(`${item.href}/`);
 }
 
-// Bottom tab bar for small screens: icon over a small label, active tab in
-// green. Hidden once a sidebar fits.
 export function BottomNav({ items }: NavProps) {
   const isActive = useActive();
   return (
     <nav
       aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-30 border-t border-white/[0.06] bg-[#1a1430]/80 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden"
     >
       <ul className="flex items-stretch justify-around">
         {items.map((item) => {
@@ -39,12 +38,23 @@ export function BottomNav({ items }: NavProps) {
               <Link
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`flex flex-col items-center gap-1 px-1 py-2.5 text-[0.6875rem] font-semibold transition-colors ${
-                  active ? "text-brand-ink" : "text-ink-muted hover:text-ink"
-                }`}
+                className="relative flex flex-col items-center gap-1 px-1 py-2.5 text-[0.6875rem] font-semibold transition-colors"
               >
-                <Icon className="h-[1.35rem] w-[1.35rem]" />
-                {item.label}
+                {active && (
+                  <motion.span
+                    layoutId="bottomnav-indicator"
+                    className="absolute -top-px left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#6c5ce7] to-[#4ecdc4]"
+                    transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  />
+                )}
+                <Icon
+                  className={`h-[1.35rem] w-[1.35rem] transition-colors ${
+                    active ? "text-[#a29bfe]" : "text-white/40"
+                  }`}
+                />
+                <span className={active ? "text-[#a29bfe]" : "text-white/40"}>
+                  {item.label}
+                </span>
               </Link>
             </li>
           );
@@ -54,8 +64,6 @@ export function BottomNav({ items }: NavProps) {
   );
 }
 
-// The desktop promotion of that same tab bar: identical items, turned on their
-// side so a laptop isn't mostly empty.
 export function SideNav({ items }: NavProps) {
   const isActive = useActive();
   return (
@@ -68,14 +76,27 @@ export function SideNav({ items }: NavProps) {
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={`flex items-center gap-3 rounded-(--radius-btn) px-3 py-2.5 text-sm transition-colors duration-150 ${
-              active
-                ? "bg-brand-tint font-semibold text-brand-ink"
-                : "font-medium text-ink-secondary hover:bg-sunken-2 hover:text-ink"
-            }`}
+            className="relative flex items-center gap-3 rounded-(--radius-btn) px-3 py-2.5 text-sm transition-colors duration-150"
           >
-            <Icon className="h-[1.15rem] w-[1.15rem] shrink-0" />
-            {item.label}
+            {active && (
+              <motion.span
+                layoutId="sidenav-indicator"
+                className="absolute inset-0 rounded-(--radius-btn) bg-gradient-to-r from-[#6c5ce7]/15 to-[#4ecdc4]/10 border border-white/[0.06]"
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
+            )}
+            <Icon
+              className={`relative h-[1.15rem] w-[1.15rem] shrink-0 transition-colors ${
+                active ? "text-[#a29bfe]" : "text-white/40"
+              }`}
+            />
+            <span
+              className={`relative transition-colors ${
+                active ? "font-semibold text-white/90" : "font-medium text-white/50 hover:text-white/70"
+              }`}
+            >
+              {item.label}
+            </span>
           </Link>
         );
       })}

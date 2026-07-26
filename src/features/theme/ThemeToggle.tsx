@@ -61,10 +61,10 @@ export function ThemeToggle() {
               apply(o.value);
               setChoice(o.value);
             }}
-            className={`rounded-(--radius-pill) px-3.5 py-1.5 text-sm font-semibold transition-colors ${
+            className={`rounded-(--radius-pill) px-3.5 py-1.5 text-sm font-semibold transition-all duration-200 ${
               active
-                ? "bg-brand text-white"
-                : "text-ink-secondary hover:text-ink"
+                ? "bg-gradient-to-r from-[#6c5ce7] to-[#4ecdc4] text-white shadow-lg shadow-[#6c5ce720]"
+                : "text-ink-secondary hover:text-ink hover:bg-sunken"
             }`}
           >
             {o.label}

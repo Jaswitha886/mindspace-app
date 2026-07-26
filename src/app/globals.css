@@ -1,125 +1,105 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   MindSpace — "Dusk"
+   MindSpace — "Aurora"
 
-   Warm without earth-tones, soft without going clinical. The warmth lives in
-   the *neutrals*, not the accent: the off-white carries a faint green wash and
-   the "black" is a deep forest, so every surface inherits it quietly. The
-   accent stays a rich emerald rather than a product-blue — cool-grey + blue is
-   the uniform of clinical software, which is exactly what this app must not
-   feel like. Gold appears only as dusk's counterpoint (sunset, not terracotta).
+   An ethereal, transformative palette inspired by the northern lights — designed
+   to feel calming, introspective, and hopeful. Deep plum and midnight bases
+   with luminous indigo, aurora teal, and soft pink accents. The theme evokes
+   the quiet beauty of a night sky shifting with light — a metaphor for the
+   inner transformation that counselling supports.
 
    Reference by token name, never raw hex — that is what makes dark mode free.
 
    DARK MODE: every themed token is light-dark(light, dark). No cookie means the
-   OS setting wins; the profile toggle sets [data-theme] to override it. Using
-   light-dark() rather than a duplicated media-query block means the two palettes
-   sit on the same line and can't drift apart.
-
-   Dark is a re-picked palette, not an inversion: green stays green, and the
-   neutrals stay green-charcoal rather than sliding to grey. --brand keeps a
-   white label in both themes (that's why no button needs an --on-brand token),
-   so on the dark page it lifts just enough to clear 3:1 against it while staying
-   dark enough for AA white text.
+   OS setting wins; the profile toggle sets [data-theme] to override it.
    ========================================================================== */
 :root {
   color-scheme: light;
-  /* --- Grove: green, mid-tone — the leaf/emerald of the references, neither
-     the lime-bright of one nor washed sage. Token names are inherited from the
-     previous system so every screen moves at once; --teal now holds a soft
-     green block and --gold a warm counterpoint, kept for continuity. --------- */
-  /* Dark keeps white-on-brand legible (AA) while still clearing 3:1 against the
-     dark page — a lighter emerald reads livelier but drops white text below AA. */
-  --brand: light-dark(#15803d, #16843f); /* primary fill — white label */
-  --brand-hover: light-dark(#116632, #12722f);
-  --brand-light: light-dark(#3ccb72, #37bd6a); /* leaf: fills with no text */
-  --brand-light-hover: light-dark(#2fb865, #45cd78);
-  --brand-ink: light-dark(#12692f, #62db94); /* green as AA text: links, figures */
-  --brand-tint: light-dark(#e4f5ea, #182a1e); /* mint card fill */
-  --brand-tint-2: light-dark(#f1faf4, #121f16); /* faintest wash */
-  --brand-disabled: light-dark(#b6ddc4, #2b4634);
 
-  /* --- supporting hues ---------------------------------------------------- */
-  /* Soft green block (the counsellor "check-ins" / "in session" card). A mid
-     tone that carries dark ink type in light and light ink in dark. */
-  --teal: light-dark(#a7d8b4, #2c5540);
-  --success: light-dark(#15803d, #15803d); /* Active/success — white label */
-  --success-tint: light-dark(#e4f5ea, #16281d);
-  --success-ink: light-dark(#146a34, #74d69d);
+  /* --- Brand: Indigo/Violet — the primary aurora hue ----------------------- */
+  --brand: light-dark(#6c5ce7, #a29bfe);
+  --brand-hover: light-dark(#5a4bd1, #8b80f0);
+  --brand-light: light-dark(#a29bfe, #6c5ce7);
+  --brand-light-hover: light-dark(#8b80f0, #7c6ef0);
+  --brand-ink: light-dark(#5a4bd1, #a29bfe);
+  --brand-tint: light-dark(#f0edff, #1a1430);
+  --brand-tint-2: light-dark(#f8f6ff, #120e24);
+  --brand-disabled: light-dark(#c4bfe0, #3a3458);
 
-  /* Gold: the one warm counterpoint, so a green-dominant system isn't a wall of
-     green. Muted honey, not orange-brown — the upcoming-appointment card. */
-  --gold: light-dark(#f4e7c6, #38301c);
-  --gold-strong: light-dark(#d9a93c, #d9a93c);
+  /* --- Supporting hues ----------------------------------------------------- */
+  /* Aurora teal — the secondary luminous accent */
+  --teal: light-dark(#4ecdc4, #2d9e96);
+  --success: light-dark(#2d9e96, #4ecdc4);
+  --success-tint: light-dark(#e8faf8, #132e2b);
+  --success-ink: light-dark(#1a7a70, #6ee0d8);
+
+  /* Gold — warm counterpoint, the hopeful glow */
+  --gold: light-dark(#fef3d0, #3d3520);
+  --gold-strong: light-dark(#e6a817, #fdcb6e);
   --gold-ink: light-dark(#6b4e0a, #ecc978);
 
-  --red: light-dark(#c62828, #d6404a); /* destructive fill — white label */
-  --red-light: light-dark(#e24b4a, #e24b4a); /* fills only */
-  --red-tint: light-dark(#fdecec, #331717);
+  /* Aurora pink — soft accent for warmth */
+  --pink: light-dark(#e8a0bf, #c77da0);
+  --pink-tint: light-dark(#fdf0f6, #2e1a28);
+
+  --red: light-dark(#d63031, #ff6b6b);
+  --red-light: light-dark(#ff6b6b, #ff6b6b);
+  --red-tint: light-dark(#fde8e8, #331717);
   --red-ink: light-dark(#b3261e, #f59d97);
 
-  /* --- neutrals (green-charcoal, never flat grey) ------------------------- */
-  --ink: light-dark(#24352a, #e2ede5); /* body + headings */
-  --ink-strong: light-dark(#12241a, #f4faf5); /* display headings */
-  --ink-secondary: light-dark(#48594e, #bcd0c1); /* supporting copy */
-  /* Meta lands on the mint card and the warm gold card as often as on the page,
-     so this is tuned to clear 4.5:1 on the *gold* card (the lightest/warmest
-     surface) in both themes, not just on the page. */
-  --ink-muted: light-dark(#4e6149, #9bb2a2);
-  --page: light-dark(#f0f7f2, #101711); /* mint-white, from the references */
-  --surface: light-dark(#ffffff, #18211b);
-  --sunken: light-dark(#e8f2ea, #1f2a22); /* secondary buttons, wells */
-  --sunken-2: light-dark(#f3faf5, #16201a);
-  --border: light-dark(#dae8de, #2c3a30);
-  --border-strong: light-dark(#c1d5c6, #435043);
+  /* --- Neutrals (plum-tinted, never flat grey) ----------------------------- */
+  --ink: light-dark(#1a1430, #e8e4f0);
+  --ink-strong: light-dark(#0f0a1e, #f5f3ff);
+  --ink-secondary: light-dark(#564970, #b8b0cc);
+  --ink-muted: light-dark(#7c6daa, #8a7fb0);
+  --page: light-dark(#f5f3ff, #0f0a1e);
+  --surface: light-dark(#ffffff, #1a1430);
+  --sunken: light-dark(#ede9fa, #241d3a);
+  --sunken-2: light-dark(#f6f4ff, #1c1530);
+  --border: light-dark(#ddd6f3, #2d2450);
+  --border-strong: light-dark(#c4b9e8, #4a3d6e);
 
-  /* Deep forest "feature" surface — the dark card both references lead with
-     (the revenue card, the KVA tile, the sidebar). Dark in both themes, so its
-     mint text stays put; --on-forest is near-white for AA either way. */
-  --forest: light-dark(#14532d, #0f3d22);
-  --forest-2: light-dark(#1c6b3b, #17542e); /* a lifted panel inside forest */
-  --on-forest: #eafaf0;
-  --on-forest-muted: #a9cfb7;
+  /* Deep plum "feature" surface — sidebar, dark cards, hero sections */
+  --forest: light-dark(#2d1b4e, #1a1430);
+  --forest-2: light-dark(#3d2868, #241d3a);
+  --on-forest: #f0edff;
+  --on-forest-muted: #b8a9e8;
 
-  /* --- clinical severity (counsellor/admin only) -------------------------- */
-  /* ONE colour language for severity everywhere — green/amber/red — retuned
-     into dusk but never re-hued: critical must not be berry here and gold three
-     cards away. The deep variant carries a white label (AA); the -fill variant
-     is for bars and dots, which carry no text.
-     **Deliberately NOT light-dark().** Severity is clinical data, and it must
-     mean exactly one thing regardless of theme — a counsellor reading "critical"
-     in dark mode must see the same red as the admin reading it in light. These
-     values already clear white-label AA and 3:1 against both pages. */
-  --sev-mild: #2e6b50; /* pill, white label — 5.3:1 */
-  --sev-moderate: #8a5a00; /* pill, white label — 4.6:1 */
-  --sev-critical: #b3243f; /* pill, white label — 6.4:1 */
-  --sev-mild-fill: #5fa37f; /* chart bars, legend dots */
+  /* --- Clinical severity (counsellor/admin only) --------------------------- */
+  /* Deliberately NOT light-dark(). Severity is clinical data and must mean
+     exactly one thing regardless of theme. These values clear white-label AA
+     and 3:1 against both page backgrounds. */
+  --sev-mild: #2e6b50;
+  --sev-moderate: #8a5a00;
+  --sev-critical: #b3243f;
+  --sev-mild-fill: #5fa37f;
   --sev-moderate-fill: #e0a93f;
   --sev-critical-fill: #d9435f;
 
-  /* --- charts (non-severity only) ----------------------------------------- */
-  /* Green-forward, with the warm amber and a teal-green for separation. The
-     darkest greens lift on the dark page so they don't vanish. */
-  --chart-1: light-dark(#15803d, #34c76a);
-  --chart-2: #3ccb72;
-  --chart-3: light-dark(#0f5c2e, #7fe0a5);
-  --chart-4: #d9a93c;
-  --chart-5: light-dark(#2a7d6b, #6fc9b5);
+  /* --- Charts (non-severity) ------------------------------------------------ */
+  --chart-1: light-dark(#6c5ce7, #a29bfe);
+  --chart-2: #4ecdc4;
+  --chart-3: light-dark(#2d9e96, #6ee0d8);
+  --chart-4: #fdcb6e;
+  --chart-5: light-dark(#e8a0bf, #c77da0);
 
-  /* The focus ring must be visible against the *page*, so it inverts with it. */
-  --focus-ring: light-dark(#157a3b, #62db94);
+  /* --- Aurora-specific tokens ----------------------------------------------- */
+  --aurora-gradient: linear-gradient(135deg, #6c5ce7, #4ecdc4, #e8a0bf);
+  --aurora-gradient-subtle: linear-gradient(135deg, light-dark(#f0edff, #1a1430), light-dark(#e8faf8, #132e2b));
+  --aurora-glow-brand: 0 0 20px rgba(108, 92, 231, 0.25), 0 0 40px rgba(108, 92, 231, 0.1);
+  --aurora-glow-teal: 0 0 20px rgba(78, 205, 196, 0.25), 0 0 40px rgba(78, 205, 196, 0.1);
+  --aurora-glow-pink: 0 0 20px rgba(232, 160, 191, 0.25), 0 0 40px rgba(232, 160, 191, 0.1);
+
+  --focus-ring: light-dark(#6c5ce7, #a29bfe);
 }
 
-/* The profile toggle. Setting color-scheme is the whole override: every
-   light-dark() above resolves from it, and the browser's own form controls,
-   scrollbars and canvas follow too — which is why this beats a class that only
-   our own CSS knows about. Default is light; dark is only applied when the
-   user explicitly chooses it via the profile toggle. */
+/* Dark mode override. */
 :root[data-theme="dark"] {
   color-scheme: dark;
 }
 
+/* ---- Tailwind v4 theme mapping ------------------------------------------ */
 @theme inline {
   --color-brand: var(--brand);
   --color-brand-hover: var(--brand-hover);
@@ -142,6 +122,9 @@
   --color-gold: var(--gold);
   --color-gold-strong: var(--gold-strong);
   --color-gold-ink: var(--gold-ink);
+
+  --color-pink: var(--pink);
+  --color-pink-tint: var(--pink-tint);
 
   --color-red: var(--red);
   --color-red-light: var(--red-light);
@@ -172,30 +155,20 @@
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
 
-  /* One family. Weight carries the hierarchy. */
   --font-sans: var(--font-figtree), sans-serif;
 
-   /* Generous rounding is most of the "soft" — it's what keeps green from
-      reading clinical. */
   --radius-card: 16px;
   --radius-btn: 12px;
   --radius-input: 10px;
   --radius-pill: 999px;
 
-   /* Shadows tint green, not black: a grey shadow over a warm off-white is what
-      makes a soft palette look dirty.
-     These stay light-mode values on purpose. box-shadow isn't a <color>, so
-     light-dark() can't reach inside it — and it doesn't need to: in dark mode
-     these all but vanish, and elevation instead comes from --surface sitting
-     lighter than --page plus the hairline border. That is how dark UIs signal
-     depth anyway; a heavier drop shadow on near-black just reads as grime. */
-  --shadow-card: 0 1px 3px rgba(36, 24, 38, 0.05), 0 1px 2px rgba(36, 24, 38, 0.04);
-  --shadow-card-hover: 0 8px 20px rgba(36, 24, 38, 0.1), 0 2px 6px rgba(36, 24, 38, 0.05);
-  --shadow-btn: 0 1px 2px rgba(36, 24, 38, 0.09);
-  --shadow-pop: 0 12px 32px rgba(36, 24, 38, 0.16);
+  --shadow-card: 0 1px 3px rgba(26, 20, 48, 0.06), 0 1px 2px rgba(26, 20, 48, 0.04);
+  --shadow-card-hover: 0 8px 24px rgba(108, 92, 231, 0.12), 0 2px 8px rgba(26, 20, 48, 0.06);
+  --shadow-btn: 0 1px 2px rgba(26, 20, 48, 0.1);
+  --shadow-pop: 0 16px 40px rgba(26, 20, 48, 0.18), 0 4px 12px rgba(108, 92, 231, 0.08);
 }
 
-/* ---- Base ------------------------------------------------------------- */
+/* ---- Base --------------------------------------------------------------- */
 html {
   background: var(--page);
 }
@@ -207,7 +180,7 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* ---- Type scale (Figtree; the only face) ------------------------------- */
+/* ---- Type scale (Figtree) ----------------------------------------------- */
 .t-display {
   font-weight: 700;
   font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem);
@@ -253,7 +226,7 @@ body {
   letter-spacing: -0.03em;
 }
 
-/* ---- Coloured blocks --------------------------------------------------- */
+/* ---- Coloured blocks ----------------------------------------------------- */
 .block-plum {
   background: var(--brand-tint);
 }
@@ -264,14 +237,14 @@ body {
   background: var(--teal);
 }
 
-/* ---- Interaction ------------------------------------------------------- */
+/* ---- Interaction --------------------------------------------------------- */
 .lift {
   transition:
-    transform 150ms ease-out,
-    box-shadow 150ms ease-out;
+    transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 200ms ease-out;
 }
 .lift:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
   box-shadow: var(--shadow-card-hover);
 }
 
@@ -281,18 +254,123 @@ body {
   border-radius: 3px;
 }
 
-/* ---- Skeleton ---------------------------------------------------------- */
+/* ---- Gradient text ------------------------------------------------------- */
+.gradient-text {
+  background: var(--aurora-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---- Glass morphism ------------------------------------------------------ */
+.glass {
+  background: color-mix(in srgb, var(--surface) 72%, transparent);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+}
+.glass-strong {
+  background: color-mix(in srgb, var(--surface) 85%, transparent);
+  backdrop-filter: blur(32px) saturate(1.6);
+  -webkit-backdrop-filter: blur(32px) saturate(1.6);
+}
+.glass-dark {
+  background: color-mix(in srgb, var(--forest) 80%, transparent);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+}
+
+/* ---- Glow effects -------------------------------------------------------- */
+.glow-brand {
+  box-shadow: var(--aurora-glow-brand);
+}
+.glow-teal {
+  box-shadow: var(--aurora-glow-teal);
+}
+.glow-pink {
+  box-shadow: var(--aurora-glow-pink);
+}
+
+/* ---- Aurora gradient button ----------------------------------------------- */
+.btn-aurora {
+  background: var(--aurora-gradient);
+  background-size: 200% 200%;
+  animation: aurora-btn-shift 4s ease infinite;
+  color: #fff;
+  border: none;
+}
+.btn-aurora:hover {
+  box-shadow: var(--aurora-glow-brand);
+}
+
+/* ---- 3D card perspective ------------------------------------------------- */
+.card-3d {
+  transform-style: preserve-3d;
+  perspective: 800px;
+}
+
+/* ---- Skeleton ------------------------------------------------------------ */
 .skeleton {
   background: linear-gradient(
     90deg,
-    light-dark(#f0eaf1, #2a1f2c) 25%,
-    light-dark(#f8f4f8, #362839) 37%,
-    light-dark(#f0eaf1, #2a1f2c) 63%
+    light-dark(#ede9fa, #241d3a) 25%,
+    light-dark(#f6f4ff, #2d2450) 37%,
+    light-dark(#ede9fa, #241d3a) 63%
   );
   background-size: 400% 100%;
   animation: shimmer 1.4s ease-in-out infinite;
   border-radius: var(--radius-input);
 }
+
+/* ---- Aurora animated background ------------------------------------------- */
+.aurora-bg {
+  position: relative;
+  overflow: hidden;
+}
+.aurora-bg::before {
+  content: "";
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(ellipse at 20% 50%, rgba(108, 92, 231, 0.15) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(78, 205, 196, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 80%, rgba(232, 160, 191, 0.1) 0%, transparent 50%);
+  animation: aurora-drift 12s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+.aurora-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- Breathing glow (for live status, availability) ---------------------- */
+.breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+.breathe-teal {
+  animation: breathe-teal 3s ease-in-out infinite;
+}
+
+/* ---- Animated gradient border -------------------------------------------- */
+.aurora-border {
+  position: relative;
+}
+.aurora-border::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.5px;
+  background: var(--aurora-gradient);
+  background-size: 200% 200%;
+  animation: aurora-btn-shift 4s ease infinite;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+/* ---- Keyframes ----------------------------------------------------------- */
 @keyframes shimmer {
   from {
     background-position: 100% 50%;
@@ -302,6 +380,86 @@ body {
   }
 }
 
+@keyframes aurora-drift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  100% {
+    transform: translate(30px, -20px) rotate(3deg);
+  }
+}
+
+@keyframes aurora-btn-shift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(108, 92, 231, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(108, 92, 231, 0.5), 0 0 48px rgba(108, 92, 231, 0.15);
+  }
+}
+
+@keyframes breathe-teal {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(78, 205, 196, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(78, 205, 196, 0.5), 0 0 48px rgba(78, 205, 196, 0.15);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes draw-in {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---- Reduced motion ------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -311,5 +469,8 @@ body {
   }
   .lift:hover {
     transform: none;
+  }
+  .aurora-bg::before {
+    animation: none;
   }
 }
