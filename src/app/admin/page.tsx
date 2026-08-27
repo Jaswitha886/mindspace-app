@@ -110,30 +110,6 @@ export default async function AdminDashboard({
         Analytics Overview
       </PageTitle>
 
-      <div id="suspensions" className="scroll-mt-24">
-        <SuspensionStudents
-          students={students.map((student) => ({
-            ...student,
-            registerNumber: student.studentProfile?.registerNumber ?? null,
-          }))}
-          suspensions={suspensions.map((suspension) => ({
-            id: suspension.id,
-            studentId: suspension.studentId,
-            student: {
-              id: suspension.studentId,
-              name: suspension.student.name,
-              email: suspension.student.email,
-              registerNumber: suspension.student.studentProfile?.registerNumber ?? null,
-            },
-            reason: suspension.reason,
-            startDate: ymd(suspension.startDate),
-            endDate: ymd(suspension.endDate),
-            notes: suspension.notes,
-            status: suspension.status,
-            notifiedCounsellors: suspension._count.notifications,
-          }))}
-        />
-      </div>
       <AdminDashboardClient
         departments={departments}
         escalations={inboxItems}
@@ -155,6 +131,28 @@ export default async function AdminDashboard({
           departmentId,
           groupBy,
         }}
+      />
+      <SuspensionStudents
+        students={students.map((student) => ({
+          ...student,
+          registerNumber: student.studentProfile?.registerNumber ?? null,
+        }))}
+        suspensions={suspensions.map((suspension) => ({
+          id: suspension.id,
+          studentId: suspension.studentId,
+          student: {
+            id: suspension.studentId,
+            name: suspension.student.name,
+            email: suspension.student.email,
+            registerNumber: suspension.student.studentProfile?.registerNumber ?? null,
+          },
+          reason: suspension.reason,
+          startDate: ymd(suspension.startDate),
+          endDate: ymd(suspension.endDate),
+          notes: suspension.notes,
+          status: suspension.status,
+          notifiedCounsellors: suspension._count.notifications,
+        }))}
       />
     </div>
   );
