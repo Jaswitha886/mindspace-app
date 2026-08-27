@@ -896,6 +896,26 @@ row would be written but invisible. UI: `/admin/notifications`.
 
 ---
 
+# Suspension APIs
+
+```
+GET   /api/admin/suspensions
+POST  /api/admin/suspensions
+PATCH /api/admin/suspensions/:id
+GET   /api/counsellor/notifications
+PATCH /api/counsellor/notifications  { "id" }
+```
+
+Admin endpoints require `ADMIN` and only accept a real `STUDENT` user id.
+Creating a suspension atomically creates one `SUSPENSION_ALERT` notification
+for every active counsellor. The notification payload contains the student and
+suspension details so the counsellor dashboard can display them. The current
+schema has no student-counsellor assignment relation, so all active counsellors
+are notified. Updates only change the suspension record and never resend the
+creation alert.
+
+---
+
 # Admin User Management APIs
 
 ```
