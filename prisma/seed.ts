@@ -27,6 +27,7 @@ async function main() {
   // Order matters: delete dependents before their parents.
   await prisma.auditLog.deleteMany();
   await prisma.notification.deleteMany();
+  await prisma.suspension.deleteMany();
   await prisma.sessionNote.deleteMany();
   await prisma.appointment.deleteMany();
   await prisma.availability.deleteMany();

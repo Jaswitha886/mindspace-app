@@ -7,6 +7,7 @@ import type { NavItem } from "@/components/app-nav";
 // that page and its APIs were removed, and no admin manages accounts here.
 const NAV_ITEMS: NavItem[] = [
   { href: "/admin", label: "Analytics", icon: "chart", exact: true },
+  { href: "/admin#suspensions", label: "Suspensions", icon: "clipboard" },
   { href: "/admin/notifications", label: "Alerts", icon: "affirmation" },
   { href: "/admin/profile", label: "Profile", icon: "user" },
 ];
