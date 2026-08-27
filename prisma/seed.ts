@@ -27,6 +27,7 @@ async function main() {
   // Order matters: delete dependents before their parents.
   await prisma.auditLog.deleteMany();
   await prisma.notification.deleteMany();
+  await prisma.suspension.deleteMany();
   await prisma.sessionNote.deleteMany();
   await prisma.appointment.deleteMany();
   await prisma.availability.deleteMany();
@@ -71,6 +72,14 @@ async function main() {
   console.log("Creating counsellors…");
   const counsellorSeed = [
     {
+      name: "Demo Counsellor",
+      email: process.env.DEMO_COUNSELLOR_EMAIL ?? "lavanyaa6@srmist.edu.in",
+      specialization: "Student Mental Health & Counselling",
+      yearsOfExperience: 5,
+      contactNumber: null,
+      bio: "Demo counsellor account for testing the MindSpace application.",
+    },
+    {
       name: "Dr. Priya Sharma",
       email: "priya.sharma@mindspace.edu.in",
       specialization: "Student Mental Health & Career Guidance",
@@ -94,8 +103,8 @@ async function main() {
       contactNumber: "+91 76543 21098",
       bio: "Behavioural therapist specialising in adolescent wellbeing.",
     },
-  ];
-  const counsellorPw = await hash("Counsellor@Demo2026");
+  ];const counsellorPw = await hash(process.env.DEMO_COUNSELLOR_PASSWORD ?? "Counsellor@Demo2026");
+  
   const counsellors: Record<string, Awaited<ReturnType<typeof prisma.user.create>>> = {};
   for (const c of counsellorSeed) {
     counsellors[c.name] = await prisma.user.create({
@@ -119,13 +128,20 @@ async function main() {
   // ---- Students ----
   console.log("Creating students…");
   const studentSeed = [
+    {
+      name: "Demo Student",
+      email: process.env.DEMO_STUDENT_EMAIL ?? "demo.student@srmist.edu.in",
+      reg: "DEMO20260001",
+      dept: "Computer Science",
+      semester: 5,
+    },
     { name: "Ananya Krishnan", email: "ananya.krishnan@srmist.edu.in", reg: "RA2111003010001", dept: "Computer Science", semester: 5 },
     { name: "Rahul Verma", email: "rahul.verma@srmist.edu.in", reg: "RA2111003010002", dept: "Electronics & Communication", semester: 4 },
     { name: "Priyanka Patel", email: "priyanka.patel@srmist.edu.in", reg: "RA2111003010003", dept: "Mechanical Engineering", semester: 6 },
     { name: "Vikram Iyer", email: "vikram.iyer@srmist.edu.in", reg: "RA2111003010004", dept: "Information Technology", semester: 3 },
     { name: "Deepa Nair", email: "deepa.nair@srmist.edu.in", reg: "RA2111003010005", dept: "Biotechnology", semester: 5 },
   ];
-  const studentPw = await hash("Student@Demo2026");
+  const studentPw = await hash(process.env.DEMO_STUDENT_PASSWORD ?? "Student@Demo2026");
   const students: Record<string, Awaited<ReturnType<typeof prisma.user.create>>> = {};
   for (const s of studentSeed) {
     students[s.name] = await prisma.user.create({

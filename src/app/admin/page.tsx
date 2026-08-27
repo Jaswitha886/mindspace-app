@@ -10,6 +10,7 @@ import {
 } from "@/features/admin/analytics";
 import { OnboardingSlides } from "@/features/student/OnboardingSlides";
 import { AdminDashboardClient } from "@/features/admin/AdminDashboardClient";
+import { SuspensionStudents } from "@/features/admin/SuspensionStudents";
 
 const ymd = (d: Date) => d.toISOString().slice(0, 10);
 
@@ -38,6 +39,8 @@ export default async function AdminDashboard({
     severity,
     load,
     totalSessions,
+    students,
+    suspensions,
   ] = await Promise.all([
       prisma.department.findMany({
         select: { id: true, name: true },
@@ -65,6 +68,29 @@ export default async function AdminDashboard({
         where: {
           appointmentDate: { gte: range.from, lte: range.to },
           ...(departmentId ? { student: { departmentId } } : {}),
+        },
+      }),
+      prisma.user.findMany({
+        where: { role: "STUDENT" },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          studentProfile: { select: { registerNumber: true } },
+        },
+        orderBy: { name: "asc" },
+      }),
+      prisma.suspension.findMany({
+        orderBy: [{ status: "asc" }, { startDate: "desc" }],
+        include: {
+          student: {
+            select: {
+              name: true,
+              email: true,
+              studentProfile: { select: { registerNumber: true } },
+            },
+          },
+          _count: { select: { notifications: true } },
         },
       }),
     ]);
@@ -105,6 +131,28 @@ export default async function AdminDashboard({
           departmentId,
           groupBy,
         }}
+      />
+      <SuspensionStudents
+        students={students.map((student) => ({
+          ...student,
+          registerNumber: student.studentProfile?.registerNumber ?? null,
+        }))}
+        suspensions={suspensions.map((suspension) => ({
+          id: suspension.id,
+          studentId: suspension.studentId,
+          student: {
+            id: suspension.studentId,
+            name: suspension.student.name,
+            email: suspension.student.email,
+            registerNumber: suspension.student.studentProfile?.registerNumber ?? null,
+          },
+          reason: suspension.reason,
+          startDate: ymd(suspension.startDate),
+          endDate: ymd(suspension.endDate),
+          notes: suspension.notes,
+          status: suspension.status,
+          notifiedCounsellors: suspension._count.notifications,
+        }))}
       />
     </div>
   );
