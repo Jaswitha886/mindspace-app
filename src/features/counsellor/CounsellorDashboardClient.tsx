@@ -6,6 +6,7 @@ import { Card } from "@/components/ui/card";
 import { EndSessionButton } from "@/features/checkin/ScanCheckIn";
 import { RequestActions } from "@/features/counsellor/RequestActions";
 import { SeverityTrendChart } from "@/features/counsellor/SeverityTrendChart";
+import { QuoteOfDayForm } from "@/features/counsellor/QuoteOfDayForm";
 import { SEVERITY_META } from "@/features/notes/severity-meta";
 import { ArrowRightIcon, CalendarIcon, UsersIcon } from "@/components/icons";
 import { formatTime, formatTimeRange, formatDateLong } from "@/lib/format";
@@ -39,12 +40,26 @@ type LiveSession = {
   endTime: string;
 };
 
+type ActiveSuspension = {
+  id: string;
+  reason: string;
+  startDate: Date;
+  endDate: Date;
+  notes: string | null;
+  student: {
+    name: string;
+    email: string;
+    studentProfile: { registerNumber: string } | null;
+  };
+};
+
 export type CounsellorDashboardClientProps = {
   todaysSessions: Session[];
   pendingRequests: Request[];
   sessionsThisWeek: number;
   severityTrend: SeverityWeek[];
   severityTotals: { MILD: number; MODERATE: number; CRITICAL: number };
+  activeSuspensions: ActiveSuspension[];
   firstName: string;
   live: LiveSession | null;
   next: { student: { name: string }; startTime: string } | undefined;
@@ -93,6 +108,7 @@ export function CounsellorDashboardClient({
   sessionsThisWeek,
   severityTrend,
   severityTotals,
+  activeSuspensions,
   firstName,
   live,
   next,
@@ -152,6 +168,16 @@ export function CounsellorDashboardClient({
               </Link>
             )}
           </div>
+        </Card>
+      </motion.div>
+
+      <motion.div variants={fadeUp}>
+        <Card tone="plum">
+          <h2 className="t-h2">Quote of the day</h2>
+          <p className="t-body mt-1">
+            Share a supportive message with students you have counselled.
+          </p>
+          <QuoteOfDayForm />
         </Card>
       </motion.div>
 
@@ -319,6 +345,60 @@ export function CounsellorDashboardClient({
           </Card>
         </motion.div>
       </div>
+
+      <motion.div variants={fadeUp}>
+        <Card tone="sunken">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <div>
+              <h2 className="t-h2">Suspended students</h2>
+              <p className="t-body mt-1">
+                Active suspension information shared by the wellness centre.
+              </p>
+            </div>
+            <span className="t-meta">{activeSuspensions.length} active</span>
+          </div>
+          {activeSuspensions.length === 0 ? (
+            <p className="t-body mt-3">No active student suspensions.</p>
+          ) : (
+            <ul className="mt-3 flex flex-col">
+              {activeSuspensions.map((suspension) => (
+                <li
+                  key={suspension.id}
+                  className="border-b border-line py-4 first:pt-0 last:border-0 last:pb-0"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <p className="text-[0.9375rem] font-semibold text-ink">
+                        {suspension.student.name}
+                      </p>
+                      <p className="t-meta mt-0.5">
+                        {suspension.student.studentProfile?.registerNumber ??
+                          suspension.student.email}
+                      </p>
+                      {suspension.student.studentProfile?.registerNumber && (
+                        <p className="t-meta mt-0.5">
+                          {suspension.student.email}
+                        </p>
+                      )}
+                    </div>
+                    <p className="t-meta">
+                      {formatDateLong(suspension.startDate)} to {formatDateLong(suspension.endDate)}
+                    </p>
+                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-ink-secondary">
+                    {suspension.reason}
+                  </p>
+                  {suspension.notes && (
+                    <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+                      {suspension.notes}
+                    </p>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+      </motion.div>
 
       {/* ── Severity Analysis ──────────────────────────────────────── */}
       <motion.div variants={fadeUp}>

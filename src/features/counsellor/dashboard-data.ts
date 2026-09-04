@@ -64,7 +64,7 @@ export async function getCounsellorDashboardData(counsellorId: string) {
   const trendSince = new Date(weekStart);
   trendSince.setUTCDate(trendSince.getUTCDate() - (TREND_WEEKS - 1) * 7);
 
-  const [todaysSessions, pendingRequests, sessionsThisWeek, trendNotes] =
+  const [todaysSessions, pendingRequests, sessionsThisWeek, trendNotes, activeSuspensions] =
     await Promise.all([
       prisma.appointment.findMany({
         where: {
@@ -112,6 +112,24 @@ export async function getCounsellorDashboardData(counsellorId: string) {
         where: { counsellorId, createdAt: { gte: trendSince } },
         select: { createdAt: true, severity: true },
       }),
+      prisma.suspension.findMany({
+        where: { status: "ACTIVE" },
+        orderBy: [{ endDate: "asc" }, { createdAt: "desc" }],
+        select: {
+          id: true,
+          reason: true,
+          startDate: true,
+          endDate: true,
+          notes: true,
+          student: {
+            select: {
+              name: true,
+              email: true,
+              studentProfile: { select: { registerNumber: true } },
+            },
+          },
+        },
+      }),
     ]);
 
   return {
@@ -124,5 +142,6 @@ export async function getCounsellorDashboardData(counsellorId: string) {
       MODERATE: trendNotes.filter((n) => n.severity === "MODERATE").length,
       CRITICAL: trendNotes.filter((n) => n.severity === "CRITICAL").length,
     },
+    activeSuspensions,
   };
 }

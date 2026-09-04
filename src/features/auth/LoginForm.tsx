@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema, type LoginInput } from "@/features/auth/validation";
 import { Button } from "@/components/ui/button";
-import { InputField } from "@/components/ui/field";
+import { InputField, PasswordField } from "@/components/ui/field";
 
 export function LoginForm({ redirectTo }: { redirectTo?: string }) {
   const router = useRouter();
@@ -44,15 +44,15 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
         label="Email ID"
         id="email"
         type="email"
-        placeholder="john.doe@example.com"
+        placeholder="Email"
         autoComplete="email"
         error={errors.email?.message}
         {...register("email")}
       />
-      <InputField
+      <PasswordField
         label="Password"
         id="password"
-        type="password"
+        placeholder="Password"
         autoComplete="current-password"
         error={errors.password?.message}
         {...register("password")}

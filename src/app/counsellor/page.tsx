@@ -15,6 +15,7 @@ export default async function CounsellorDashboard() {
     sessionsThisWeek,
     severityTrend,
     severityTotals,
+    activeSuspensions,
   } = await getCounsellorDashboardData(session.userId);
 
   const firstName = session.name.split(" ").slice(0, 2).join(" ");
@@ -47,6 +48,7 @@ export default async function CounsellorDashboard() {
     sessionsThisWeek,
     severityTrend,
     severityTotals,
+    activeSuspensions,
     firstName,
     live: live
       ? {
