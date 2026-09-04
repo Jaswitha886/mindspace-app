@@ -257,29 +257,6 @@ model Notification {
   suspension  Suspension?      @relation(fields: [suspensionId], references: [id], onDelete: Cascade)
 
   @@index([recipientId, isRead])
-  @@index([suspensionId])
-}
-
-model Suspension {
-  id          String           @id @default(cuid())
-  studentId   String
-  createdById String
-  reason      String
-  startDate   DateTime         @db.Date
-  endDate     DateTime         @db.Date
-  notes       String?
-  status      SuspensionStatus @default(ACTIVE)
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime         @updatedAt
-
-  student       User           @relation("StudentSuspensions", fields: [studentId], references: [id])
-  createdBy     User           @relation("CreatedSuspensions", fields: [createdById], references: [id])
-  notifications Notification[]
-
-  @@index([studentId])
-  @@index([createdById])
-  @@index([status])
-  @@index([startDate, endDate])
 }
 
 model AuditLog {
