@@ -46,7 +46,7 @@ export function SuspensionAlerts({ items }: { items: SuspensionAlertItem[] }) {
       ) : (
         <ul className="mt-3 flex flex-col">
           {items.map((item) => (
-            <li key={item.id} className={`border-b border-line py-4 last:border-0 ${item.isRead ? "" : "rounded-(--radius-input) bg-white/50 px-2"}`}>
+            <li key={item.id} className={`border-b border-line py-4 last:border-0 ${item.isRead ? "" : "rounded-(--radius-input) bg-surface/70 px-2"}`}>
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="font-semibold text-ink">Suspension Alert: {item.studentName} has been suspended.</p>

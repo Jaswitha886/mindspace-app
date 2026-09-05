@@ -63,7 +63,7 @@ export function ThemeToggle() {
             }}
             className={`rounded-(--radius-pill) px-3.5 py-1.5 text-sm font-semibold transition-all duration-200 ${
               active
-                ? "bg-gradient-to-r from-[#6c5ce7] to-[#4ecdc4] text-white shadow-lg shadow-[#6c5ce720]"
+                ? "bg-brand text-white shadow-(--shadow-btn)"
                 : "text-ink-secondary hover:text-ink hover:bg-sunken"
             }`}
           >

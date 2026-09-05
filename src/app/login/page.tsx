@@ -17,7 +17,7 @@ export default async function LoginPage({
       footer={
         <p className="text-sm text-white/50">
           New to MindSpace?{" "}
-          <Link href="/register" className="font-semibold text-[#a29bfe] hover:underline">
+          <Link href="/register" className="font-semibold text-brand-ink hover:underline">
             Create an account
           </Link>
         </p>

@@ -27,7 +27,7 @@ export function BottomNav({ items }: NavProps) {
   return (
     <nav
       aria-label="Main"
-      className="fixed inset-x-0 bottom-0 z-30 border-t border-white/[0.06] bg-[#1a1430]/80 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl lg:hidden"
+      className="fixed inset-x-0 bottom-0 z-30 border-t border-line bg-surface pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
       <ul className="flex items-stretch justify-around">
         {items.map((item) => {
@@ -43,16 +43,16 @@ export function BottomNav({ items }: NavProps) {
                 {active && (
                   <motion.span
                     layoutId="bottomnav-indicator"
-                    className="absolute -top-px left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-gradient-to-r from-[#6c5ce7] to-[#4ecdc4]"
+                    className="absolute -top-px left-1/2 h-0.5 w-8 -translate-x-1/2 rounded-full bg-brand"
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
                 )}
                 <Icon
                   className={`h-[1.35rem] w-[1.35rem] transition-colors ${
-                    active ? "text-[#a29bfe]" : "text-white/40"
+                    active ? "text-brand" : "text-ink-muted"
                   }`}
                 />
-                <span className={active ? "text-[#a29bfe]" : "text-white/40"}>
+                <span className={active ? "text-brand" : "text-ink-muted"}>
                   {item.label}
                 </span>
               </Link>
@@ -81,18 +81,20 @@ export function SideNav({ items }: NavProps) {
             {active && (
               <motion.span
                 layoutId="sidenav-indicator"
-                className="absolute inset-0 rounded-(--radius-btn) bg-gradient-to-r from-[#6c5ce7]/15 to-[#4ecdc4]/10 border border-white/[0.06]"
+                className="absolute inset-0 rounded-(--radius-btn) border border-white/10 bg-sidebar-active"
                 transition={{ type: "spring", stiffness: 400, damping: 30 }}
               />
             )}
             <Icon
               className={`relative h-[1.15rem] w-[1.15rem] shrink-0 transition-colors ${
-                active ? "text-[#a29bfe]" : "text-white/40"
+                    active ? "text-sidebar-text" : "text-sidebar-muted"
               }`}
             />
             <span
               className={`relative transition-colors ${
-                active ? "font-semibold text-white/90" : "font-medium text-white/50 hover:text-white/70"
+                active
+                  ? "font-semibold text-sidebar-text"
+                  : "font-medium text-sidebar-muted hover:text-sidebar-text"
               }`}
             >
               {item.label}

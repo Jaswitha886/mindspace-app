@@ -164,7 +164,7 @@ function TiltTile({
 const AVATAR_TINTS = [
   "bg-brand-tint text-brand-ink",
   "bg-gold text-gold-ink",
-  "bg-teal text-ink-strong",
+  "bg-teal-tint text-teal",
 ];
 
 function initials(name: string): string {

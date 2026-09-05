@@ -1,14 +1,11 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { Figtree } from "next/font/google";
+import { Inter } from "next/font/google";
 import { THEME_COOKIE, isTheme } from "@/features/theme/theme";
 import "./globals.css";
 
-// One family: Figtree carries display, UI, and figures alike — weight does the
-// separating. Soft terminals keep it friendly at the sizes a student reads a
-// mood prompt at, without going soft enough to undercut counsellor tables.
-const figtree = Figtree({
-  variable: "--font-figtree",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -32,7 +29,7 @@ export default async function RootLayout({
     <html
       lang="en"
       {...(theme ? { "data-theme": theme } : {})}
-      className={`${figtree.variable} h-full antialiased`}
+      className={`${inter.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

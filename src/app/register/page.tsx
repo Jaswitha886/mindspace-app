@@ -19,7 +19,7 @@ export default async function RegisterPage() {
       footer={
         <p className="text-sm text-white/50">
           Already have an account?{" "}
-          <Link href="/login" className="font-semibold text-[#a29bfe] hover:underline">
+          <Link href="/login" className="font-semibold text-brand-ink hover:underline">
             Sign in
           </Link>
         </p>

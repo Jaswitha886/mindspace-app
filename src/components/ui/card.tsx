@@ -7,7 +7,7 @@ const toneClasses: Record<Tone, string> = {
   paper: "bg-surface border border-line",
   plum: "bg-brand-tint border border-transparent",
   gold: "bg-gold border border-transparent",
-  teal: "bg-teal border border-transparent",
+  teal: "bg-teal-tint border border-transparent",
   sunken: "bg-sunken border border-line",
 };
 
