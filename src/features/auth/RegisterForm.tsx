@@ -6,7 +6,7 @@ import { useForm, type Path } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema, type RegisterInput } from "@/features/auth/validation";
 import { Button } from "@/components/ui/button";
-import { InputField, SelectField } from "@/components/ui/field";
+import { InputField, PasswordField, SelectField } from "@/components/ui/field";
 
 const emptyToUndefined = (v: string) => (v === "" ? undefined : v);
 const emptyToUndefinedNumber = (v: string) => (v === "" ? undefined : Number(v));
@@ -53,6 +53,7 @@ export function RegisterForm({ departments }: { departments: string[] }) {
       <InputField
         label="Full name"
         id="name"
+        placeholder="Name"
         autoComplete="name"
         error={errors.name?.message}
         {...register("name")}
@@ -61,6 +62,7 @@ export function RegisterForm({ departments }: { departments: string[] }) {
         label="Email"
         id="email"
         type="email"
+        placeholder="Email"
         autoComplete="email"
         error={errors.email?.message}
         {...register("email")}
@@ -69,6 +71,7 @@ export function RegisterForm({ departments }: { departments: string[] }) {
         <InputField
           label="Register number"
           id="registerNumber"
+          placeholder="Register number"
           error={errors.registerNumber?.message}
           {...register("registerNumber")}
         />
@@ -78,6 +81,7 @@ export function RegisterForm({ departments }: { departments: string[] }) {
           type="number"
           min={1}
           max={10}
+          placeholder="Semester"
           error={errors.semester?.message}
           {...register("semester", { setValueAs: emptyToUndefinedNumber })}
         />
@@ -111,22 +115,23 @@ export function RegisterForm({ departments }: { departments: string[] }) {
         label="Phone number (optional)"
         id="phoneNumber"
         type="tel"
+        placeholder="Phone number"
         autoComplete="tel"
         error={errors.phoneNumber?.message}
         {...register("phoneNumber", { setValueAs: emptyToUndefined })}
       />
-      <InputField
+      <PasswordField
         label="Password"
         id="password"
-        type="password"
+        placeholder="Password"
         autoComplete="new-password"
         error={errors.password?.message}
         {...register("password")}
       />
-      <InputField
+      <PasswordField
         label="Confirm password"
         id="confirmPassword"
-        type="password"
+        placeholder="Confirm password"
         autoComplete="new-password"
         error={errors.confirmPassword?.message}
         {...register("confirmPassword")}

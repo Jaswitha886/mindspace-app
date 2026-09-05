@@ -3,6 +3,7 @@ import type {
   SelectHTMLAttributes,
   TextareaHTMLAttributes,
 } from "react";
+import { useState } from "react";
 
 // A visible label above a white field with a hairline border. The error state
 // turns the label, the border, and the helper text red together — colour is
@@ -67,6 +68,35 @@ export function InputField({ label, id, error, hint, ...props }: InputFieldProps
         className={inputClasses(!!error)}
         {...props}
       />
+    </FieldWrapper>
+  );
+}
+
+type PasswordFieldProps = Omit<InputFieldProps, "type">;
+
+export function PasswordField({ label, id, error, hint, ...props }: PasswordFieldProps) {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <FieldWrapper label={label} htmlFor={id} error={error} hint={hint}>
+      <div className="relative">
+        <input
+          id={id}
+          type={visible ? "text" : "password"}
+          aria-invalid={!!error}
+          className={`${inputClasses(!!error)} pr-28`}
+          {...props}
+        />
+        <button
+          type="button"
+          className="absolute inset-y-0 right-3 text-xs font-semibold text-brand-ink hover:underline"
+          aria-controls={id}
+          aria-pressed={visible}
+          onClick={() => setVisible((current) => !current)}
+        >
+          {visible ? "Hide password" : "Show password"}
+        </button>
+      </div>
     </FieldWrapper>
   );
 }

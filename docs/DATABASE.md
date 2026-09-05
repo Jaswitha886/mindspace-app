@@ -327,6 +327,20 @@ Appointment
 
 ---
 
+# Suspension
+
+`Suspension` stores `studentId`, `createdById`, `reason`, `startDate`, `endDate`,
+optional `notes`, `status` (`ACTIVE`, `COMPLETED`, or `CANCELLED`), and the
+standard created/updated timestamps. It relates to `User` for both the student
+and the admin who created it. Suspension alerts link back to the record through
+`Notification.suspensionId`.
+
+There is no student-to-counsellor assignment relation in the current schema.
+Therefore a new suspension notifies every active `COUNSELLOR`; edits and
+resolution do not create duplicate alerts.
+
+---
+
 # Future Database Enhancements
 
 - Notification table

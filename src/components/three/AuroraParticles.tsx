@@ -25,12 +25,12 @@ export default function AuroraParticles({
   const particles = useMemo<Particle[]>(() => {
     return Array.from({ length: count }, (_, i) => ({
       id: i,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 4 + 2,
-      delay: Math.random() * 5,
-      duration: Math.random() * 8 + 6,
-      color: colors[Math.floor(Math.random() * colors.length)],
+      x: ((i * 47 + count * 13) % 97) + 1,
+      y: ((i * 71 + count * 7) % 97) + 1,
+      size: ((i * 19 + count) % 4) + 2,
+      delay: ((i * 29 + count) % 5),
+      duration: ((i * 37 + count) % 8) + 6,
+      color: colors[(i * 3 + count) % colors.length],
     }));
   }, [count, colors]);
 
