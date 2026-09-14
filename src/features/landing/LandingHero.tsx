@@ -12,13 +12,13 @@ const AuroraScene = dynamic(
 
 export function LandingHero() {
   return (
-    <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-[#0f0a1e]">
+    <section className="relative flex min-h-[85vh] items-center justify-center overflow-hidden bg-forest">
       {/* Gradient overlays */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#6c5ce710] via-transparent to-[#0f0a1e]" />
-        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-[#6c5ce7] opacity-[0.07] blur-[120px]" />
-        <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-[#4ecdc4] opacity-[0.06] blur-[120px]" />
-        <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#e8a0bf] opacity-[0.04] blur-[100px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand/5 via-transparent to-forest" />
+        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-brand opacity-[0.07] blur-[120px]" />
+        <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-teal opacity-[0.06] blur-[120px]" />
+        <div className="absolute left-1/2 top-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-pink opacity-[0.04] blur-[100px]" />
       </div>
 
       {/* 3D Scene */}
@@ -33,8 +33,8 @@ export function LandingHero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <span className="mb-6 inline-flex items-center gap-2 rounded-(--radius-pill) border border-white/10 bg-white/5 px-4 py-1.5 text-sm font-medium text-white/60 backdrop-blur-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#4ecdc4]" />
+          <span className="mb-6 inline-flex items-center gap-2 rounded-(--radius-pill) border border-on-dark-faint bg-on-dark-whisper px-4 py-1.5 text-sm font-medium text-on-dark-muted backdrop-blur-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-teal" />
             Campus counselling &amp; wellbeing
           </span>
         </motion.div>
@@ -54,7 +54,7 @@ export function LandingHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.25 }}
-          className="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-white/50"
+          className="mx-auto mt-6 max-w-lg text-lg leading-relaxed text-on-dark-muted"
         >
           Talk to a counsellor when you want to, keep a private journal, and check
           in with yourself — at your own pace.
@@ -68,14 +68,14 @@ export function LandingHero() {
         >
           <Link
             href="/register"
-            className="btn-aurora inline-flex items-center gap-2 rounded-(--radius-btn) px-7 py-3.5 text-sm font-semibold shadow-lg shadow-[#6c5ce730] transition-all hover:shadow-xl hover:shadow-[#6c5ce740]"
+            className="btn-aurora inline-flex items-center gap-2 rounded-(--radius-btn) px-7 py-3.5 text-sm font-semibold shadow-lg shadow-brand/30 transition-all hover:shadow-xl hover:shadow-brand/40"
           >
             Get started
             <ArrowRightIcon className="h-4 w-4" />
           </Link>
           <Link
             href="/login"
-            className="inline-flex items-center gap-2 rounded-(--radius-btn) border border-white/15 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white backdrop-blur-sm transition-all hover:border-white/25 hover:bg-white/10"
+            className="inline-flex items-center gap-2 rounded-(--radius-btn) border border-on-dark-ghost bg-on-dark-whisper px-7 py-3.5 text-sm font-semibold text-on-dark backdrop-blur-sm transition-all hover:border-on-dark-faint hover:bg-on-dark-whisper"
           >
             Sign in
           </Link>
@@ -83,7 +83,7 @@ export function LandingHero() {
       </div>
 
       {/* Bottom gradient fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#0f0a1e] to-transparent" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-forest to-transparent" />
     </section>
   );
 }

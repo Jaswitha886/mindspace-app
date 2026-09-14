@@ -39,7 +39,7 @@ export function Wordmark({ href = "/" }: { href?: string }) {
       aria-label="MindSpace home"
     >
       <WordmarkMark size="sm" />
-      <span className="text-lg font-bold text-white">
+      <span className="text-lg font-bold text-sidebar-text">
         MindSpace
       </span>
     </Link>

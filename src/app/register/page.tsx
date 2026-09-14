@@ -17,7 +17,7 @@ export default async function RegisterPage() {
       headline="Create your account"
       sub="For students. Counsellor accounts are set up by the wellness centre."
       footer={
-        <p className="text-sm text-white/50">
+        <p className="text-sm text-ink-muted">
           Already have an account?{" "}
           <Link href="/login" className="font-semibold text-brand-ink hover:underline">
             Sign in

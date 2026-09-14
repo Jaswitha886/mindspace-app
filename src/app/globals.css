@@ -1,10 +1,20 @@
 @import "tailwindcss";
 
-/* Shared dashboard design tokens. Keep components on semantic tokens so the
-  light product surface and optional dark theme stay in sync. */
+/* ─────────────────────────────────────────────────────────────────────────────
+   MindSpace Design Tokens
+   
+   Every colour, shadow, and radius used in the app flows through these tokens.
+   light-dark() ensures automatic adaptation: the browser picks the first value
+   in light mode, the second in dark mode ([data-theme="dark"]).
+   
+   Components MUST use these tokens (via Tailwind utilities or CSS var()).
+   Never hardcode hex/rgb values in component files.
+   ───────────────────────────────────────────────────────────────────────────── */
+
 :root {
   color-scheme: light;
 
+  /* ── Brand (indigo) ──────────────────────────────────────────────────────── */
   --brand: light-dark(#4f46e5, #818cf8);
   --brand-hover: light-dark(#4338ca, #6366f1);
   --brand-light: light-dark(#6366f1, #a5b4fc);
@@ -14,46 +24,76 @@
   --brand-tint-2: light-dark(#f5f7ff, #17153a);
   --brand-disabled: light-dark(#c7d2fe, #373580);
 
+  /* ── Teal ────────────────────────────────────────────────────────────────── */
   --teal: light-dark(#06b6d4, #22d3ee);
   --teal-tint: light-dark(#ecfeff, #164e63);
+
+  /* ── Success (green) ─────────────────────────────────────────────────────── */
   --success: light-dark(#16a34a, #4ade80);
   --success-tint: light-dark(#dcfce7, #16351f);
   --success-ink: light-dark(#15803d, #86efac);
+
+  /* ── Gold / amber ────────────────────────────────────────────────────────── */
   --gold: light-dark(#fef3c7, #3b2e0d);
   --gold-strong: light-dark(#f59e0b, #fbbf24);
   --gold-ink: light-dark(#b45309, #fcd34d);
+
+  /* ── Pink ────────────────────────────────────────────────────────────────── */
   --pink: light-dark(#fda4af, #fb7185);
   --pink-tint: light-dark(#fff1f2, #3b1820);
+
+  /* ── Red / error ─────────────────────────────────────────────────────────── */
   --red: light-dark(#dc2626, #f87171);
   --red-light: light-dark(#ef4444, #fca5a5);
   --red-tint: light-dark(#fee2e2, #451a1a);
   --red-ink: light-dark(#b91c1c, #fca5a5);
 
+  /* ── Ink / text hierarchy ────────────────────────────────────────────────── */
   --ink: light-dark(#172033, #f8fafc);
   --ink-strong: light-dark(#101828, #ffffff);
   --ink-secondary: light-dark(#667085, #cbd5e1);
   --ink-muted: light-dark(#98a2b3, #94a3b8);
+
+  /* ── Surface / background hierarchy ──────────────────────────────────────── */
   --page: light-dark(#f7f9fc, #0f172a);
   --surface: light-dark(#ffffff, #111827);
   --sunken: light-dark(#f1f5f9, #1e293b);
   --sunken-2: light-dark(#f8fafc, #172033);
+
+  /* ── Border hierarchy ────────────────────────────────────────────────────── */
   --border: light-dark(#e2e8f0, #334155);
   --border-strong: light-dark(#cbd5e1, #475569);
 
-  --forest: light-dark(#111827, #0b1220);
-  --forest-2: light-dark(#1f2937, #172033);
-  --on-forest: #f8fafc;
-  --on-forest-muted: #cbd5e1;
-  --sidebar: #111827;
-  --sidebar-active: #312e81;
-  --sidebar-text: #f8fafc;
-  --sidebar-muted: #cbd5e1;
-  --sidebar-border: rgba(248, 250, 252, 0.1);
+  /* ── On-dark surfaces (for components rendered over dark backgrounds) ────── */
+  /* These replace hardcoded rgba(255,255,255,*) values. In light mode they
+     adapt to dark-on-light; in dark mode they stay light-on-dark. */
+  --on-dark: light-dark(#111827, rgba(255, 255, 255, 0.90));
+  --on-dark-muted: light-dark(#667085, rgba(255, 255, 255, 0.60));
+  --on-dark-subtle: light-dark(#98a2b3, rgba(255, 255, 255, 0.40));
+  --on-dark-faint: light-dark(#cbd5e1, rgba(255, 255, 255, 0.10));
+  --on-dark-ghost: light-dark(#e2e8f0, rgba(255, 255, 255, 0.06));
+  --on-dark-whisper: light-dark(#f1f5f9, rgba(255, 255, 255, 0.05));
 
-  /* --- Clinical severity (counsellor/admin only) --------------------------- */
+  /* ── QR / high-contrast surfaces ─────────────────────────────────────────── */
+  /* QR codes need maximum contrast regardless of theme. */
+  --qr-bg: light-dark(#ffffff, #1e293b);
+  --qr-fg: light-dark(#241826, #ffffff);
+
+  /* ── Forest / sidebar ──────────────────────────────────────────────────── */
+  --forest: #0f172a;
+  --forest-2: #172033;
+  --sidebar: light-dark(#ffffff, #0f172a);
+  --sidebar-active: light-dark(#eef2ff, #312e81);
+  --sidebar-text: light-dark(#101828, #f8fafc);
+  --sidebar-muted: light-dark(#667085, #94a3b8);
+  --sidebar-border: light-dark(#e2e8f0, rgba(248, 250, 252, 0.1));
+  --sidebar-active-text: light-dark(#4338ca, #a5b4fc);
+  --sidebar-hover: light-dark(#f1f5f9, rgba(255, 255, 255, 0.05));
+
+  /* ── Clinical severity (counsellor/admin only) ───────────────────────────── */
   /* Deliberately NOT light-dark(). Severity is clinical data and must mean
-     exactly one thing regardless of theme. These values clear white-label AA
-     and 3:1 against both page backgrounds. */
+     exactly one thing regardless of theme. These values clear WCAG AA
+     and 3:1 contrast against both page backgrounds. */
   --sev-mild: #2e6b50;
   --sev-moderate: #8a5a00;
   --sev-critical: #b3243f;
@@ -61,30 +101,49 @@
   --sev-moderate-fill: #e0a93f;
   --sev-critical-fill: #d9435f;
 
-  /* --- Charts (non-severity) ------------------------------------------------ */
+  /* ── Charts (non-severity) ───────────────────────────────────────────────── */
   --chart-1: light-dark(#4f46e5, #818cf8);
   --chart-2: #06b6d4;
   --chart-3: light-dark(#16a34a, #4ade80);
   --chart-4: #f59e0b;
   --chart-5: light-dark(#f43f5e, #fb7185);
 
-  /* --- Aurora-specific tokens ----------------------------------------------- */
+  /* ── Aurora decorative ───────────────────────────────────────────────────── */
   --aurora-gradient: linear-gradient(135deg, #4f46e5, #06b6d4);
   --aurora-gradient-subtle: linear-gradient(135deg, #eef2ff, #ecfeff);
   --aurora-glow-brand: 0 4px 12px rgba(79, 70, 229, 0.14);
   --aurora-glow-teal: 0 4px 12px rgba(6, 182, 212, 0.14);
   --aurora-glow-pink: 0 4px 12px rgba(244, 63, 94, 0.12);
 
+  /* ── Focus ring ──────────────────────────────────────────────────────────── */
   --focus-ring: light-dark(#4f46e5, #818cf8);
+
+  /* ── Shadows ─────────────────────────────────────────────────────────────── */
+  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06);
+  --shadow-card-hover: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-btn: 0 1px 2px rgba(15, 23, 42, 0.1);
+  --shadow-pop: 0 4px 12px rgba(15, 23, 42, 0.08);
+
+  /* ── Radii ───────────────────────────────────────────────────────────────── */
+  --radius-card: 14px;
+  --radius-btn: 8px;
+  --radius-input: 8px;
+  --radius-pill: 999px;
 }
 
-/* Dark mode override. */
+/* Dark mode activation. */
 :root[data-theme="dark"] {
   color-scheme: dark;
 }
 
-/* ---- Tailwind v4 theme mapping ------------------------------------------ */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Tailwind v4 theme mapping
+   
+   Maps CSS custom properties to Tailwind utility classes. After this block,
+   you can write bg-brand, text-ink-strong, border-line, etc.
+   ───────────────────────────────────────────────────────────────────────────── */
 @theme inline {
+  /* ── Brand ───────────────────────────────────────────────────────────────── */
   --color-brand: var(--brand);
   --color-brand-hover: var(--brand-hover);
   --color-brand-light: var(--brand-light);
@@ -94,43 +153,70 @@
   --color-brand-tint-2: var(--brand-tint-2);
   --color-brand-disabled: var(--brand-disabled);
 
+  /* ── Teal ────────────────────────────────────────────────────────────────── */
   --color-teal: var(--teal);
   --color-teal-tint: var(--teal-tint);
-  --color-forest: var(--forest);
-  --color-forest-2: var(--forest-2);
-  --color-on-forest: var(--on-forest);
-  --color-on-forest-muted: var(--on-forest-muted);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-active: var(--sidebar-active);
-  --color-sidebar-text: var(--sidebar-text);
-  --color-sidebar-muted: var(--sidebar-muted);
+
+  /* ── Success ─────────────────────────────────────────────────────────────── */
   --color-success: var(--success);
   --color-success-tint: var(--success-tint);
   --color-success-ink: var(--success-ink);
 
+  /* ── Gold ────────────────────────────────────────────────────────────────── */
   --color-gold: var(--gold);
   --color-gold-strong: var(--gold-strong);
   --color-gold-ink: var(--gold-ink);
 
+  /* ── Pink ────────────────────────────────────────────────────────────────── */
   --color-pink: var(--pink);
   --color-pink-tint: var(--pink-tint);
 
+  /* ── Red ─────────────────────────────────────────────────────────────────── */
   --color-red: var(--red);
   --color-red-light: var(--red-light);
   --color-red-tint: var(--red-tint);
   --color-red-ink: var(--red-ink);
 
+  /* ── Ink / text ──────────────────────────────────────────────────────────── */
   --color-ink: var(--ink);
   --color-ink-strong: var(--ink-strong);
   --color-ink-secondary: var(--ink-secondary);
   --color-ink-muted: var(--ink-muted);
+
+  /* ── Surface / background ────────────────────────────────────────────────── */
   --color-page: var(--page);
   --color-surface: var(--surface);
   --color-sunken: var(--sunken);
   --color-sunken-2: var(--sunken-2);
+
+  /* ── Borders ─────────────────────────────────────────────────────────────── */
   --color-line: var(--border);
   --color-line-strong: var(--border-strong);
 
+  /* ── On-dark (for dark-context components) ───────────────────────────────── */
+  --color-on-dark: var(--on-dark);
+  --color-on-dark-muted: var(--on-dark-muted);
+  --color-on-dark-subtle: var(--on-dark-subtle);
+  --color-on-dark-faint: var(--on-dark-faint);
+  --color-on-dark-ghost: var(--on-dark-ghost);
+  --color-on-dark-whisper: var(--on-dark-whisper);
+
+  /* ── QR / high-contrast ──────────────────────────────────────────────────── */
+  --color-qr-bg: var(--qr-bg);
+  --color-qr-fg: var(--qr-fg);
+
+  /* ── Forest / sidebar ────────────────────────────────────────────────────── */
+  --color-forest: var(--forest);
+  --color-forest-2: var(--forest-2);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-active: var(--sidebar-active);
+  --color-sidebar-text: var(--sidebar-text);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-active-text: var(--sidebar-active-text);
+  --color-sidebar-hover: var(--sidebar-hover);
+
+  /* ── Severity (clinical, theme-invariant) ────────────────────────────────── */
   --color-mild: var(--sev-mild);
   --color-moderate: var(--sev-moderate);
   --color-critical: var(--sev-critical);
@@ -138,26 +224,32 @@
   --color-moderate-fill: var(--sev-moderate-fill);
   --color-critical-fill: var(--sev-critical-fill);
 
+  /* ── Charts ──────────────────────────────────────────────────────────────── */
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
 
+  /* ── Typography ──────────────────────────────────────────────────────────── */
   --font-sans: var(--font-inter), sans-serif;
 
+  /* ── Radii ───────────────────────────────────────────────────────────────── */
   --radius-card: 14px;
   --radius-btn: 8px;
   --radius-input: 8px;
   --radius-pill: 999px;
 
+  /* ── Shadows ─────────────────────────────────────────────────────────────── */
   --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06);
   --shadow-card-hover: 0 4px 12px rgba(15, 23, 42, 0.08);
   --shadow-btn: 0 1px 2px rgba(15, 23, 42, 0.1);
   --shadow-pop: 0 4px 12px rgba(15, 23, 42, 0.08);
 }
 
-/* ---- Base --------------------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Base styles
+   ───────────────────────────────────────────────────────────────────────────── */
 html {
   background: var(--page);
 }
@@ -169,20 +261,24 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Auth forms sit on a dark card, unlike the light surfaces used elsewhere. */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Auth form overrides
+   ───────────────────────────────────────────────────────────────────────────── */
 .auth-form-card .auth-field-label:not(.text-red-ink) {
-  color: #f5f3ff !important;
+  color: var(--ink) !important;
 }
 .auth-form-card .auth-field-control {
-  color: #1a1430 !important;
-  background-color: #ffffff !important;
+  color: var(--ink) !important;
+  background-color: var(--surface) !important;
 }
 .auth-form-card .auth-field-control::placeholder {
-  color: #6b5c8a !important;
+  color: var(--ink-muted) !important;
   opacity: 1;
 }
 
-/* ---- Type scale (Figtree) ----------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Typography scale
+   ───────────────────────────────────────────────────────────────────────────── */
 .t-display {
   font-weight: 700;
   font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem);
@@ -228,7 +324,9 @@ body {
   letter-spacing: 0;
 }
 
-/* ---- Coloured blocks ----------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Coloured blocks
+   ───────────────────────────────────────────────────────────────────────────── */
 .block-plum {
   background: var(--brand-tint);
 }
@@ -239,7 +337,9 @@ body {
   background: var(--teal);
 }
 
-/* ---- Interaction --------------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Interaction
+   ───────────────────────────────────────────────────────────────────────────── */
 .lift {
   transition:
     transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1),
@@ -256,12 +356,16 @@ body {
   border-radius: 3px;
 }
 
-/* ---- Gradient text ------------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Gradient text
+   ───────────────────────────────────────────────────────────────────────────── */
 .gradient-text {
   color: var(--brand);
 }
 
-/* ---- Glass morphism ------------------------------------------------------ */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Glass morphism
+   ───────────────────────────────────────────────────────────────────────────── */
 .glass {
   background: color-mix(in srgb, var(--surface) 72%, transparent);
   backdrop-filter: blur(20px) saturate(1.4);
@@ -278,7 +382,9 @@ body {
   -webkit-backdrop-filter: blur(24px) saturate(1.4);
 }
 
-/* ---- Glow effects -------------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Glow effects
+   ───────────────────────────────────────────────────────────────────────────── */
 .glow-brand {
   box-shadow: var(--aurora-glow-brand);
 }
@@ -289,7 +395,9 @@ body {
   box-shadow: var(--aurora-glow-pink);
 }
 
-/* ---- Aurora gradient button ----------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Aurora gradient button
+   ───────────────────────────────────────────────────────────────────────────── */
 .btn-aurora {
   background: var(--brand);
   color: #fff;
@@ -299,13 +407,17 @@ body {
   background: var(--brand-hover);
 }
 
-/* ---- 3D card perspective ------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   3D card perspective
+   ───────────────────────────────────────────────────────────────────────────── */
 .card-3d {
   transform-style: preserve-3d;
   perspective: 800px;
 }
 
-/* ---- Skeleton ------------------------------------------------------------ */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Skeleton shimmer
+   ───────────────────────────────────────────────────────────────────────────── */
 .skeleton {
   background: linear-gradient(
     90deg,
@@ -318,7 +430,9 @@ body {
   border-radius: var(--radius-input);
 }
 
-/* ---- Aurora animated background ------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Aurora animated background
+   ───────────────────────────────────────────────────────────────────────────── */
 .aurora-bg {
   position: relative;
   overflow: hidden;
@@ -333,7 +447,9 @@ body {
   z-index: 1;
 }
 
-/* ---- Breathing glow (for live status, availability) ---------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Breathing glow (live status, availability)
+   ───────────────────────────────────────────────────────────────────────────── */
 .breathe {
   animation: breathe 3s ease-in-out infinite;
 }
@@ -341,7 +457,9 @@ body {
   animation: breathe-teal 3s ease-in-out infinite;
 }
 
-/* ---- Animated gradient border -------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Animated gradient border
+   ───────────────────────────────────────────────────────────────────────────── */
 .aurora-border {
   position: relative;
 }
@@ -359,7 +477,9 @@ body {
   pointer-events: none;
 }
 
-/* ---- Keyframes ----------------------------------------------------------- */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Keyframes
+   ───────────────────────────────────────────────────────────────────────────── */
 @keyframes shimmer {
   from {
     background-position: 100% 50%;
@@ -448,7 +568,9 @@ body {
   }
 }
 
-/* ---- Reduced motion ------------------------------------------------------ */
+/* ─────────────────────────────────────────────────────────────────────────────
+   Reduced motion
+   ───────────────────────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -464,135 +586,71 @@ body {
   }
 }
 
-/* Student workspace: a brighter, calmer canvas distinct from staff tools. */
-.student-workspace {
-  background: #f4f6ff;
-  color: #17213d;
+/* ─────────────────────────────────────────────────────────────────────────────
+   Student dashboard card classes
+   
+   Minimal layout overrides for the student dashboard's card sizing.
+   The sidebar and theme are now fully unified across all roles.
+   ───────────────────────────────────────────────────────────────────────────── */
+.student-dashboard-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-card);
+  padding: 1.25rem;
 }
-.student-workspace main {
-  background:
-    radial-gradient(circle at 88% 4%, rgba(213, 222, 255, 0.58), transparent 28rem),
-    #f4f6ff;
+.student-dashboard-card:hover {
+  box-shadow: var(--shadow-card-hover);
 }
-.student-workspace .aurora-bg,
-.student-workspace .aurora-bg::before {
-  background: transparent;
-  animation: none;
-}
-.student-workspace .t-meta {
-  color: #7d88a5;
-}
-.student-workspace .t-h2,
-.student-workspace .t-h3,
-.student-workspace .t-body,
-.student-workspace .t-figure {
-  color: #17213d;
-}
-.student-workspace aside nav a[aria-current="page"] {
-  background: #eef0ff;
-  border-radius: 12px;
-}
-.student-workspace aside nav a[aria-current="page"] svg {
-  color: #5b62db !important;
-}
-.student-workspace aside nav a[aria-current="page"] span {
-  color: #5961d7 !important;
-}
-.student-workspace aside nav a:not([aria-current="page"]) svg {
-  color: #707b99 !important;
-}
-.student-workspace aside nav a:not([aria-current="page"]) span {
-  color: #53607d !important;
-}
-.student-workspace aside a[aria-label="MindSpace home"] > span:last-child {
-  color: #17213d !important;
-}
-.student-workspace aside nav a > span:first-child {
-  background: transparent !important;
-  border: 0 !important;
-}
-.student-workspace > nav[aria-label="Main"] {
-  border-color: #e5e9f6 !important;
-  background: rgba(255, 255, 255, 0.96) !important;
-}
-.student-workspace > nav[aria-label="Main"] svg {
-  color: #8992ad !important;
-}
-.student-workspace > nav[aria-label="Main"] a[aria-current="page"] svg,
-.student-workspace > nav[aria-label="Main"] a[aria-current="page"] span {
-  color: #5b62db !important;
-}
-.student-workspace > nav[aria-label="Main"] a > span:first-child {
-  background: #5b62db !important;
-}
-.student-workspace .student-dashboard-card {
-  border: 1px solid #e9ecf7;
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 12px 30px rgba(94, 106, 155, 0.08);
-}
-.student-workspace .student-dashboard-card:hover {
-  box-shadow: 0 16px 34px rgba(94, 106, 155, 0.12);
-}
-.student-workspace .student-action-card {
+.student-action-card {
+  position: relative;
   min-height: 190px;
   padding: 1.5rem;
-  border-color: transparent;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-card);
 }
-.student-workspace .student-action-card-blue {
-  background: linear-gradient(145deg, #f2f6ff 0%, #e5eeff 100%);
+.student-action-card:hover {
+  box-shadow: var(--shadow-card-hover);
 }
-.student-workspace .student-action-card-sky {
-  background: linear-gradient(145deg, #f1fbfd 0%, #e0f3f7 100%);
+.student-action-card-blue {
+  background: light-dark(#eef2ff, #1e1b4b);
 }
-.student-workspace .student-mood-card {
-  border: 1px solid #e6e8ff;
-  background: linear-gradient(100deg, #ffffff 0%, #f4f3ff 100%);
-  box-shadow: 0 12px 28px rgba(94, 106, 155, 0.07);
+.student-action-card-sky {
+  background: light-dark(#ecfeff, #164e63);
+}
+.student-mood-card {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+}
+.student-hero {
+  background: light-dark(
+    linear-gradient(135deg, #ffffff 0%, #eef2ff 40%, #e0e7ff 100%),
+    linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #172033 100%)
+  );
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+.student-leaf {
+  position: absolute;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 12px rgba(104, 126, 171, 0.1));
 }
 
 @media (max-width: 639px) {
-  .student-workspace .student-hero {
+  .student-hero {
     min-height: 166px;
   }
-  .student-workspace .student-leaf {
+  .student-leaf {
     right: -34px;
     top: -10px;
     width: 185px;
     height: 155px;
     opacity: 0.58;
   }
-  .student-workspace .student-mood-card {
+  .student-mood-card {
     padding: 1.15rem;
   }
-}
-.student-workspace .student-hero {
-  background:
-    radial-gradient(circle at 78% 18%, rgba(255, 251, 223, 0.9), transparent 11rem),
-    linear-gradient(105deg, #f7f8ff 0%, #edf2ff 58%, #e7efff 100%);
-}
-.student-workspace .student-leaf {
-  position: absolute;
-  pointer-events: none;
-  filter: drop-shadow(0 12px 12px rgba(104, 126, 171, 0.1));
-}
-.student-workspace .student-mood-card {
-  background:
-    radial-gradient(circle at 8% 50%, rgba(229, 225, 255, 0.72), transparent 8rem),
-    linear-gradient(100deg, #ffffff 0%, #f4f3ff 100%);
-}
-.student-workspace .student-dashboard > div > div:first-child .student-dashboard-card {
-  background: linear-gradient(135deg, #fffdf5 0%, #fff9ea 100%);
-}
-.student-workspace .student-dashboard > div > div:last-child .student-dashboard-card:last-of-type {
-  background: linear-gradient(135deg, #ffffff 0%, #f2f5ff 100%);
-}
-.student-workspace .student-dashboard .student-action-card {
-  min-height: 190px;
-  padding: 1.5rem;
-}
-.student-workspace .student-dashboard .student-action-card-blue {
-  background: linear-gradient(145deg, #f2f6ff 0%, #e5eeff 100%) !important;
-}
-.student-workspace .student-dashboard .student-action-card-sky {
-  background: linear-gradient(145deg, #f1fbfd 0%, #e0f3f7 100%) !important;
 }

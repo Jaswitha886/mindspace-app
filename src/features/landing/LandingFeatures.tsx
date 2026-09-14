@@ -8,19 +8,19 @@ const FEATURES = [
     icon: CalendarIcon,
     title: "Talk to a counsellor",
     body: "Book a session in a few small steps, at a time that suits you. Choose who you'd like to talk to.",
-    gradient: "from-[#6c5ce7] to-[#a29bfe]",
+    gradient: "from-brand to-brand-light",
   },
   {
     icon: JournalIcon,
     title: "A private journal",
     body: "Write freely. Your entries are yours alone — never shared with anyone.",
-    gradient: "from-[#e8a0bf] to-[#f0c4d8]",
+    gradient: "from-pink to-pink/60",
   },
   {
     icon: SparkleIcon,
     title: "Gentle check-ins",
     body: "Note how a day felt in five seconds. No streaks, no pressure — just a quiet record.",
-    gradient: "from-[#4ecdc4] to-[#6ee0d8]",
+    gradient: "from-teal to-teal/60",
   },
 ];
 
@@ -44,7 +44,7 @@ const item = {
 
 export function LandingFeatures() {
   return (
-    <section className="relative bg-[#0f0a1e] py-24">
+    <section className="relative bg-forest py-24">
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -56,7 +56,7 @@ export function LandingFeatures() {
           <h2 className="text-3xl font-bold tracking-[-0.03em] text-white sm:text-4xl">
             Built for your wellbeing
           </h2>
-          <p className="mx-auto mt-3 max-w-md text-base text-white/50">
+          <p className="mx-auto mt-3 max-w-md text-base text-on-dark-muted">
             Three simple tools, designed to feel safe and private.
           </p>
         </motion.div>
@@ -72,7 +72,7 @@ export function LandingFeatures() {
             <motion.div
               key={f.title}
               variants={item}
-              className="group relative overflow-hidden rounded-(--radius-card) border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm transition-all duration-300 hover:border-white/20 hover:bg-white/[0.06]"
+              className="group relative overflow-hidden rounded-(--radius-card) border border-on-dark-faint bg-on-dark-whisper p-6 backdrop-blur-sm transition-all duration-300 hover:border-on-dark-ghost hover:bg-on-dark-whisper"
             >
               {/* Gradient glow on hover */}
               <div
@@ -86,7 +86,7 @@ export function LandingFeatures() {
               <h3 className="relative mt-4 text-lg font-bold text-white">
                 {f.title}
               </h3>
-              <p className="relative mt-2 text-sm leading-relaxed text-white/50">
+              <p className="relative mt-2 text-sm leading-relaxed text-on-dark-muted">
                 {f.body}
               </p>
             </motion.div>

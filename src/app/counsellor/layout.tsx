@@ -5,9 +5,10 @@ import type { NavItem } from "@/components/app-nav";
 // Phase 3 landed these routes, so the tab bar can name them honestly.
 const NAV_ITEMS: NavItem[] = [
   { href: "/counsellor", label: "Home", icon: "home", exact: true },
-  { href: "/counsellor/schedule", label: "Schedule", icon: "calendar" },
-  { href: "/counsellor/history", label: "History", icon: "history" },
+  { href: "/counsellor/schedule", label: "Sessions", icon: "calendar" },
   { href: "/counsellor/availability", label: "Availability", icon: "clock" },
+  { href: "/counsellor/students", label: "Students", icon: "user-circle" },
+  { href: "/counsellor/resources", label: "Resources", icon: "folder" },
   { href: "/counsellor/profile", label: "Profile", icon: "user" },
 ];
 

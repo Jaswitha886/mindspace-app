@@ -49,7 +49,7 @@ const STATS = [
 
 export function LandingStats() {
   return (
-    <section className="relative bg-[#0f0a1e] py-20">
+    <section className="relative bg-forest py-20">
       <div className="mx-auto max-w-5xl px-5 sm:px-8">
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           {STATS.map((stat, i) => (
@@ -64,7 +64,7 @@ export function LandingStats() {
               <div className="gradient-text text-3xl font-bold tracking-[-0.03em] sm:text-4xl">
                 <AnimatedNumber value={stat.value} suffix={stat.suffix} />
               </div>
-              <p className="mt-2 text-sm text-white/40">{stat.label}</p>
+              <p className="mt-2 text-sm text-on-dark-subtle">{stat.label}</p>
             </motion.div>
           ))}
         </div>

@@ -24,7 +24,6 @@ export default async function StudentLayout({
       roleLabel="Student"
       items={NAV_ITEMS}
       home="/student"
-      variant="student"
     >
       {children}
     </AppShell>

@@ -49,7 +49,7 @@ export function EscalationInbox({
   if (items.length === 0) {
     return (
       <p className="t-body flex items-center gap-2">
-        <CheckCircleIcon className="h-[1.15rem] w-[1.15rem] text-success" />
+        <CheckCircleIcon className="h-5 w-5 text-success" />
         No critical escalations. You&apos;ll be notified here the moment a
         counsellor flags one.
       </p>
@@ -82,7 +82,7 @@ export function EscalationInbox({
               <span
                 className={`mt-0.5 shrink-0 ${n.isRead ? "text-ink-muted" : "text-red-ink"}`}
               >
-                <AlertIcon className="h-[1.15rem] w-[1.15rem]" />
+                <AlertIcon className="h-5 w-5" />
               </span>
               <div className="min-w-0">
                 <p className="text-[0.9375rem] text-ink">

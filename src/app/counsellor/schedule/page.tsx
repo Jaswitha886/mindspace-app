@@ -82,7 +82,7 @@ export default async function CounsellorSchedulePage() {
             </div>
 
             <div
-              className="hidden w-px self-stretch bg-border sm:block"
+              className="hidden w-px self-stretch bg-line sm:block"
               aria-hidden
             />
 
