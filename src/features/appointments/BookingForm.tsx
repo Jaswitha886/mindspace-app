@@ -119,7 +119,7 @@ export function BookingForm({ counsellors }: { counsellors: CounsellorOption[] }
                 whileTap={{ scale: 0.99 }}
                 className={`flex items-center gap-3 rounded-(--radius-card) border bg-surface p-4 text-left shadow-(--shadow-card) transition-all duration-200 ${
                   active
-                    ? "border-[#a29bfe] shadow-lg shadow-[#6c5ce715]"
+                    ? "border-brand-light shadow-lg shadow-brand/15"
                     : "border-line hover:border-line-strong"
                 }`}
               >
@@ -214,7 +214,7 @@ export function BookingForm({ counsellors }: { counsellors: CounsellorOption[] }
                         whileTap={!unavailable ? { scale: 0.97 } : {}}
                         className={`rounded-(--radius-btn) px-3 py-3 text-sm font-semibold transition-all duration-200 ${
                           active
-                            ? "bg-gradient-to-r from-[#6c5ce7] to-[#4ecdc4] text-white shadow-lg shadow-[#6c5ce720]"
+                            ? "bg-brand text-white shadow-lg shadow-brand/20"
                             : unavailable
                               ? "cursor-not-allowed bg-sunken-2 text-line-strong"
                               : "bg-sunken text-ink hover:bg-line"

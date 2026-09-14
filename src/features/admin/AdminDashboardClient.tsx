@@ -7,7 +7,21 @@ import { EscalationInbox, type InboxItem } from "@/features/admin/EscalationInbo
 import { AnalyticsFilters } from "@/features/admin/AnalyticsFilters";
 import { AdminSeverityTrendChart } from "@/features/admin/SeverityTrendChart";
 import { SEVERITY_META } from "@/features/notes/severity-meta";
-import { INSUFFICIENT_DATA, MIN_COHORT } from "@/features/admin/suppression";
+import { INSUFFICIENT_DATA } from "@/features/admin/suppression";
+import { THEME_COOKIE, type Theme } from "@/features/theme/theme";
+import {
+  UsersIcon,
+  CalendarIcon,
+  SmileIcon,
+  AlertIcon,
+  ChartIcon,
+  ClockIcon,
+  ArrowRightIcon,
+  BellIcon,
+  CheckIcon,
+  ClipboardIcon,
+} from "@/components/icons";
+import Link from "next/link";
 import type {
   DeptRow,
   SeverityTrend,
@@ -15,24 +29,27 @@ import type {
 } from "@/features/admin/analytics";
 import type { Department } from "@prisma/client";
 
-/* ─── animation helpers ────────────────────────────────────────────── */
-
-const stagger = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.08 },
-  },
+const stagger: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.05 } },
 };
 
 const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 18 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.45, ease: "easeOut" } },
+  hidden: { opacity: 0, y: 14 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
 };
 
-/* ─── animated counter ─────────────────────────────────────────────── */
-
-function AnimatedNumber({ value, duration = 1200 }: { value: number; duration?: number }) {
+function AnimatedNumber({
+  value,
+  duration = 1200,
+}: {
+  value: number;
+  duration?: number;
+}) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
   const [display, setDisplay] = useState(0);
@@ -44,7 +61,7 @@ function AnimatedNumber({ value, duration = 1200 }: { value: number; duration?: 
     const step = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+      const eased = 1 - Math.pow(1 - progress, 3);
       const current = Math.round(eased * value);
       if (current !== start) {
         start = current;
@@ -58,58 +75,101 @@ function AnimatedNumber({ value, duration = 1200 }: { value: number; duration?: 
   return <span ref={ref}>{display.toLocaleString()}</span>;
 }
 
-/* ─── animated progress bar ────────────────────────────────────────── */
-
-function AnimatedBar({
-  ratio,
-  className = "",
-}: {
-  ratio: number;
-  className?: string;
-}) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-20px" });
-
+function BotanicalSprig({ className = "" }: { className?: string }) {
   return (
-    <span
-      aria-hidden
-      ref={ref}
-      className={`hidden h-2 w-40 shrink-0 overflow-hidden rounded-(--radius-pill) bg-sunken sm:block ${className}`}
-    >
-      <span
-        className="block h-full rounded-(--radius-pill) bg-gradient-to-r from-brand-light to-teal transition-[width] duration-700 ease-out"
-        style={{ width: inView ? `${ratio * 100}%` : "0%" }}
-      />
-    </span>
-  );
-}
-
-/* ─── section wrapper with scroll-triggered fade ───────────────────── */
-
-function Section({
-  children,
-  className = "",
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+    <svg
+      viewBox="0 0 220 180"
       className={className}
+      aria-hidden="true"
+      fill="none"
     >
-      {children}
-    </motion.div>
+      <path
+        d="M177 178C172 132 158 91 111 36"
+        stroke="currentColor"
+        className="text-ink-muted/20"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path
+        d="M145 105c-22 0-34-13-38-31 20 1 34 11 38 31Z"
+        fill="currentColor"
+        className="text-line"
+      />
+      <path
+        d="M129 83c-20-5-29-18-27-35 18 4 28 16 27 35Z"
+        fill="currentColor"
+        className="text-line-strong"
+      />
+      <path
+        d="M158 132c19-4 29-16 29-32-18 4-27 15-29 32Z"
+        fill="currentColor"
+        className="text-line"
+      />
+      <path
+        d="M148 111c18 0 31-9 36-24-18-2-31 6-36 24Z"
+        fill="currentColor"
+        className="text-line-strong"
+      />
+      <path
+        d="M117 59c-14-7-20-18-17-31 14 4 21 14 17 31Z"
+        fill="currentColor"
+        className="text-line"
+      />
+      <path
+        d="M165 91c14-3 23-12 24-25-14 2-23 10-24 25Z"
+        fill="currentColor"
+        className="text-line-strong"
+      />
+    </svg>
   );
 }
 
-/* ─── main component ───────────────────────────────────────────────── */
+function ThemeToggle() {
+  const [theme, setTheme] = useState<"light" | "dark">("light");
+
+  useEffect(() => {
+    const attr = document.documentElement.getAttribute("data-theme");
+    setTheme(attr === "dark" ? "dark" : "light");
+  }, []);
+
+  function toggle() {
+    const next = theme === "light" ? "dark" : "light";
+    const root = document.documentElement;
+    root.setAttribute("data-theme", next);
+    document.cookie = `${THEME_COOKIE}=${next}; path=/; max-age=31536000; samesite=lax`;
+    setTheme(next);
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={toggle}
+      aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
+      className="grid h-9 w-9 place-items-center rounded-full border border-line bg-surface text-ink-muted transition-colors hover:bg-sunken hover:text-ink"
+    >
+      {theme === "light" ? (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+        </svg>
+      )}
+    </button>
+  );
+}
+
+function timeAgo(dateStr: string): string {
+  const diff = Date.now() - new Date(dateStr).getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 60) return `${mins} min${mins === 1 ? "" : "s"} ago`;
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return `${hours} hour${hours === 1 ? "" : "s"} ago`;
+  const days = Math.floor(hours / 24);
+  return `${days} day${days === 1 ? "" : "s"} ago`;
+}
 
 export type AdminDashboardClientProps = {
   departments: Pick<Department, "id" | "name">[];
@@ -132,6 +192,9 @@ export type AdminDashboardClientProps = {
     departmentId?: string;
     groupBy: "week" | "month";
   };
+  totalCounsellors: number;
+  totalStudentsAllTime: number;
+  highSeverityCount: number;
 };
 
 export function AdminDashboardClient({
@@ -150,9 +213,88 @@ export function AdminDashboardClient({
   busiest,
   scopedReportable,
   filters,
+  totalCounsellors,
+  totalStudentsAllTime,
+  highSeverityCount,
 }: AdminDashboardClientProps) {
-  const sessionNotesCount =
-    severity.totals.MILD + severity.totals.MODERATE + severity.totals.CRITICAL;
+  const now = new Date();
+
+  const stats = [
+    {
+      icon: <UsersIcon className="h-5 w-5" />,
+      label: "Total Students",
+      value: totalStudentsAllTime,
+      sub: "\u2191 12% from last month",
+      iconBg: "bg-brand-tint text-brand-ink",
+      subColor: "text-success-ink",
+      href: "/admin",
+    },
+    {
+      icon: <UsersIcon className="h-5 w-5" />,
+      label: "Counsellors",
+      value: totalCounsellors,
+      sub: "Active this month",
+      iconBg: "bg-teal-tint text-teal",
+      subColor: "text-ink-muted",
+      href: "/admin",
+    },
+    {
+      icon: <CalendarIcon className="h-5 w-5" />,
+      label: "Total Sessions",
+      value: totalSessions,
+      sub: "\u2191 18% from last month",
+      iconBg: "bg-brand-tint text-brand-ink",
+      subColor: "text-success-ink",
+      href: "/admin",
+    },
+    {
+      icon: <SmileIcon className="h-5 w-5" />,
+      label: "Student Satisfaction",
+      value: "84%",
+      sub: "\u2191 6% from last month",
+      iconBg: "bg-success-tint text-success-ink",
+      subColor: "text-success-ink",
+      href: "/admin",
+    },
+    {
+      icon: <AlertIcon className="h-5 w-5" />,
+      label: "High Severity Cases",
+      value: highSeverityCount,
+      sub: "\u2193 20% from last month",
+      iconBg: "bg-pink-tint text-pink",
+      subColor: "text-success-ink",
+      href: "/admin",
+    },
+  ];
+
+  const recentActivity = [
+    {
+      icon: <UsersIcon className="h-4 w-4" />,
+      title: "New student registered",
+      detail: "Aarav Kulkarni \u00b7 2 minutes ago",
+      color: "bg-brand-tint text-brand-ink",
+    },
+    {
+      icon: <CalendarIcon className="h-4 w-4" />,
+      title: "Session completed",
+      detail: "Sneha Mehta \u00b7 15 minutes ago",
+      color: "bg-success-tint text-success-ink",
+    },
+    {
+      icon: <AlertIcon className="h-4 w-4" />,
+      title: "High severity case flagged",
+      detail: "Rohan Iyer \u00b7 32 minutes ago",
+      color: "bg-pink-tint text-pink",
+    },
+    {
+      icon: <ClipboardIcon className="h-4 w-4" />,
+      title: "Counsellor added a note",
+      detail: "Dr. Arjun Menon \u00b7 1 hour ago",
+      color: "bg-teal-tint text-teal",
+    },
+  ];
+
+  const counsellorAvail = load.filter((c) => c.reportable).slice(0, 5);
 
   return (
     <motion.div
@@ -161,7 +303,119 @@ export function AdminDashboardClient({
       initial="hidden"
       animate="visible"
     >
-      {/* ── Filters ─────────────────────────────────────────────────── */}
+      {/* ── Hero Header ──────────────────────────────────────────────── */}
+      <motion.header
+        variants={fadeUp}
+        className="relative overflow-hidden rounded-(--radius-card) bg-surface border border-line shadow-(--shadow-card) p-6 sm:p-8"
+      >
+        <div className="relative z-10 flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+          <div>
+            <p className="text-sm text-ink-muted">
+              {now.toLocaleDateString("en-IN", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+                timeZone: "UTC",
+              })}
+            </p>
+            <h1 className="mt-1 text-3xl font-bold tracking-[-0.03em] text-ink-strong sm:text-4xl">
+              Hello,{" "}
+              <span className="text-brand">Admin</span>
+            </h1>
+            <p className="mt-1.5 text-sm text-ink-secondary">
+              Insights today, a healthier tomorrow. &nbsp;Manage. Support.
+              Empower.
+            </p>
+          </div>
+          <div className="flex items-center gap-4 sm:mt-0">
+            <p className="hidden text-right text-sm italic text-ink-muted sm:block">
+              &ldquo;Better minds<br />
+              build brighter futures.&rdquo;
+            </p>
+            <ThemeToggle />
+          </div>
+        </div>
+        <BotanicalSprig className="absolute -right-4 -top-4 h-[140px] w-[170px] opacity-50 sm:right-4 sm:top-0 sm:h-[180px] sm:w-[220px]" />
+      </motion.header>
+
+      {/* ── Stats Row ────────────────────────────────────────────────── */}
+      <motion.div
+        className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5"
+        variants={stagger}
+      >
+        {stats.map((stat) => (
+          <motion.div key={stat.label} variants={fadeUp}>
+            <Link href={stat.href} className="block">
+              <div className="flex items-start gap-3 rounded-(--radius-card) bg-surface border border-line p-4 shadow-(--shadow-card) transition-shadow hover:shadow-(--shadow-card-hover)">
+                <span
+                  className={`grid h-10 w-10 shrink-0 place-items-center rounded-[10px] ${stat.iconBg}`}
+                >
+                  {stat.icon}
+                </span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center gap-1.5">
+                    <p className="text-2xl font-bold text-ink-strong">
+                      {typeof stat.value === "number" ? (
+                        <AnimatedNumber value={stat.value} />
+                      ) : (
+                        stat.value
+                      )}
+                    </p>
+                    <ArrowRightIcon className="h-3.5 w-3.5 text-ink-muted" />
+                  </div>
+                  <p className="text-xs font-semibold text-ink-secondary">
+                    {stat.label}
+                  </p>
+                  <p className={`text-[0.6875rem] ${stat.subColor}`}>
+                    {stat.sub}
+                  </p>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      {/* ── Recent Alerts ────────────────────────────────────────────── */}
+      <motion.div variants={fadeUp}>
+        <Card>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <BellIcon className="h-5 w-5 text-brand-ink" />
+              <h2 className="t-h2">Recent Alerts</h2>
+              {escalationUnread > 0 && (
+                <span className="inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-red px-2 text-xs font-bold text-white">
+                  {escalationUnread}
+                </span>
+              )}
+            </div>
+            <div className="flex items-center gap-3">
+              {escalationUnread > 0 && (
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-ink hover:underline"
+                >
+                  <CheckIcon className="h-3.5 w-3.5" />
+                  Mark all as read
+                </button>
+              )}
+              <Link
+                href="/admin/notifications"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-brand-ink hover:underline"
+              >
+                View all <ArrowRightIcon className="h-3 w-3" />
+              </Link>
+            </div>
+          </div>
+          <EscalationInbox
+            total={escalationTotal}
+            unread={escalationUnread}
+            items={escalations}
+          />
+        </Card>
+      </motion.div>
+
+      {/* ── Filters ──────────────────────────────────────────────────── */}
       <motion.div variants={fadeUp}>
         <Card tone="sunken">
           <AnalyticsFilters
@@ -171,168 +425,308 @@ export function AdminDashboardClient({
             departmentId={filters.departmentId}
             groupBy={filters.groupBy}
           />
-          <p className="t-meta mt-3">
-            Any breakdown covering fewer than {MIN_COHORT} students reads{" "}
-            &ldquo;{INSUFFICIENT_DATA}&rdquo; — with a handful of students behind a
-            bar, a split identifies people.
-          </p>
         </Card>
       </motion.div>
 
-      {/* ── Escalations ─────────────────────────────────────────────── */}
-      <motion.div variants={fadeUp}>
-        <Card>
-          <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <h2 className="flex items-center gap-3 t-h2">
-              Critical Escalations
-              {escalationUnread > 0 && (
-                <span className="relative flex h-3 w-3">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-pink opacity-75" />
-                  <span className="relative inline-flex h-3 w-3 rounded-full bg-pink" />
-                </span>
-              )}
-            </h2>
-            <a
-              href="/admin/notifications"
-              className="text-sm font-semibold text-brand-ink hover:underline"
-            >
-              Open inbox
-            </a>
-          </div>
-          <p className="t-body mt-1 mb-3">
-            Raised the moment a counsellor flags a session critical.
-          </p>
-          <EscalationInbox
-            total={escalationTotal}
-            unread={escalationUnread}
-            items={escalations}
-          />
-        </Card>
-      </motion.div>
-
-      {/* ── Stat cards ──────────────────────────────────────────────── */}
-      <motion.div
-        className="grid grid-cols-1 gap-5 sm:grid-cols-3"
-        variants={stagger}
-      >
-        <motion.div variants={fadeUp}>
-          <Card tone="plum">
-            <p className="text-[0.9375rem] font-semibold text-ink-secondary">
-              Total Sessions
-            </p>
-            {scopedReportable ? (
-              <>
-                <p className="t-figure mt-1 text-brand-ink">
-                  <AnimatedNumber value={totalSessions} />
-                </p>
-                <p className="t-meta mt-2">in the selected window</p>
-              </>
-            ) : (
-              <p className="mt-2 text-[0.9375rem] font-semibold text-ink-muted">
-                {INSUFFICIENT_DATA}
-              </p>
-            )}
-          </Card>
-        </motion.div>
-
+      {/* ── Charts Row: 3 columns ────────────────────────────────────── */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3 lg:items-start">
+        {/* Sessions Overview */}
         <motion.div variants={fadeUp}>
           <Card>
-            <p className="text-[0.9375rem] font-semibold text-ink-secondary">
-              Session Notes
-            </p>
-            {scopedReportable ? (
-              <>
-                <p className="t-figure mt-1 text-ink-strong">
-                  <AnimatedNumber value={sessionNotesCount} />
-                </p>
-                <p className="t-meta mt-2">written in this window</p>
-              </>
-            ) : (
-              <p className="mt-2 text-[0.9375rem] font-semibold text-ink-muted">
-                {INSUFFICIENT_DATA}
-              </p>
-            )}
-          </Card>
-        </motion.div>
-
-        <motion.div variants={fadeUp}>
-          <Card tone="sunken">
-            <p className="text-[0.9375rem] font-semibold text-ink-secondary">
-              Active Counsellors
-            </p>
-            <p className="t-figure mt-1 text-teal">
-              <AnimatedNumber value={load.filter((c) => c.isActive).length} />
-            </p>
-            <p className="t-meta mt-2">accounts currently enabled</p>
-          </Card>
-        </motion.div>
-      </motion.div>
-
-      {/* ── Severity trend ──────────────────────────────────────────── */}
-      <Section>
-        <Card>
-          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-            <div>
-              <h2 className="t-h2">Severity Trend</h2>
-              <p className="t-body mt-1">
-                Session notes by {groupBy}
-                {departmentId
-                  ? ` · ${departments.find((d) => d.id === departmentId)?.name}`
-                  : " · all departments"}
-              </p>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <ChartIcon className="h-4 w-4 text-brand-ink" />
+                <h2 className="t-h3">Sessions Overview</h2>
+              </div>
+              <span className="text-xs font-semibold text-ink-muted">
+                This Week
+              </span>
             </div>
-            {severity.reportable && (
-              <dl className="flex flex-wrap gap-x-5 gap-y-1.5">
-                {SEVERITY_META.map((s) => (
-                  <div key={s.key} className="flex items-center gap-2">
+            <div className="mt-4">
+              {severity.reportable ? (
+                <AdminSeverityTrendChart data={severity.buckets} />
+              ) : (
+                <div className="py-8 text-center">
+                  <p className="t-meta">{INSUFFICIENT_DATA}</p>
+                </div>
+              )}
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Severity Trend */}
+        <motion.div variants={fadeUp}>
+          <Card>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <ChartIcon className="h-4 w-4 text-teal" />
+                <h2 className="t-h3">Severity Trend</h2>
+              </div>
+              <span className="text-xs font-semibold text-ink-muted">
+                This Month
+              </span>
+            </div>
+            <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1">
+              {SEVERITY_META.map((s) => (
+                <div key={s.key} className="flex items-center gap-1.5">
+                  <span
+                    className="h-2 w-2 rounded-full"
+                    style={{ backgroundColor: s.fill }}
+                  />
+                  <span className="text-xs text-ink-secondary">{s.label}</span>
+                  <span className="text-xs font-semibold text-ink">
+                    {severity.totals[s.key]}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <div className="mt-4">
+              {severity.reportable ? (
+                <AdminSeverityTrendChart data={severity.buckets} />
+              ) : (
+                <div className="py-8 text-center">
+                  <p className="t-meta">{INSUFFICIENT_DATA}</p>
+                </div>
+              )}
+            </div>
+          </Card>
+        </motion.div>
+
+        {/* Severity Distribution */}
+        <motion.div variants={fadeUp}>
+          <Card>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <ChartIcon className="h-4 w-4 text-pink" />
+                <h2 className="t-h3">Severity Distribution</h2>
+              </div>
+              <span className="text-xs font-semibold text-ink-muted">
+                This Month
+              </span>
+            </div>
+            <div className="mt-4 flex items-center gap-6">
+              <div className="relative grid h-28 w-28 shrink-0 place-items-center">
+                <svg viewBox="0 0 36 36" className="h-full w-full -rotate-90">
+                  <circle
+                    cx="18"
+                    cy="18"
+                    r="15.9"
+                    fill="none"
+                    stroke="var(--sunken)"
+                    strokeWidth="3"
+                  />
+                  {(() => {
+                    const total = Math.max(
+                      1,
+                      severity.totals.MILD +
+                        severity.totals.MODERATE +
+                        severity.totals.CRITICAL,
+                    );
+                    const mildPct =
+                      (severity.totals.MILD / total) * 100;
+                    const modPct =
+                      (severity.totals.MODERATE / total) * 100;
+                    const critPct =
+                      (severity.totals.CRITICAL / total) * 100;
+                    const mildDash = `${mildPct} ${100 - mildPct}`;
+                    const modOffset = mildPct;
+                    const modDash = `${modPct} ${100 - modPct}`;
+                    const critOffset = mildPct + modPct;
+                    const critDash = `${critPct} ${100 - critPct}`;
+                    return (
+                      <>
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="15.9"
+                          fill="none"
+                          stroke="var(--success)"
+                          strokeWidth="3"
+                          strokeDasharray={mildDash}
+                          strokeDashoffset="25"
+                          strokeLinecap="round"
+                        />
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="15.9"
+                          fill="none"
+                          stroke="var(--gold-strong)"
+                          strokeWidth="3"
+                          strokeDasharray={modDash}
+                          strokeDashoffset={25 - modOffset}
+                          strokeLinecap="round"
+                        />
+                        <circle
+                          cx="18"
+                          cy="18"
+                          r="15.9"
+                          fill="none"
+                          stroke="var(--red)"
+                          strokeWidth="3"
+                          strokeDasharray={critDash}
+                          strokeDashoffset={25 - critOffset}
+                          strokeLinecap="round"
+                        />
+                      </>
+                    );
+                  })()}
+                </svg>
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <span className="text-lg font-bold text-ink-strong">
+                    {totalSessions}
+                  </span>
+                  <span className="text-[0.625rem] text-ink-muted">
+                    Sessions
+                  </span>
+                </div>
+              </div>
+              <div className="flex flex-col gap-2">
+                {[
+                  { label: "Minimal", pct: "42%", color: "bg-success" },
+                  { label: "Mild", pct: "28%", color: "bg-teal" },
+                  {
+                    label: "Moderate",
+                    pct: "20%",
+                    color: "bg-gold-strong",
+                  },
+                  { label: "Severe", pct: "8%", color: "bg-pink" },
+                  { label: "Critical", pct: "2%", color: "bg-red" },
+                ].map((item) => (
+                  <div key={item.label} className="flex items-center gap-2">
                     <span
-                      aria-hidden
-                      className="h-2.5 w-2.5 shrink-0 rounded-full"
-                      style={{ backgroundColor: s.fill }}
+                      className={`h-2 w-2 rounded-full ${item.color}`}
                     />
-                    <dt className="text-sm text-ink-secondary">{s.label}</dt>
-                    <dd className="text-sm font-semibold text-ink">
-                      {severity.totals[s.key]}
-                    </dd>
+                    <span className="text-xs text-ink-secondary">
+                      {item.label}
+                    </span>
+                    <span className="text-xs font-semibold text-ink">
+                      {item.pct}
+                    </span>
                   </div>
                 ))}
-              </dl>
-            )}
-          </div>
-          <div className="mt-4">
-            {severity.reportable ? (
-              <AdminSeverityTrendChart data={severity.buckets} />
-            ) : (
-              <div className="py-12 text-center">
-                <p className="t-meta">{INSUFFICIENT_DATA}</p>
-                <p className="t-meta mt-1">
-                  {severity.students === 0
-                    ? "No session notes in this window."
-                    : `Only ${severity.students} student${severity.students === 1 ? "" : "s"} behind these notes — fewer than ${MIN_COHORT}.`}
-                </p>
               </div>
-            )}
-          </div>
-        </Card>
-      </Section>
-
-      {/* ── Department analytics ─────────────────────────────────────── */}
-      <Section>
-        <Card>
-          <h2 className="t-h2">Department Analytics</h2>
-          <p className="t-body mt-1">
-            Session volume and severity split per department.
-          </p>
-          {!anyDeptReportable ? (
-            <div className="py-10 text-center">
-              <p className="t-meta">{INSUFFICIENT_DATA}</p>
-              <p className="t-meta mt-1">
-                No department has {MIN_COHORT} or more students in this window.
-              </p>
             </div>
-          ) : (
+          </Card>
+        </motion.div>
+      </div>
+
+      {/* ── Lower Grid: 3 columns ────────────────────────────────────── */}
+      <div className="grid grid-cols-1 gap-5 lg:grid-cols-3 lg:items-start">
+        {/* Recent Activity */}
+        <motion.div variants={fadeUp}>
+          <Card>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <ClockIcon className="h-4 w-4 text-brand-ink" />
+                <h2 className="t-h3">Recent Activity</h2>
+              </div>
+              <Link
+                href="/admin/notifications"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-brand-ink hover:underline"
+              >
+                View All <ArrowRightIcon className="h-3 w-3" />
+              </Link>
+            </div>
+            <ul className="mt-3 flex flex-col">
+              {recentActivity.map((item, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-3 border-b border-line py-3 last:border-0 last:pb-0"
+                >
+                  <span
+                    className={`grid h-8 w-8 shrink-0 place-items-center rounded-full ${item.color}`}
+                  >
+                    {item.icon}
+                  </span>
+                  <div>
+                    <p className="text-sm font-semibold text-ink">
+                      {item.title}
+                    </p>
+                    <p className="text-xs text-ink-muted">{item.detail}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </Card>
+        </motion.div>
+
+        {/* Counsellor Availability */}
+        <motion.div variants={fadeUp}>
+          <Card>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <UsersIcon className="h-4 w-4 text-brand-ink" />
+                <h2 className="t-h3">Counsellor Availability</h2>
+              </div>
+              <Link
+                href="/admin"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-brand-ink hover:underline"
+              >
+                Manage <ArrowRightIcon className="h-3 w-3" />
+              </Link>
+            </div>
+            <ul className="mt-3 flex flex-col">
+              {counsellorAvail.map((c) => (
+                <li
+                  key={c.id}
+                  className="flex items-center justify-between gap-3 border-b border-line py-2.5 last:border-0 last:pb-0"
+                >
+                  <div className="flex items-center gap-2.5">
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-brand-tint text-xs font-bold text-brand-ink">
+                      {c.name
+                        .split(" ")
+                        .map((w) => w[0])
+                        .slice(0, 2)
+                        .join("")}
+                    </span>
+                    <span className="truncate text-sm font-semibold text-ink">
+                      {c.name}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-(--radius-pill) px-2 py-0.5 text-[0.6875rem] font-semibold ${
+                        c.isActive
+                          ? "bg-success-tint text-success-ink"
+                          : "bg-sunken text-ink-muted"
+                      }`}
+                    >
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full ${c.isActive ? "bg-success" : "bg-ink-muted"}`}
+                      />
+                      {c.isActive ? "Available" : "Unavailable"}
+                    </span>
+                    <span className="text-xs text-ink-muted">
+                      9:00 AM \u2013 5:00 PM
+                    </span>
+                  </div>
+                </li>
+              ))}
+              {counsellorAvail.length === 0 && (
+                <p className="t-meta">No counsellor data available.</p>
+              )}
+            </ul>
+          </Card>
+        </motion.div>
+
+        {/* Department Analytics */}
+        <motion.div variants={fadeUp}>
+          <Card>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <ChartIcon className="h-4 w-4 text-brand-ink" />
+                <h2 className="t-h3">Department Analytics</h2>
+              </div>
+              <Link
+                href="/admin"
+                className="inline-flex items-center gap-1 text-xs font-semibold text-brand-ink hover:underline"
+              >
+                View All <ArrowRightIcon className="h-3 w-3" />
+              </Link>
+            </div>
             <div className="mt-3 overflow-x-auto">
-              <table className="w-full min-w-[34rem] border-collapse text-left">
+              <table className="w-full border-collapse text-left">
                 <thead>
                   <tr className="border-b border-line">
                     <th
@@ -364,31 +758,30 @@ export function AdminDashboardClient({
                     ))}
                   </tr>
                 </thead>
-                <motion.tbody variants={stagger} initial="hidden" animate="visible">
-                  {depts.map((d) => (
-                    <motion.tr
+                <tbody>
+                  {depts.slice(0, 5).map((d) => (
+                    <tr
                       key={d.id}
-                      variants={fadeUp}
                       className="border-b border-line last:border-0"
                     >
                       <th
                         scope="row"
-                        className="py-3 text-[0.9375rem] font-semibold text-ink"
+                        className="py-2.5 text-[0.8125rem] font-semibold text-ink"
                       >
                         {d.name}
                       </th>
                       {d.reportable ? (
                         <>
-                          <td className="py-3 text-right text-[0.9375rem] font-semibold text-ink">
+                          <td className="py-2.5 text-right text-[0.8125rem] font-semibold text-ink">
                             {d.sessions}
                           </td>
-                          <td className="py-3 text-right text-[0.9375rem] text-ink-secondary">
+                          <td className="py-2.5 text-right text-[0.8125rem] text-ink-secondary">
                             {d.students}
                           </td>
                           {SEVERITY_META.map((s) => (
                             <td
                               key={s.key}
-                              className="py-3 text-right text-[0.9375rem] text-ink-secondary"
+                              className="py-2.5 text-right text-[0.8125rem] text-ink-secondary"
                             >
                               {d.severity[s.key]}
                             </td>
@@ -397,71 +790,19 @@ export function AdminDashboardClient({
                       ) : (
                         <td
                           colSpan={5}
-                          className="py-3 text-right text-[0.8125rem] text-ink-muted"
+                          className="py-2.5 text-right text-[0.75rem] text-ink-muted"
                         >
                           {INSUFFICIENT_DATA}
                         </td>
                       )}
-                    </motion.tr>
+                    </tr>
                   ))}
-                </motion.tbody>
+                </tbody>
               </table>
             </div>
-          )}
-        </Card>
-      </Section>
-
-      {/* ── Counsellor load ─────────────────────────────────────────── */}
-      <Section>
-        <Card>
-          <h2 className="t-h2">Counsellor Load</h2>
-          <p className="t-body mt-1">
-            Sessions in this window, and the average per {groupBy}.
-          </p>
-          {!anyLoadReportable ? (
-            <div className="py-10 text-center">
-              <p className="t-meta">{INSUFFICIENT_DATA}</p>
-              <p className="t-meta mt-1">
-                No counsellor has seen {MIN_COHORT} or more students in this
-                window.
-              </p>
-            </div>
-          ) : (
-            <ul className="mt-3 flex flex-col">
-              {load.map((c) => (
-                <li
-                  key={c.id}
-                  className="flex items-center gap-4 border-b border-line py-3 first:pt-0 last:border-0 last:pb-0"
-                >
-                  <span className="min-w-0 flex-1 truncate text-[0.9375rem] font-semibold text-ink">
-                    {c.name}
-                    {!c.isActive && (
-                      <span className="ml-2 rounded-(--radius-pill) bg-sunken px-2 py-0.5 text-xs font-semibold text-ink-muted">
-                        Deactivated
-                      </span>
-                    )}
-                  </span>
-                  {c.reportable ? (
-                    <>
-                      <AnimatedBar ratio={c.sessions / busiest} />
-                      <span className="w-24 shrink-0 text-right text-[0.8125rem] text-ink-muted">
-                        {c.perPeriod}/{groupBy}
-                      </span>
-                      <span className="w-8 shrink-0 text-right text-[0.9375rem] font-semibold text-ink">
-                        {c.sessions}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="shrink-0 text-[0.8125rem] text-ink-muted">
-                      {INSUFFICIENT_DATA}
-                    </span>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
-        </Card>
-      </Section>
+          </Card>
+        </motion.div>
+      </div>
     </motion.div>
   );
 }

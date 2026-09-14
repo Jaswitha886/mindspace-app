@@ -53,7 +53,7 @@ export function MoodCircles({
             <motion.span
               className={`grid ${box} place-items-center rounded-full transition-shadow duration-200 ${
                 active
-                  ? "ring-2 ring-[#a29bfe] ring-offset-2 ring-offset-[var(--surface)] shadow-lg shadow-[#6c5ce730]"
+                  ? "ring-2 ring-brand-light ring-offset-2 ring-offset-surface shadow-lg shadow-brand/30"
                   : "ring-0 ring-offset-2"
               }`}
               style={{ backgroundColor: MOOD_COLOR[m], color: MOOD_FACE_INK }}

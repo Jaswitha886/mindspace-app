@@ -81,7 +81,7 @@ export function LogoutButton({
             onClick={arm}
             aria-label="Sign out"
             title="Sign out"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-(--radius-btn) text-ink-muted transition-colors duration-150 hover:bg-sunken hover:text-red-ink"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-(--radius-btn) text-sidebar-muted transition-colors duration-150 hover:bg-sidebar-hover hover:text-red-ink"
           >
             <LogoutIcon className="h-[1.15rem] w-[1.15rem]" />
           </button>

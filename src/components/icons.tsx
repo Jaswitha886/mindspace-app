@@ -224,6 +224,77 @@ export function AlertIcon(p: IconProps) {
   );
 }
 
+export function BellIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M14.5 18.5a1.5 1.5 0 0 1-3 0" />
+      <path d="M5.5 9.5a6.5 6.5 0 0 1 13 0v3l2 3H3.5l2-3z" />
+    </Svg>
+  );
+}
+
+export function QuoteIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M10 8.5H6.5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1H9a1 1 0 0 0 1-1v-.5a1 1 0 0 0-1-1H8" />
+      <path d="M20 8.5h-3.5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1H18a1 1 0 0 0 1-1v-.5a1 1 0 0 0-1-1H17" />
+    </Svg>
+  );
+}
+
+export function SendIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M5.5 12l-2 8 17-8L3.5 4l2 8z" />
+      <path d="M3.5 12h10" />
+    </Svg>
+  );
+}
+
+export function UserCircleIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <circle cx="12" cy="12" r="9.5" />
+      <circle cx="12" cy="10" r="3.25" />
+      <path d="M6.5 19.5c0-2.8 2.5-4.5 5.5-4.5s5.5 1.7 5.5 4.5" />
+    </Svg>
+  );
+}
+
+export function FolderIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M3.5 6.5a1.5 1.5 0 0 1 1.5-1.5h4.38a1.5 1.5 0 0 1 1.06.44l1.12 1.12a1.5 1.5 0 0 0 1.06.44H20a1.5 1.5 0 0 1 1.5 1.5v9a1.5 1.5 0 0 1-1.5 1.5H5a1.5 1.5 0 0 1-1.5-1.5z" />
+    </Svg>
+  );
+}
+
+export function EyeIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M2.5 12s3.5-7 9.5-7 9.5 7 9.5 7-3.5 7-9.5 7S2.5 12 2.5 12z" />
+      <circle cx="12" cy="12" r="3" />
+    </Svg>
+  );
+}
+
+export function CheckIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <path d="M5.5 12.5l4 4 9-9.5" />
+    </Svg>
+  );
+}
+
+export function SettingsIcon(p: IconProps) {
+  return (
+    <Svg {...p}>
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+    </Svg>
+  );
+}
+
 export const NAV_ICONS = {
   home: HomeIcon,
   calendar: CalendarIcon,
@@ -235,6 +306,15 @@ export const NAV_ICONS = {
   chart: ChartIcon,
   clipboard: ClipboardIcon,
   clock: ClockIcon,
+  bell: BellIcon,
+  quote: QuoteIcon,
+  send: SendIcon,
+  "user-circle": UserCircleIcon,
+  folder: FolderIcon,
+  eye: EyeIcon,
+  check: CheckIcon,
+  qr: QrIcon,
+  settings: SettingsIcon,
 } as const;
 
 export type IconKey = keyof typeof NAV_ICONS;

@@ -22,7 +22,7 @@ const DISMISS_KEY = "mindspace-onboarding-done";
 const STUDENT_SLIDES = [
   {
     icon: SparkleIcon,
-    gradient: "from-[#6c5ce7] to-[#a29bfe]",
+    gradient: "from-brand to-brand-light",
     title: "Welcome to MindSpace",
     body: "A calm corner of the internet, just for you. Let us show you around.",
     href: null,
@@ -30,7 +30,7 @@ const STUDENT_SLIDES = [
   },
   {
     icon: SmileIcon,
-    gradient: "from-[#4ecdc4] to-[#6ee0d8]",
+    gradient: "from-teal to-teal/60",
     title: "Track your mood",
     body: "Log how you're feeling in five seconds. No streaks, no pressure — just a quiet record of your days.",
     href: "/student/mood",
@@ -38,7 +38,7 @@ const STUDENT_SLIDES = [
   },
   {
     icon: JournalIcon,
-    gradient: "from-[#e8a0bf] to-[#f0c4d8]",
+    gradient: "from-pink to-pink/60",
     title: "Write freely",
     body: "A private journal that belongs to you alone. Nobody else can read it — not your counsellor, not anyone.",
     href: "/student/journal",
@@ -46,7 +46,7 @@ const STUDENT_SLIDES = [
   },
   {
     icon: UsersIcon,
-    gradient: "from-[#6c5ce7] to-[#4ecdc4]",
+    gradient: "from-brand to-teal",
     title: "Talk to someone",
     body: "Book a session with a counsellor in a few small steps. Choose who, pick a time, and you're set.",
     href: "/student/appointments/new",
@@ -54,7 +54,7 @@ const STUDENT_SLIDES = [
   },
   {
     icon: CheckCircleIcon,
-    gradient: "from-[#4ecdc4] to-[#a29bfe]",
+    gradient: "from-teal to-brand-light",
     title: "You're all set",
     body: "That's the whole app. Come back whenever you need it — we'll be here.",
     href: null,
@@ -65,7 +65,7 @@ const STUDENT_SLIDES = [
 const COUNSELLOR_SLIDES = [
   {
     icon: SparkleIcon,
-    gradient: "from-[#6c5ce7] to-[#a29bfe]",
+    gradient: "from-brand to-brand-light",
     title: "Welcome to MindSpace",
     body: "Your dedicated space for managing sessions, tracking student wellbeing, and making a difference.",
     href: null,
@@ -73,7 +73,7 @@ const COUNSELLOR_SLIDES = [
   },
   {
     icon: CalendarIcon,
-    gradient: "from-[#4ecdc4] to-[#6ee0d8]",
+    gradient: "from-teal to-teal/60",
     title: "Your schedule",
     body: "See your confirmed sessions at a glance. Check students in with a QR scan or a quick search.",
     href: "/counsellor/schedule",
@@ -81,7 +81,7 @@ const COUNSELLOR_SLIDES = [
   },
   {
     icon: ClipboardIcon,
-    gradient: "from-[#e8a0bf] to-[#f0c4d8]",
+    gradient: "from-pink to-pink/60",
     title: "Session notes",
     body: "Record observations and severity after each session. Critical cases are automatically escalated.",
     href: "/counsellor",
@@ -89,7 +89,7 @@ const COUNSELLOR_SLIDES = [
   },
   {
     icon: CheckCircleIcon,
-    gradient: "from-[#4ecdc4] to-[#a29bfe]",
+    gradient: "from-teal to-brand-light",
     title: "You're ready",
     body: "You're all set to start helping. We're glad you're here.",
     href: null,
@@ -100,7 +100,7 @@ const COUNSELLOR_SLIDES = [
 const ADMIN_SLIDES = [
   {
     icon: SparkleIcon,
-    gradient: "from-[#6c5ce7] to-[#a29bfe]",
+    gradient: "from-brand to-brand-light",
     title: "Welcome to MindSpace Analytics",
     body: "Your command centre for campus-wide mental health insights and escalation management.",
     href: null,
@@ -108,7 +108,7 @@ const ADMIN_SLIDES = [
   },
   {
     icon: ChartIcon,
-    gradient: "from-[#4ecdc4] to-[#6ee0d8]",
+    gradient: "from-teal to-teal/60",
     title: "Analytics dashboard",
     body: "Track session volume, severity trends, and counsellor load across departments with powerful filters.",
     href: "/admin",
@@ -116,7 +116,7 @@ const ADMIN_SLIDES = [
   },
   {
     icon: UsersIcon,
-    gradient: "from-[#e8a0bf] to-[#f0c4d8]",
+    gradient: "from-pink to-pink/60",
     title: "Escalation alerts",
     body: "Critical severity sessions are flagged immediately. Review and act on escalations in real time.",
     href: "/admin/notifications",
@@ -124,7 +124,7 @@ const ADMIN_SLIDES = [
   },
   {
     icon: CheckCircleIcon,
-    gradient: "from-[#4ecdc4] to-[#a29bfe]",
+    gradient: "from-teal to-brand-light",
     title: "You're in control",
     body: "Everything is ready. The wellbeing of your campus starts here.",
     href: null,
@@ -232,13 +232,13 @@ export function OnboardingSlides({ role = "student" }: { role?: Role }) {
         className="absolute inset-0"
         animate={{
           background: `linear-gradient(135deg, 
-            ${step === 0 ? "#6c5ce720" : step === 1 ? "#4ecdc420" : step === 2 ? "#e8a0bf20" : step === 3 ? "#6c5ce720" : "#4ecdc420"} 0%, 
-            ${step === 0 ? "#0f0a1e" : step === 1 ? "#0f0a1e" : step === 2 ? "#0f0a1e" : step === 3 ? "#0f0a1e" : "#0f0a1e"} 50%, 
-            ${step === 0 ? "#4ecdc410" : step === 1 ? "#6c5ce710" : step === 2 ? "#a29bfe10" : step === 3 ? "#e8a0bf10" : "#6c5ce710"} 100%)`,
+            ${step === 0 ? "rgba(79,70,229,0.13)" : step === 1 ? "rgba(6,182,212,0.13)" : step === 2 ? "rgba(253,164,175,0.13)" : step === 3 ? "rgba(79,70,229,0.13)" : "rgba(6,182,212,0.13)"} 0%, 
+            var(--forest) 50%, 
+            ${step === 0 ? "rgba(6,182,212,0.06)" : step === 1 ? "rgba(79,70,229,0.06)" : step === 2 ? "rgba(129,140,248,0.06)" : step === 3 ? "rgba(253,164,175,0.06)" : "rgba(79,70,229,0.06)"} 100%)`,
         }}
         transition={{ duration: 0.8 }}
       />
-      <div className="absolute inset-0 bg-[#0f0a1e]/90 backdrop-blur-sm" />
+      <div className="absolute inset-0 bg-forest/90 backdrop-blur-sm" />
 
       {/* Floating particles */}
       <AuroraParticles count={20} />
@@ -247,24 +247,24 @@ export function OnboardingSlides({ role = "student" }: { role?: Role }) {
       <div className="relative z-10 mx-4 w-full max-w-lg">
         {/* Progress bar */}
         <div className="mb-8">
-          <div className="h-1 w-full overflow-hidden rounded-full bg-white/10">
+          <div className="h-1 w-full overflow-hidden rounded-full bg-on-dark-faint">
             <motion.div
               className="h-full rounded-full"
               style={{
-                background: "linear-gradient(90deg, #6c5ce7, #4ecdc4)",
+                background: "linear-gradient(90deg, var(--brand), var(--teal))",
               }}
               animate={{ width: `${progress}%` }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             />
           </div>
           <div className="mt-2 flex justify-between">
-            <span className="text-xs font-medium text-white/40">
+            <span className="text-xs font-medium text-on-dark-subtle">
               {step + 1} of {config.slides.length}
             </span>
             <button
               type="button"
               onClick={dismiss}
-              className="text-xs font-medium text-white/40 transition-colors hover:text-white/70"
+              className="text-xs font-medium text-on-dark-subtle transition-colors hover:text-on-dark-muted"
             >
               Skip
             </button>
@@ -307,7 +307,7 @@ export function OnboardingSlides({ role = "student" }: { role?: Role }) {
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.4 }}
-              className="mt-3 max-w-sm text-base leading-relaxed text-white/60"
+              className="mt-3 max-w-sm text-base leading-relaxed text-on-dark-muted"
             >
               {slide.body}
             </motion.p>
@@ -325,7 +325,7 @@ export function OnboardingSlides({ role = "student" }: { role?: Role }) {
             <Link
               href={slide.href}
               onClick={dismiss}
-              className="btn-aurora inline-flex items-center justify-center gap-2 rounded-(--radius-btn) px-6 py-3.5 text-sm font-semibold shadow-lg transition-all hover:shadow-xl hover:shadow-[#6c5ce720]"
+              className="btn-aurora inline-flex items-center justify-center gap-2 rounded-(--radius-btn) px-6 py-3.5 text-sm font-semibold shadow-lg transition-all hover:shadow-xl hover:shadow-brand/20"
             >
               {slide.cta}
               <ChevronRightIcon className="h-4 w-4" />
@@ -334,7 +334,7 @@ export function OnboardingSlides({ role = "student" }: { role?: Role }) {
             <button
               type="button"
               onClick={dismiss}
-              className="btn-aurora inline-flex items-center justify-center gap-2 rounded-(--radius-btn) px-6 py-3.5 text-sm font-semibold shadow-lg transition-all hover:shadow-xl hover:shadow-[#6c5ce720]"
+              className="btn-aurora inline-flex items-center justify-center gap-2 rounded-(--radius-btn) px-6 py-3.5 text-sm font-semibold shadow-lg transition-all hover:shadow-xl hover:shadow-brand/20"
             >
               {slide.cta}
               <CheckCircleIcon className="h-4 w-4" />
@@ -343,7 +343,7 @@ export function OnboardingSlides({ role = "student" }: { role?: Role }) {
             <button
               type="button"
               onClick={next}
-              className="btn-aurora inline-flex items-center justify-center gap-2 rounded-(--radius-btn) px-6 py-3.5 text-sm font-semibold shadow-lg transition-all hover:shadow-xl hover:shadow-[#6c5ce720]"
+              className="btn-aurora inline-flex items-center justify-center gap-2 rounded-(--radius-btn) px-6 py-3.5 text-sm font-semibold shadow-lg transition-all hover:shadow-xl hover:shadow-brand/20"
             >
               {slide.cta}
               <ChevronRightIcon className="h-4 w-4" />
@@ -355,7 +355,7 @@ export function OnboardingSlides({ role = "student" }: { role?: Role }) {
             <button
               type="button"
               onClick={prev}
-              className="inline-flex items-center justify-center gap-1.5 rounded-(--radius-btn) px-4 py-2 text-sm font-medium text-white/50 transition-colors hover:text-white/80"
+              className="inline-flex items-center justify-center gap-1.5 rounded-(--radius-btn) px-4 py-2 text-sm font-medium text-on-dark-muted transition-colors hover:text-on-dark"
             >
               <ChevronLeftIcon className="h-4 w-4" />
               Back

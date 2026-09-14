@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { TextareaField } from "@/components/ui/field";
+import { SendIcon } from "@/components/icons";
 
 export function QuoteOfDayForm() {
   const [message, setMessage] = useState("");
   const [feedback, setFeedback] = useState<string | null>(null);
   const [error, setError] = useState<string | undefined>();
   const [busy, setBusy] = useState(false);
+  const maxLen = 200;
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -38,25 +39,41 @@ export function QuoteOfDayForm() {
 
   return (
     <form onSubmit={submit} className="mt-4 flex flex-col gap-3">
-      <TextareaField
-        label="Quote"
-        id="quote-of-day"
-        placeholder="Write a thoughtful quote for your students"
-        rows={3}
-        maxLength={500}
-        value={message}
-        onChange={(event) => setMessage(event.target.value)}
-        error={error}
-        hint="This will appear on the dashboards of students you have counselled."
-      />
+      <div className="relative">
+        <textarea
+          id="quote-of-day"
+          placeholder="Write a thoughtful quote for your students..."
+          rows={3}
+          maxLength={maxLen}
+          value={message}
+          onChange={(event) => setMessage(event.target.value)}
+          className="w-full rounded-(--radius-input) border border-line bg-surface px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-muted focus:border-brand-light focus:outline-none focus:ring-2 focus:ring-brand/20"
+        />
+        <span className="absolute bottom-2 right-3 text-xs text-ink-muted">
+          {message.length}/{maxLen}
+        </span>
+      </div>
+      {error && (
+        <p role="alert" className="text-sm font-semibold text-red-ink">
+          {error}
+        </p>
+      )}
       {feedback && (
         <p role="status" className="text-sm font-semibold text-success-ink">
           {feedback}
         </p>
       )}
-      <Button type="submit" size="sm" disabled={busy || !message.trim()}>
-        {busy ? "Sharing..." : "Share quote"}
-      </Button>
+      <div className="flex justify-end">
+        <Button
+          type="submit"
+          size="sm"
+          disabled={busy || !message.trim()}
+          className="inline-flex items-center gap-2"
+        >
+          <SendIcon className="h-4 w-4" />
+          {busy ? "Sharing..." : "Share Quote"}
+        </Button>
+      </div>
     </form>
   );
 }

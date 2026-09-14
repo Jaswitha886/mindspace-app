@@ -19,7 +19,7 @@ export default async function Home() {
         <Wordmark />
         <Link
           href="/login"
-          className="rounded-(--radius-pill) bg-white/10 px-4 py-2 text-sm font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/20"
+          className="rounded-(--radius-pill) bg-on-dark-whisper px-4 py-2 text-sm font-semibold text-on-dark backdrop-blur-sm transition-colors hover:bg-on-dark-faint"
         >
           Sign in
         </Link>
@@ -32,8 +32,8 @@ export default async function Home() {
         <LandingCTA />
       </main>
 
-      <footer className="relative z-10 border-t border-white/10 px-5 py-6 text-center sm:px-8">
-        <p className="text-sm text-white/40">
+      <footer className="relative z-10 border-t border-on-dark-faint px-5 py-6 text-center sm:px-8">
+        <p className="text-sm text-on-dark-subtle">
           Your journal and mood log are private to you — always.
         </p>
       </footer>
