@@ -1,12 +1,14 @@
 import { prisma } from "@/lib/prisma";
-import { createSessionCookie, requireRole } from "@/lib/auth";
+import { createSessionCookie, requireRole, requireRoleWith } from "@/lib/auth";
 import { apiError, notFound, ok, validationError } from "@/lib/api";
 import { studentProfileSchema } from "@/features/profile/validation";
 
 const profileSelect = {
   id: true,
   name: true,
-  email: true, // read-only: tied to auth, PATCH ignores it
+  email: true,
+  isActive: true,
+  role: true,
   department: { select: { name: true } },
   studentProfile: {
     select: { registerNumber: true, semester: true, phoneNumber: true },
@@ -15,11 +17,7 @@ const profileSelect = {
 
 export async function GET() {
   try {
-    const session = await requireRole("STUDENT");
-    const user = await prisma.user.findUnique({
-      where: { id: session.userId },
-      select: profileSelect,
-    });
+    const { session, user } = await requireRoleWith("STUDENT", profileSelect);
     if (!user) return notFound("Profile not found");
     return ok({ profile: user });
   } catch (error) {

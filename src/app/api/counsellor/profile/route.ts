@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
-import { createSessionCookie, requireRole } from "@/lib/auth";
+import { createSessionCookie, requireRole, requireRoleWith } from "@/lib/auth";
 import { apiError, fail, notFound, ok, validationError } from "@/lib/api";
 import { counsellorProfileSchema } from "@/features/profile/validation";
 
@@ -8,7 +8,8 @@ const profileSelect = {
   id: true,
   name: true,
   email: true,
-  role: true, // view-only: admin-controlled, PATCH never writes it
+  role: true,
+  isActive: true,
   department: { select: { name: true } },
   counsellorProfile: {
     select: {
@@ -22,11 +23,7 @@ const profileSelect = {
 
 export async function GET() {
   try {
-    const session = await requireRole("COUNSELLOR");
-    const user = await prisma.user.findUnique({
-      where: { id: session.userId },
-      select: profileSelect,
-    });
+    const { session, user } = await requireRoleWith("COUNSELLOR", profileSelect);
     if (!user) return notFound("Profile not found");
     return ok({ profile: user });
   } catch (error) {

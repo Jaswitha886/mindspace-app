@@ -7,7 +7,7 @@ export async function getStudentDashboardData(studentId: string) {
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);
 
-  const [upcoming, recentMoods, recentJournal, counsellorIds] = await Promise.all([
+  const [upcoming, recentMoods, journalCount, counsellorIds, candidates] = await Promise.all([
     prisma.appointment.findFirst({
       where: {
         studentId,
@@ -29,16 +29,27 @@ export async function getStudentDashboardData(studentId: string) {
       orderBy: { logDate: "desc" },
       take: 5,
     }),
-    prisma.journalEntry.findMany({
+    prisma.journalEntry.count({
       where: { studentId },
-      orderBy: { createdAt: "desc" },
-      take: 2,
-      select: { id: true, title: true, content: true, createdAt: true },
     }),
     prisma.appointment.findMany({
       where: { studentId, status: { in: ["APPROVED", "COMPLETED"] } },
       select: { counsellorId: true },
       distinct: ["counsellorId"],
+    }),
+    prisma.user.findMany({
+      where: {
+        role: "COUNSELLOR",
+        isActive: true,
+        availabilities: { some: { isActive: true } },
+      },
+      select: {
+        id: true,
+        name: true,
+        counsellorProfile: { select: { specialization: true } },
+      },
+      orderBy: { name: "asc" },
+      take: 12,
     }),
   ]);
 
@@ -63,38 +74,15 @@ export async function getStudentDashboardData(studentId: string) {
     take: 3,
   });
 
-  // "Counsellors Available Now": counsellors with at least one active
-  // availability window, minus anyone currently in a session.
-  //
-  // "In session" depends on the slot's end time, which is an "HH:mm" string —
-  // not something Prisma can compare against now(). So the busy set is computed
-  // in app code, and the list is over-fetched and sliced *after* filtering:
-  // taking 3 first would silently show fewer than 3 whenever someone is busy.
-  const candidates = await prisma.user.findMany({
-    where: {
-      role: "COUNSELLOR",
-      isActive: true,
-      availabilities: { some: { isActive: true } },
-    },
-    select: {
-      id: true,
-      name: true,
-      counsellorProfile: { select: { specialization: true } },
-    },
-    orderBy: { name: "asc" },
-    take: 12,
-  });
-
   const busy = await inSessionCounsellorIds(candidates.map((c) => c.id));
   const counsellors = candidates.filter((c) => !busy.has(c.id)).slice(0, 3);
 
   return {
     upcoming,
     recentMoods,
-    recentJournal,
     affirmations,
     counsellors,
-    isNewUser: recentMoods.length === 0 && recentJournal.length === 0 && !upcoming,
+    isNewUser: recentMoods.length === 0 && journalCount === 0 && !upcoming,
   };
 }
 

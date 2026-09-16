@@ -1,6 +1,6 @@
 import type { AppointmentStatus } from "@prisma/client";
 import { StatusChip } from "@/components/ui/status-chip";
-import { CalendarIcon, UserIcon } from "@/components/icons";
+import { CalendarIcon, UserIcon, CheckIcon } from "@/components/icons";
 import { formatDateLong, formatTimeRange } from "@/lib/format";
 
 // The "Upcoming Counselling" card: a title with a status chip opposite it, then
@@ -13,6 +13,7 @@ export function AppointmentCard({
   startTime,
   endTime,
   status,
+  checkedInAt,
   actions,
   className = "",
 }: {
@@ -23,6 +24,7 @@ export function AppointmentCard({
   startTime: string;
   endTime: string;
   status?: AppointmentStatus;
+  checkedInAt?: Date | string | null;
   actions?: React.ReactNode;
   className?: string;
 }) {
@@ -57,6 +59,22 @@ export function AppointmentCard({
             {formatDateLong(date)} at {formatTimeRange(startTime, endTime)}
           </dd>
         </div>
+        {checkedInAt && (
+          <div className="flex items-start gap-2.5">
+            <dt className="mt-0.5 shrink-0 text-ink-muted">
+              <CheckIcon className="h-[1.05rem] w-[1.05rem]" />
+              <span className="sr-only">Check-in</span>
+            </dt>
+            <dd className="text-[0.9375rem] font-semibold text-success-ink">
+              Checked in at{" "}
+              {new Date(checkedInAt).toLocaleTimeString("en-IN", {
+                hour: "numeric",
+                minute: "2-digit",
+                timeZone: "UTC",
+              })}
+            </dd>
+          </div>
+        )}
       </dl>
 
       {actions && (

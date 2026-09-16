@@ -1,5 +1,6 @@
+import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { requirePageRole } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { toInboxItems } from "@/features/admin/escalation-view";
 import {
   counsellorLoad,
@@ -23,7 +24,8 @@ export default async function AdminDashboard({
     groupBy?: string;
   }>;
 }) {
-  const session = await requirePageRole("ADMIN");
+  const session = await getSession();
+  if (!session) redirect("/login");
   const sp = await searchParams;
   const range = parseRange(sp.from, sp.to);
   const groupBy = sp.groupBy === "month" ? "month" : "week";

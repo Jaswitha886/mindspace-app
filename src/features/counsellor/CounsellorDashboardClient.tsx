@@ -627,32 +627,35 @@ export function CounsellorDashboardClient({
         <div className="flex flex-col gap-5">
           {/* Scan QR for Walk-in */}
           <motion.div variants={fadeUp}>
-            <Card>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <QrIcon className="h-4 w-4 text-brand-ink" />
-                  <h2 className="t-h3">Scan QR for Walk-in</h2>
+            <Link href="/counsellor/qr-scanner" className="block">
+              <Card>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <QrIcon className="h-4 w-4 text-brand-ink" />
+                    <h2 className="t-h3">Scan Session QR</h2>
+                  </div>
+                  <ArrowRightIcon className="h-3.5 w-3.5 text-ink-muted" />
                 </div>
-                <ArrowRightIcon className="h-3.5 w-3.5 text-ink-muted" />
-              </div>
-              <p className="t-meta mt-1">
-                Let students scan this QR code to check in for a walk-in session.
-              </p>
-              <div className="mt-3 flex items-start gap-4">
-                <div className="grid h-[4.5rem] w-[4.5rem] shrink-0 place-items-center rounded-lg bg-qr-bg border border-line">
-                  <QrIcon className="h-10 w-10 text-qr-fg" />
+                <p className="t-meta mt-1">
+                  Scan the QR code displayed on the student&apos;s dashboard, or type their
+                  code manually. This works for both booked sessions and walk-ins.
+                </p>
+                <div className="mt-3 flex items-start gap-4">
+                  <div className="grid h-[4.5rem] w-[4.5rem] shrink-0 place-items-center rounded-lg bg-qr-bg border border-line">
+                    <QrIcon className="h-10 w-10 text-qr-fg" />
+                  </div>
+                  <div className="flex-1 pt-1">
+                    <p className="mb-1.5 text-xs font-semibold text-ink-secondary">
+                      Or enter their code
+                    </p>
+                    <QuickCheckIn />
+                    <p className="mt-1.5 text-[0.6875rem] text-ink-muted">
+                      Valid for today only
+                    </p>
+                  </div>
                 </div>
-                <div className="flex-1 pt-1">
-                  <p className="mb-1.5 text-xs font-semibold text-ink-secondary">
-                    Or enter their code
-                  </p>
-                  <QuickCheckIn />
-                  <p className="mt-1.5 text-[0.6875rem] text-ink-muted">
-                    Valid for today only
-                  </p>
-                </div>
-              </div>
-            </Card>
+              </Card>
+            </Link>
           </motion.div>
 
           {/* Recent Walk-ins */}

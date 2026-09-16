@@ -7,6 +7,8 @@ import { AppointmentCard } from "@/components/ui/appointment-card";
 import { EmptyState } from "@/components/ui/states";
 import { HistoryIcon, PlusIcon } from "@/components/icons";
 import { CancelAppointmentButton } from "@/features/appointments/CancelAppointmentButton";
+import { CheckInCode, CheckedInNotice } from "@/features/checkin/CheckInCode";
+import { isWithinCheckInWindow } from "@/features/checkin/checkin";
 
 // Three views, not six status filters. A student thinks in "what's coming" and
 // "what happened" — not in the schema's five statuses. Nothing is lost by
@@ -130,30 +132,52 @@ export default async function AppointmentsPage({
         />
       ) : (
         <ul className="grid grid-cols-1 gap-4 xl:grid-cols-2">
-          {appointments.map((a) => (
-            <li key={a.id}>
-              <AppointmentCard
-                title="Counselling Session"
-                person={a.counsellor.name}
-                personSub={a.counsellor.counsellorProfile?.specialization ?? undefined}
-                date={a.appointmentDate}
-                startTime={a.startTime}
-                endTime={a.endTime}
-                status={a.status}
-                actions={
-                  a.status === "PENDING" ? (
-                    <CancelAppointmentButton appointmentId={a.id} />
-                  ) : undefined
-                }
-              />
-              {a.reason && (
-                <p className="t-meta mt-2 px-1">
-                  {a.status === "REJECTED" ? "Counsellor's note: " : ""}
-                  {a.reason}
-                </p>
-              )}
-            </li>
-          ))}
+          {appointments.map((a) => {
+            const showCheckIn =
+              a.status === "APPROVED" &&
+              isWithinCheckInWindow({
+                appointmentDate: a.appointmentDate,
+                startTime: a.startTime,
+                endTime: a.endTime,
+              });
+
+            return (
+              <li key={a.id}>
+                <AppointmentCard
+                  title="Counselling Session"
+                  person={a.counsellor.name}
+                  personSub={a.counsellor.counsellorProfile?.specialization ?? undefined}
+                  date={a.appointmentDate}
+                  startTime={a.startTime}
+                  endTime={a.endTime}
+                  status={a.status}
+                  actions={
+                    a.status === "PENDING" ? (
+                      <CancelAppointmentButton appointmentId={a.id} />
+                    ) : undefined
+                  }
+                />
+                {a.reason && (
+                  <p className="t-meta mt-2 px-1">
+                    {a.status === "REJECTED" ? "Counsellor's note: " : ""}
+                    {a.reason}
+                  </p>
+                )}
+                {showCheckIn && !a.checkedInAt && (
+                  <CheckInCode
+                    appointmentId={a.id}
+                    studentId={session.userId}
+                    appointmentDate={a.appointmentDate}
+                    startTime={a.startTime}
+                    endTime={a.endTime}
+                  />
+                )}
+                {showCheckIn && a.checkedInAt && (
+                  <CheckedInNotice checkedInAt={a.checkedInAt} />
+                )}
+              </li>
+            );
+          })}
         </ul>
       )}
 
