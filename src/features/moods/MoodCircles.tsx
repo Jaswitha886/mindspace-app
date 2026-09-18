@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { Mood } from "@prisma/client";
+import type { Mood } from "@/generated/prisma/client";
 import { MOOD_COLOR, MOOD_FACE_INK, MOOD_LABEL, MOODS_IN_ORDER } from "@/features/moods/mood-meta";
 import { MoodFace } from "@/features/moods/MoodFace";
 

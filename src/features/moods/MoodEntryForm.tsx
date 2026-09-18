@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import type { Mood } from "@prisma/client";
+import type { Mood } from "@/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import { MoodCircles } from "@/features/moods/MoodCircles";
 import { CheckCircleIcon } from "@/components/icons";

@@ -1,4 +1,4 @@
-import type { Mood } from "@prisma/client";
+import type { Mood } from "@/generated/prisma/client";
 
 // Mood is a categorical enum (confirmed Phase 1 decision, not a numeric scale).
 // Trend math needs an app-layer ordinal: higher = better wellbeing.

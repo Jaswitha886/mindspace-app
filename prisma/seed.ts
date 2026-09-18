@@ -1,4 +1,4 @@
-import { PrismaClient, type Mood } from "@prisma/client";
+import { PrismaClient, type Mood } from "../src/generated/prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { config } from "dotenv";
 import bcrypt from "bcryptjs";

@@ -3,6 +3,7 @@ import { LogoutButton } from "@/features/auth/LogoutButton";
 import { WordmarkMark, Wordmark } from "@/components/wordmark";
 import { BottomNav, SideNav, type NavItem } from "@/components/app-nav";
 import { BackButton } from "@/components/ui/back-button";
+import { AppAssistant } from "@/features/assistant/AppAssistant";
 import type { SessionPayload } from "@/lib/session";
 
 export function AppShell({
@@ -70,6 +71,7 @@ export function AppShell({
       </div>
 
       <BottomNav items={items} />
+      <AppAssistant session={session} />
     </div>
   );
 }

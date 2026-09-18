@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { registerSchema } from "@/features/auth/validation";
 import { fail, ok, serverError, validationError } from "@/lib/api";

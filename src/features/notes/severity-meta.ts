@@ -1,4 +1,4 @@
-import type { SeverityLevel } from "@prisma/client";
+import type { SeverityLevel } from "@/generated/prisma/client";
 
 // The single source of truth for how severity looks and reads, shared by the
 // counsellor chart, the admin distribution, and the pills. Import this rather

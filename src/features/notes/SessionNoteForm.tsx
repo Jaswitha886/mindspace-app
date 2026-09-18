@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import type { SeverityLevel } from "@prisma/client";
+import type { SeverityLevel } from "@/generated/prisma/client";
 import { Button } from "@/components/ui/button";
 import { AlertIcon, CheckCircleIcon } from "@/components/icons";
 

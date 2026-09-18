@@ -379,6 +379,7 @@ export function CounsellorDashboardClient({
       iconBg: "bg-brand-tint text-brand-ink",
       href: "/counsellor/schedule",
       arrow: true,
+      tone: "blue" as const,
     },
     {
       icon: <UsersIcon className="h-5 w-5" />,
@@ -388,6 +389,7 @@ export function CounsellorDashboardClient({
       iconBg: "bg-teal-tint text-teal",
       href: "/counsellor/walk-ins",
       arrow: true,
+      tone: "green" as const,
     },
     {
       icon: <ClockIcon className="h-5 w-5" />,
@@ -400,6 +402,7 @@ export function CounsellorDashboardClient({
       iconBg: "bg-gold text-gold-ink",
       href: "/counsellor/schedule",
       arrow: true,
+      tone: "orange" as const,
     },
     {
       icon: <UsersIcon className="h-5 w-5" />,
@@ -409,6 +412,7 @@ export function CounsellorDashboardClient({
       iconBg: "bg-brand-tint text-brand-ink",
       href: "/counsellor/students",
       arrow: true,
+      tone: "blue" as const,
     },
     {
       icon: <SmileIcon className="h-5 w-5" />,
@@ -418,6 +422,7 @@ export function CounsellorDashboardClient({
       iconBg: "bg-success-tint text-success-ink",
       href: "/counsellor/history",
       arrow: true,
+      tone: "green" as const,
     },
   ];
 
@@ -431,7 +436,7 @@ export function CounsellorDashboardClient({
       {/* ── Hero Header ──────────────────────────────────────────────── */}
       <motion.header
         variants={fadeUp}
-        className="relative overflow-hidden rounded-(--radius-card) bg-surface border border-line shadow-(--shadow-card) p-6 sm:p-8"
+        className="mind-card card-tone-paper relative overflow-hidden p-6 sm:p-8"
       >
         <div className="relative z-10 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
           <div>
@@ -570,7 +575,7 @@ export function CounsellorDashboardClient({
         {stats.map((stat) => (
           <motion.div key={stat.label} variants={fadeUp}>
             <Link href={stat.href} className="block">
-              <div className="flex items-start gap-3 rounded-(--radius-card) bg-surface border border-line p-4 shadow-(--shadow-card) transition-shadow hover:shadow-(--shadow-card-hover)">
+              <Card tone={stat.tone} padding="none" interactive className="flex items-start gap-3 p-4">
                 <span
                   className={`grid h-10 w-10 shrink-0 place-items-center rounded-[10px] ${stat.iconBg}`}
                 >
@@ -590,7 +595,7 @@ export function CounsellorDashboardClient({
                   </p>
                   <p className="text-[0.6875rem] text-ink-muted">{stat.sub}</p>
                 </div>
-              </div>
+              </Card>
             </Link>
           </motion.div>
         ))}

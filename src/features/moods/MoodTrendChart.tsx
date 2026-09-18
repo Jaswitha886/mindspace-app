@@ -1,6 +1,6 @@
 "use client";
 
-import type { Mood } from "@prisma/client";
+import type { Mood } from "@/generated/prisma/client";
 import {
   Line,
   LineChart,

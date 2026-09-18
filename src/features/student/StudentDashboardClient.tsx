@@ -21,7 +21,7 @@ import {
 } from "@/features/moods/mood-meta";
 import { MoodFace } from "@/features/moods/MoodFace";
 import { OnboardingSlides } from "@/features/student/OnboardingSlides";
-import type { Mood } from "@prisma/client";
+import type { Mood } from "@/generated/prisma/client";
 
 /* -------------------------------------------------------------------------- */
 /*  Types                                                                     */
@@ -292,7 +292,7 @@ export function StudentDashboardClient({
           {/* Upcoming appointment */}
           <motion.div variants={fadeUp}>
             {upcoming ? (
-              <Card className="student-dashboard-card relative min-h-[250px] overflow-hidden">
+              <Card className="relative min-h-[250px] overflow-hidden">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <CalendarIcon className="h-4 w-4 text-brand-ink" />
@@ -384,7 +384,7 @@ export function StudentDashboardClient({
                   ) : null)}
               </Card>
             ) : (
-              <Card className="student-dashboard-card min-h-[250px]">
+              <Card className="min-h-[250px]">
                 <div className="flex items-center gap-2">
                   <CalendarIcon className="h-4 w-4 text-brand-ink" />
                   <h2 className="t-h3">No upcoming appointment</h2>
@@ -411,7 +411,7 @@ export function StudentDashboardClient({
           >
             <Link
               href="/student/appointments/new"
-              className="student-action-card student-action-card-blue group flex min-h-[190px] flex-col justify-between rounded-[16px] p-6 transition-shadow hover:shadow-(--shadow-card-hover)"
+              className="mind-card card-tone-blue group flex min-h-[190px] flex-col justify-between p-6"
             >
               <span className="grid h-14 w-14 place-items-center rounded-[16px] bg-brand-tint text-brand-ink">
                 <UsersIcon className="h-6 w-6" />
@@ -429,7 +429,7 @@ export function StudentDashboardClient({
 
             <Link
               href="/student/journal"
-              className="student-action-card student-action-card-sky group flex min-h-[190px] flex-col justify-between rounded-[16px] p-6 transition-shadow hover:shadow-(--shadow-card-hover)"
+              className="mind-card card-tone-green group flex min-h-[190px] flex-col justify-between p-6"
             >
               <span className="grid h-14 w-14 place-items-center rounded-[16px] bg-teal-tint text-teal">
                 <JournalIcon className="h-6 w-6" />
@@ -451,7 +451,7 @@ export function StudentDashboardClient({
         <div className="flex flex-col gap-5">
           {/* Affirmation / note panel */}
           <motion.div variants={fadeUp}>
-            <div className="student-dashboard-card relative min-h-[250px] overflow-hidden rounded-[16px] p-5">
+            <div className="mind-card card-tone-paper relative min-h-[250px] overflow-hidden p-5">
               <div className="flex items-center justify-between">
                 <h2 className="t-h3 text-ink-strong">A note for you</h2>
                 <svg viewBox="0 0 24 24" className="h-6 w-6 text-brand-light" aria-hidden fill="currentColor">
@@ -467,7 +467,7 @@ export function StudentDashboardClient({
 
           {/* Available counsellors */}
           <motion.div variants={fadeUp}>
-            <Card className="student-dashboard-card min-h-[250px]">
+            <Card className="min-h-[250px]">
               <div className="flex items-center gap-2">
                 <span
                   className="h-2.5 w-2.5 rounded-full bg-success breathe"

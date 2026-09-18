@@ -1,4 +1,6 @@
 import { WordmarkMark } from "@/components/wordmark";
+import { Card } from "@/components/ui/card";
+import { AuthBackdrop } from "@/components/auth-backdrop";
 
 export function AuthShell({
   headline,
@@ -12,8 +14,9 @@ export function AuthShell({
   footer?: React.ReactNode;
 }) {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-page px-5 py-12">
-      <div className="w-full max-w-[420px]">
+    <main className="auth-page relative flex min-h-svh items-center justify-center overflow-hidden px-5 py-12">
+      <AuthBackdrop />
+      <div className="relative z-10 w-full max-w-[460px]">
         <div className="flex flex-col items-center gap-4 text-center">
           <WordmarkMark />
           <div>
@@ -23,12 +26,15 @@ export function AuthShell({
             <p className="mt-1.5 text-sm text-ink-secondary">{sub}</p>
           </div>
         </div>
-        <div className="auth-form-card mt-7 rounded-(--radius-card) border border-line bg-surface p-6 shadow-2xl backdrop-blur-xl sm:p-7">
+        <Card
+          padding="none"
+          className="auth-form-card mt-7 p-6 sm:p-7"
+        >
           {children}
           {footer && (
             <div className="mt-6 border-t border-line pt-5 text-center">{footer}</div>
           )}
-        </div>
+        </Card>
       </div>
     </main>
   );

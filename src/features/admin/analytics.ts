@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import type { SeverityLevel } from "@prisma/client";
+import type { SeverityLevel } from "@/generated/prisma/client";
 import { cohortIsReportable, cohortSize } from "@/features/admin/suppression";
 
 // Admin analytics. Two rules run through everything here:

@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import type { SeverityLevel } from "@prisma/client";
+import type { SeverityLevel } from "@/generated/prisma/client";
 
 // Counsellor home queries (server components only). Everything is scoped to
 // the counsellor's own userId — one counsellor never sees another's caseload.

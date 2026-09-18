@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma/client";
 import { slotDateTime } from "@/features/appointments/slots";
 
 // Shared include + response shaping for appointment payloads (docs/API.md).

@@ -1,4 +1,4 @@
-import type { AppointmentStatus } from "@prisma/client";
+import type { AppointmentStatus } from "@/generated/prisma/client";
 
 // Status pills. Always a word, never colour alone — and every fill/label pair
 // here clears AA.

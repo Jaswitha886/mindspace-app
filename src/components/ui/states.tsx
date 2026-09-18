@@ -1,5 +1,6 @@
 // Empty and loading states: a muted outline icon, a title, a short explanation,
 // and (optionally) the one action that resolves it. Loading is a skeleton stack.
+import { Card } from "@/components/ui/card";
 
 export function EmptyState({
   icon,
@@ -15,14 +16,15 @@ export function EmptyState({
   className?: string;
 }) {
   return (
-    <div
-      className={`flex flex-col items-center gap-3 rounded-(--radius-card) border border-line bg-surface px-6 py-10 text-center shadow-(--shadow-card) ${className}`}
+    <Card
+      padding="none"
+      className={`flex flex-col items-center gap-3 px-6 py-10 text-center ${className}`}
     >
       <span className="text-brand-light">{icon}</span>
       <h3 className="t-h3">{title}</h3>
       {body && <p className="t-body max-w-xs">{body}</p>}
       {action && <div className="mt-1">{action}</div>}
-    </div>
+    </Card>
   );
 }
 
@@ -34,8 +36,7 @@ export function SkeletonList({
   label?: string;
 }) {
   return (
-    <div
-      className="rounded-(--radius-card) border border-line bg-surface p-5 shadow-(--shadow-card)"
+    <Card
       role="status"
       aria-live="polite"
     >
@@ -46,6 +47,6 @@ export function SkeletonList({
         ))}
       </div>
       <span className="sr-only">{label}</span>
-    </div>
+    </Card>
   );
 }

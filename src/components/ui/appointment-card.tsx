@@ -1,6 +1,7 @@
-import type { AppointmentStatus } from "@prisma/client";
+import type { AppointmentStatus } from "@/generated/prisma/client";
 import { StatusChip } from "@/components/ui/status-chip";
 import { CalendarIcon, UserIcon, CheckIcon } from "@/components/icons";
+import { Card } from "@/components/ui/card";
 import { formatDateLong, formatTimeRange } from "@/lib/format";
 
 // The "Upcoming Counselling" card: a title with a status chip opposite it, then
@@ -29,9 +30,7 @@ export function AppointmentCard({
   className?: string;
 }) {
   return (
-    <div
-      className={`rounded-(--radius-card) border border-line bg-surface p-5 shadow-(--shadow-card) ${className}`}
-    >
+    <Card className={className}>
       <div className="flex items-start justify-between gap-3">
         <h3 className="t-h3">{title}</h3>
         {status && <StatusChip status={status} />}
@@ -80,6 +79,6 @@ export function AppointmentCard({
       {actions && (
         <div className="mt-4 flex flex-wrap justify-end gap-2.5">{actions}</div>
       )}
-    </div>
+    </Card>
   );
 }

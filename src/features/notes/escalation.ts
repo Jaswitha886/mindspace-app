@@ -1,4 +1,4 @@
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma/client";
 
 // CRITICAL severity is an action trigger, not a label (docs/MASTER_PROMPT.md).
 // Flagging a note CRITICAL must, in the same transaction as the note write:

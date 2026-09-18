@@ -1,4 +1,4 @@
-import type { Mood } from "@prisma/client";
+import type { Mood } from "@/generated/prisma/client";
 import type { ReactNode } from "react";
 
 // Bold, minimal mood faces on a 24×24 grid. Stroke-based with clear features

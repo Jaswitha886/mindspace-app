@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { Prisma } from "@prisma/client";
+import type { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { requirePageRole } from "@/lib/auth";
 import { PageTitle } from "@/components/ui/page-title";

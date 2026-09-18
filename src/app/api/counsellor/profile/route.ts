@@ -1,4 +1,4 @@
-import { Prisma } from "@prisma/client";
+import { Prisma } from "@/generated/prisma/client";
 import { prisma } from "@/lib/prisma";
 import { createSessionCookie, requireRole, requireRoleWith } from "@/lib/auth";
 import { apiError, fail, notFound, ok, validationError } from "@/lib/api";

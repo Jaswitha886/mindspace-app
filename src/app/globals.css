@@ -5,14 +5,27 @@
    
    Every colour, shadow, and radius used in the app flows through these tokens.
    light-dark() ensures automatic adaptation: the browser picks the first value
-   in light mode, the second in dark mode ([data-theme="dark"]).
+   in light mode, the second in dark mode ([data-theme="dark"] or system dark).
    
    Components MUST use these tokens (via Tailwind utilities or CSS var()).
    Never hardcode hex/rgb values in component files.
    ───────────────────────────────────────────────────────────────────────────── */
 
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
+
+  /* ── Reference card palette ─────────────────────────────────────────────── */
+  --clr-blue: #1890ff;
+  --clr-green: #01c3a8;
+  --clr-orange: #ffb741;
+  --clr-red: #a63d2a;
+  --bg-dark: #232228;
+  --bg-footer: #151419;
+  --color-white: #fff;
+  --color-gray-light: #ddd;
+  --color-gray-medium: #363636;
+  --color-gray-dark: #292929;
+  --color-gray-very-dark: #222127;
 
   /* ── Brand (indigo) ──────────────────────────────────────────────────────── */
   --brand: light-dark(#4f46e5, #818cf8);
@@ -59,6 +72,63 @@
   --surface: light-dark(#ffffff, #111827);
   --sunken: light-dark(#f1f5f9, #1e293b);
   --sunken-2: light-dark(#f8fafc, #172033);
+
+  /* ── Card surface system ───────────────────────────────────────────────── */
+  --card-paper-bg: var(--surface);
+  --card-paper-border: var(--border);
+  --card-paper-accent: var(--brand);
+  --card-paper-ink: var(--ink);
+  --card-paper-muted: var(--ink-secondary);
+
+  --card-blue-bg: light-dark(
+    color-mix(in srgb, var(--clr-blue) 14%, #ffffff),
+    color-mix(in srgb, var(--clr-blue) 24%, var(--surface))
+  );
+  --card-blue-border: light-dark(
+    color-mix(in srgb, var(--clr-blue) 30%, #ffffff),
+    color-mix(in srgb, var(--clr-blue) 38%, var(--surface))
+  );
+  --card-blue-ink: light-dark(#0f477a, #d8ecff);
+  --card-blue-muted: light-dark(#446176, #aac9e6);
+
+  --card-green-bg: light-dark(
+    color-mix(in srgb, var(--clr-green) 15%, #ffffff),
+    color-mix(in srgb, var(--clr-green) 24%, var(--surface))
+  );
+  --card-green-border: light-dark(
+    color-mix(in srgb, var(--clr-green) 34%, #ffffff),
+    color-mix(in srgb, var(--clr-green) 38%, var(--surface))
+  );
+  --card-green-ink: light-dark(#06564d, #c8fff6);
+  --card-green-muted: light-dark(#426b66, #a8e8de);
+
+  --card-orange-bg: light-dark(
+    color-mix(in srgb, var(--clr-orange) 22%, #ffffff),
+    color-mix(in srgb, var(--clr-orange) 20%, var(--surface))
+  );
+  --card-orange-border: light-dark(
+    color-mix(in srgb, var(--clr-orange) 42%, #ffffff),
+    color-mix(in srgb, var(--clr-orange) 35%, var(--surface))
+  );
+  --card-orange-ink: light-dark(#7a4a00, #ffe8b7);
+  --card-orange-muted: light-dark(#72582f, #f3cf91);
+
+  --card-red-bg: light-dark(
+    color-mix(in srgb, var(--clr-red) 12%, #ffffff),
+    color-mix(in srgb, var(--clr-red) 25%, var(--surface))
+  );
+  --card-red-border: light-dark(
+    color-mix(in srgb, var(--clr-red) 26%, #ffffff),
+    color-mix(in srgb, var(--clr-red) 38%, var(--surface))
+  );
+  --card-red-ink: light-dark(#6f2a1e, #ffd8cf);
+  --card-red-muted: light-dark(#7a5a52, #e7b7ad);
+
+  --card-progress-track: light-dark(
+    rgba(255, 255, 255, 0.68),
+    rgba(255, 255, 255, 0.14)
+  );
+  --card-progress-fill: currentColor;
 
   /* ── Border hierarchy ────────────────────────────────────────────────────── */
   --border: light-dark(#e2e8f0, #334155);
@@ -119,10 +189,22 @@
   --focus-ring: light-dark(#4f46e5, #818cf8);
 
   /* ── Shadows ─────────────────────────────────────────────────────────────── */
-  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06);
-  --shadow-card-hover: 0 4px 12px rgba(15, 23, 42, 0.08);
-  --shadow-btn: 0 1px 2px rgba(15, 23, 42, 0.1);
-  --shadow-pop: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-card: light-dark(
+    0 1px 3px rgba(15, 23, 42, 0.06),
+    0 16px 34px rgba(2, 6, 23, 0.24)
+  );
+  --shadow-card-hover: light-dark(
+    0 4px 12px rgba(15, 23, 42, 0.08),
+    0 22px 46px rgba(2, 6, 23, 0.32)
+  );
+  --shadow-btn: light-dark(
+    0 1px 2px rgba(15, 23, 42, 0.1),
+    0 8px 22px rgba(2, 6, 23, 0.22)
+  );
+  --shadow-pop: light-dark(
+    0 4px 12px rgba(15, 23, 42, 0.08),
+    0 20px 48px rgba(2, 6, 23, 0.32)
+  );
 
   /* ── Radii ───────────────────────────────────────────────────────────────── */
   --radius-card: 14px;
@@ -132,8 +214,52 @@
 }
 
 /* Dark mode activation. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
 :root[data-theme="dark"] {
   color-scheme: dark;
+}
+
+/* The public landing page has a deliberately dark, immersive art direction.
+   Keep it stable while the signed-in product follows the user's theme choice. */
+.landing-page {
+  color-scheme: dark;
+  --brand: #818cf8;
+  --brand-hover: #6366f1;
+  --brand-light: #a5b4fc;
+  --brand-ink: #a5b4fc;
+  --brand-tint: #1e1b4b;
+  --brand-tint-2: #17153a;
+  --brand-disabled: #373580;
+  --teal: #22d3ee;
+  --teal-tint: #164e63;
+  --gold: #3b2e0d;
+  --gold-strong: #fbbf24;
+  --gold-ink: #fcd34d;
+  --pink-tint: #3b1820;
+  --red-tint: #451a1a;
+  --ink: #f8fafc;
+  --ink-strong: #ffffff;
+  --ink-secondary: #cbd5e1;
+  --ink-muted: #94a3b8;
+  --page: #0f172a;
+  --surface: #111827;
+  --sunken: #1e293b;
+  --sunken-2: #172033;
+  --border: #334155;
+  --border-strong: #475569;
+  --sidebar-border: rgba(248, 250, 252, 0.1);
+  --on-dark: rgba(255, 255, 255, 0.9);
+  --on-dark-muted: rgba(255, 255, 255, 0.6);
+  --on-dark-subtle: rgba(255, 255, 255, 0.4);
+  --on-dark-faint: rgba(255, 255, 255, 0.1);
+  --on-dark-ghost: rgba(255, 255, 255, 0.06);
+  --on-dark-whisper: rgba(255, 255, 255, 0.05);
+  --shadow-card: 0 16px 34px rgba(2, 6, 23, 0.24);
+  --shadow-card-hover: 0 22px 46px rgba(2, 6, 23, 0.32);
+  --shadow-btn: 0 8px 22px rgba(2, 6, 23, 0.22);
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -189,6 +315,12 @@
   --color-sunken: var(--sunken);
   --color-sunken-2: var(--sunken-2);
 
+  /* ── Reference card tones ──────────────────────────────────────────────── */
+  --color-card-blue: var(--card-blue-bg);
+  --color-card-green: var(--card-green-bg);
+  --color-card-orange: var(--card-orange-bg);
+  --color-card-red: var(--card-red-bg);
+
   /* ── Borders ─────────────────────────────────────────────────────────────── */
   --color-line: var(--border);
   --color-line-strong: var(--border-strong);
@@ -241,10 +373,22 @@
   --radius-pill: 999px;
 
   /* ── Shadows ─────────────────────────────────────────────────────────────── */
-  --shadow-card: 0 1px 3px rgba(15, 23, 42, 0.06);
-  --shadow-card-hover: 0 4px 12px rgba(15, 23, 42, 0.08);
-  --shadow-btn: 0 1px 2px rgba(15, 23, 42, 0.1);
-  --shadow-pop: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-card: light-dark(
+    0 1px 3px rgba(15, 23, 42, 0.06),
+    0 16px 34px rgba(2, 6, 23, 0.24)
+  );
+  --shadow-card-hover: light-dark(
+    0 4px 12px rgba(15, 23, 42, 0.08),
+    0 22px 46px rgba(2, 6, 23, 0.32)
+  );
+  --shadow-btn: light-dark(
+    0 1px 2px rgba(15, 23, 42, 0.1),
+    0 8px 22px rgba(2, 6, 23, 0.22)
+  );
+  --shadow-pop: light-dark(
+    0 4px 12px rgba(15, 23, 42, 0.08),
+    0 20px 48px rgba(2, 6, 23, 0.32)
+  );
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -448,6 +592,196 @@ body {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
+   Reference-inspired cards
+   ───────────────────────────────────────────────────────────────────────────── */
+.mind-card {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid var(--mind-card-border, var(--card-paper-border));
+  background: var(--mind-card-bg, var(--card-paper-bg));
+  color: var(--mind-card-ink, var(--card-paper-ink));
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-card);
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.mind-card::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 0;
+  height: 4px;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  background: var(--mind-card-accent, var(--card-paper-accent));
+  opacity: 0.9;
+  pointer-events: none;
+}
+.mind-card-muted {
+  color: var(--mind-card-muted, var(--card-paper-muted));
+}
+.card-tone-paper {
+  --mind-card-bg: var(--card-paper-bg);
+  --mind-card-border: var(--card-paper-border);
+  --mind-card-accent: var(--card-paper-accent);
+  --mind-card-ink: var(--card-paper-ink);
+  --mind-card-muted: var(--card-paper-muted);
+}
+.card-tone-sunken {
+  --mind-card-bg: var(--sunken);
+  --mind-card-border: var(--border);
+  --mind-card-accent: var(--ink-muted);
+  --mind-card-ink: var(--ink);
+  --mind-card-muted: var(--ink-secondary);
+}
+.card-tone-plum {
+  --mind-card-bg: var(--brand-tint);
+  --mind-card-border: color-mix(in srgb, var(--brand) 24%, transparent);
+  --mind-card-accent: var(--brand);
+  --mind-card-ink: var(--ink);
+  --mind-card-muted: var(--ink-secondary);
+}
+.card-tone-gold {
+  --mind-card-bg: var(--gold);
+  --mind-card-border: color-mix(in srgb, var(--gold-strong) 28%, transparent);
+  --mind-card-accent: var(--gold-strong);
+  --mind-card-ink: var(--ink);
+  --mind-card-muted: var(--ink-secondary);
+}
+.card-tone-teal {
+  --mind-card-bg: var(--teal-tint);
+  --mind-card-border: color-mix(in srgb, var(--teal) 28%, transparent);
+  --mind-card-accent: var(--teal);
+  --mind-card-ink: var(--ink);
+  --mind-card-muted: var(--ink-secondary);
+}
+.card-tone-blue {
+  --mind-card-bg: var(--card-blue-bg);
+  --mind-card-border: var(--card-blue-border);
+  --mind-card-accent: var(--clr-blue);
+  --mind-card-ink: var(--card-blue-ink);
+  --mind-card-muted: var(--card-blue-muted);
+}
+.card-tone-green {
+  --mind-card-bg: var(--card-green-bg);
+  --mind-card-border: var(--card-green-border);
+  --mind-card-accent: var(--clr-green);
+  --mind-card-ink: var(--card-green-ink);
+  --mind-card-muted: var(--card-green-muted);
+}
+.card-tone-orange {
+  --mind-card-bg: var(--card-orange-bg);
+  --mind-card-border: var(--card-orange-border);
+  --mind-card-accent: var(--clr-orange);
+  --mind-card-ink: var(--card-orange-ink);
+  --mind-card-muted: var(--card-orange-muted);
+}
+.card-tone-red {
+  --mind-card-bg: var(--card-red-bg);
+  --mind-card-border: var(--card-red-border);
+  --mind-card-accent: var(--clr-red);
+  --mind-card-ink: var(--card-red-ink);
+  --mind-card-muted: var(--card-red-muted);
+}
+.mind-card-progress {
+  overflow: hidden;
+  height: 0.45rem;
+  border-radius: var(--radius-pill);
+  background: var(--card-progress-track);
+}
+.mind-card-progress > span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--card-progress-fill);
+}
+
+/* Glass auth treatment. The page keeps the existing auth content and behavior,
+   but presents it over a calm, animated colour field. */
+.auth-page {
+  color-scheme: dark;
+  background: var(--forest);
+  --brand: #818cf8;
+  --brand-hover: #a5b4fc;
+  --brand-light: #a5b4fc;
+  --brand-ink: #c7d2fe;
+  --brand-tint: #1e1b4b;
+  --brand-disabled: #373580;
+  --ink: #f8fafc;
+  --ink-strong: #ffffff;
+  --ink-secondary: #cbd5e1;
+  --ink-muted: #94a3b8;
+  --surface: #111827;
+  --sunken: #1e293b;
+  --border: #334155;
+  --shadow-card: 0 16px 34px rgba(2, 6, 23, 0.24);
+  --shadow-btn: 0 8px 22px rgba(2, 6, 23, 0.22);
+}
+.auth-backdrop {
+  position: absolute;
+  inset: 0;
+  opacity: 0.62;
+}
+.auth-page::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--forest) 58%, transparent);
+  pointer-events: none;
+}
+.auth-page > * {
+  position: relative;
+}
+.auth-page > .auth-backdrop {
+  position: absolute;
+}
+.auth-page .auth-form-card {
+  overflow: visible;
+  border-color: rgba(255, 255, 255, 0.2);
+  background: color-mix(in srgb, var(--surface) 64%, transparent);
+  box-shadow: 0 28px 70px rgba(2, 6, 23, 0.34);
+  backdrop-filter: blur(28px) saturate(1.35);
+  -webkit-backdrop-filter: blur(28px) saturate(1.35);
+}
+.auth-page .auth-form-card::before {
+  z-index: 0;
+  height: 1px;
+  opacity: 0.78;
+}
+.auth-page .auth-form-card .auth-field-control {
+  border-color: rgba(255, 255, 255, 0.18) !important;
+  border-radius: var(--radius-pill) !important;
+  background: rgba(15, 23, 42, 0.36) !important;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  color: #fff !important;
+}
+.auth-page .auth-form-card .auth-field-control::placeholder {
+  color: rgba(255, 255, 255, 0.55) !important;
+}
+.auth-page .auth-form-card .auth-field-control:focus {
+  border-color: rgba(165, 180, 252, 0.92) !important;
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.auth-page .auth-form-card .auth-field-label:not(.text-red-ink) {
+  color: rgba(255, 255, 255, 0.84) !important;
+}
+.auth-page .auth-form-card .auth-field-control + button {
+  color: var(--brand-light) !important;
+}
+.auth-page .auth-form-card button[type="submit"] {
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--forest);
+  box-shadow: 0 10px 28px rgba(2, 6, 23, 0.2);
+}
+.auth-page .auth-form-card button[type="submit"]:hover {
+  background: #fff;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
    Breathing glow (live status, availability)
    ───────────────────────────────────────────────────────────────────────────── */
 .breathe {
@@ -586,45 +920,6 @@ body {
   }
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   Student dashboard card classes
-   
-   Minimal layout overrides for the student dashboard's card sizing.
-   The sidebar and theme are now fully unified across all roles.
-   ───────────────────────────────────────────────────────────────────────────── */
-.student-dashboard-card {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  box-shadow: var(--shadow-card);
-  border-radius: var(--radius-card);
-  padding: 1.25rem;
-}
-.student-dashboard-card:hover {
-  box-shadow: var(--shadow-card-hover);
-}
-.student-action-card {
-  position: relative;
-  min-height: 190px;
-  padding: 1.5rem;
-  border: 1px solid var(--border);
-  background: var(--surface);
-  box-shadow: var(--shadow-card);
-  border-radius: var(--radius-card);
-}
-.student-action-card:hover {
-  box-shadow: var(--shadow-card-hover);
-}
-.student-action-card-blue {
-  background: light-dark(#eef2ff, #1e1b4b);
-}
-.student-action-card-sky {
-  background: light-dark(#ecfeff, #164e63);
-}
-.student-mood-card {
-  border: 1px solid var(--border);
-  background: var(--surface);
-  box-shadow: var(--shadow-card);
-}
 .student-hero {
   background: light-dark(
     linear-gradient(135deg, #ffffff 0%, #eef2ff 40%, #e0e7ff 100%),

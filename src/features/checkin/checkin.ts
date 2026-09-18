@@ -1,6 +1,6 @@
 import { createHmac } from "node:crypto";
 import { SignJWT, jwtVerify } from "jose";
-import type { AppointmentStatus } from "@prisma/client";
+import type { AppointmentStatus } from "@/generated/prisma/client";
 import { slotDateTime } from "@/features/appointments/slots";
 
 // QR session check-in. Spec: docs/superpowers/specs/2026-07-17-qr-session-checkin-design.md

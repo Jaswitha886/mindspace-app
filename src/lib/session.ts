@@ -1,5 +1,5 @@
 import { SignJWT, jwtVerify } from "jose";
-import type { UserRole } from "@prisma/client";
+import type { UserRole } from "@/generated/prisma/client";
 
 // Stateless JWT sessions in an HTTP-only cookie (docs/API.md — Session Management).
 // This module is imported from proxy.ts, so it must stay free of next/headers

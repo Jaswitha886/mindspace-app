@@ -6,35 +6,39 @@ import { ArrowRightIcon } from "@/components/icons";
 
 export function LandingCTA() {
   return (
-    <section className="relative overflow-hidden bg-forest py-24">
-      {/* Aurora glow background */}
-      <div className="absolute inset-0">
-        <div className="absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-brand opacity-[0.08] blur-[150px]" />
-        <div className="absolute left-1/3 top-1/3 h-[300px] w-[300px] rounded-full bg-teal opacity-[0.05] blur-[120px]" />
-        <div className="absolute bottom-1/3 right-1/3 h-[300px] w-[300px] rounded-full bg-pink opacity-[0.04] blur-[120px]" />
-      </div>
-
+    <section id="privacy" className="relative overflow-hidden bg-page px-5 py-20 sm:px-8">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
         transition={{ duration: 0.6 }}
-        className="relative z-10 mx-auto max-w-2xl px-5 text-center sm:px-8"
+        className="relative z-10 mx-auto flex max-w-6xl flex-col items-start justify-between gap-8 rounded-(--radius-card) bg-forest px-6 py-8 text-left shadow-2xl shadow-brand/10 sm:px-8 lg:flex-row lg:items-center"
       >
-        <h2 className="text-3xl font-bold tracking-[-0.03em] text-white sm:text-4xl">
-          Your wellbeing matters.
-        </h2>
-        <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-on-dark-muted">
-          Start your journey with MindSpace today. It&apos;s private, free, and designed
-          for you.
-        </p>
-        <div className="mt-8 flex flex-wrap justify-center gap-4">
+        <div>
+          <p className="text-sm font-bold uppercase tracking-normal text-teal">
+            Privacy-first by default
+          </p>
+          <h2 className="mt-3 text-3xl font-bold tracking-normal text-white sm:text-4xl">
+            Start with a quiet, protected space.
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-white/66">
+            Students can write, check in, and ask for support without turning
+            every personal detail into an admin report.
+          </p>
+        </div>
+        <div className="flex shrink-0 flex-wrap gap-3">
           <Link
             href="/register"
-            className="btn-aurora inline-flex items-center gap-2 rounded-(--radius-btn) px-8 py-4 text-sm font-semibold shadow-lg shadow-brand/30 transition-all hover:shadow-xl hover:shadow-brand/40"
+            className="inline-flex items-center gap-2 rounded-(--radius-btn) bg-white px-6 py-3.5 text-sm font-bold text-forest transition hover:bg-white/90"
           >
-            Create your account
+            Create account
             <ArrowRightIcon className="h-4 w-4" />
+          </Link>
+          <Link
+            href="/login"
+            className="inline-flex items-center rounded-(--radius-btn) border border-white/12 bg-white/[0.06] px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
+          >
+            Sign in
           </Link>
         </div>
       </motion.div>
