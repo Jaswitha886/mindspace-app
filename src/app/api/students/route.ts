@@ -25,6 +25,7 @@ export async function GET(request: NextRequest) {
         isActive: true,
         OR: [
           { name: { contains: q, mode: "insensitive" } },
+          { email: { contains: q, mode: "insensitive" } },
           { studentProfile: { registerNumber: { contains: q, mode: "insensitive" } } },
         ],
       },

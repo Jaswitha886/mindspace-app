@@ -10,6 +10,7 @@ export type NavItem = {
   label: string;
   icon: IconKey;
   exact?: boolean;
+  mobileHidden?: boolean;
 };
 
 export type NavProps = { items: NavItem[] };
@@ -30,7 +31,7 @@ export function BottomNav({ items }: NavProps) {
       className="fixed inset-x-0 bottom-0 z-30 border-t border-sidebar-border bg-sidebar pb-[env(safe-area-inset-bottom)] lg:hidden"
     >
       <ul className="flex items-stretch justify-around">
-        {items.map((item) => {
+        {items.filter((item) => !item.mobileHidden).map((item) => {
           const active = isActive(item);
           const Icon = NAV_ICONS[item.icon];
           return (

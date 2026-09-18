@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { MeshGradient, PulsingBorder } from "@paper-design/shaders-react";
 import { motion } from "framer-motion";
 import { ArrowRightIcon, CalendarIcon, JournalIcon, SmileIcon } from "@/components/icons";
-import { WordmarkMark } from "@/components/wordmark";
+import { BrandLockup } from "@/components/brand-lockup";
 
 const meshColors = [
   "hsl(222,47%,11%)",
@@ -142,10 +142,7 @@ export default function ShaderShowcase() {
       <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-page to-transparent" />
 
       <header className="relative z-20 mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8 lg:px-10">
-        <Link href="/" className="inline-flex items-center gap-2.5" aria-label="MindSpace home">
-          <WordmarkMark size="sm" />
-          <span className="text-lg font-bold text-white">MindSpace</span>
-        </Link>
+        <BrandLockup onDark />
 
         <nav className="hidden items-center gap-1 rounded-(--radius-pill) border border-white/10 bg-white/5 p-1 text-sm text-white/72 backdrop-blur-md md:flex">
           <a href="#support" className="rounded-(--radius-pill) px-4 py-2 transition hover:bg-white/10 hover:text-white">

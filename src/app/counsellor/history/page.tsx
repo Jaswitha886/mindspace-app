@@ -1,12 +1,10 @@
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { requirePageRole } from "@/lib/auth";
 import { PageTitle } from "@/components/ui/page-title";
-import { Card } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/states";
-import { StatusChip } from "@/components/ui/status-chip";
 import { HistoryIcon } from "@/components/icons";
 import { formatDateLong, formatTimeRange } from "@/lib/format";
+import { HistoryList } from "@/features/counsellor/HistoryList";
 
 // Past sessions, most recent first — the counsellor's record, and where they
 // write or revise a note after the fact. It links into the existing note editor
@@ -39,7 +37,7 @@ export default async function CounsellorHistoryPage() {
       status: true,
       reason: true,
       student: { select: { name: true } },
-      sessionNote: { select: { id: true, severity: true } },
+      sessionNote: { select: { id: true, severity: true, content: true } },
     },
   });
 
@@ -55,37 +53,7 @@ export default async function CounsellorHistoryPage() {
           title="No past sessions yet"
           body="Once a session is over, it moves here so you can write up your notes."
         />
-      ) : (
-        <Card>
-          <ul className="flex flex-col">
-            {appointments.map((a) => (
-              <li
-                key={a.id}
-                className="flex flex-wrap items-center justify-between gap-3 border-b border-line py-3.5 first:pt-0 last:border-0 last:pb-0"
-              >
-                <div className="min-w-0">
-                  <p className="truncate text-[0.9375rem] font-semibold text-ink">
-                    {a.student.name}
-                  </p>
-                  <p className="t-meta">
-                    {formatDateLong(a.appointmentDate)} ·{" "}
-                    {formatTimeRange(a.startTime, a.endTime)}
-                  </p>
-                </div>
-                <div className="flex shrink-0 items-center gap-3">
-                  <StatusChip status={a.status} />
-                  <Link
-                    href={`/counsellor/notes/${a.id}`}
-                    className="text-sm font-semibold text-brand-ink hover:underline"
-                  >
-                    {a.sessionNote ? "Edit note" : "Add note"}
-                  </Link>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
+      ) : <HistoryList rows={appointments.map((a) => ({ id: a.id, studentName: a.student.name, date: formatDateLong(a.appointmentDate), time: formatTimeRange(a.startTime, a.endTime), status: a.status, note: a.sessionNote ? { severity: a.sessionNote.severity, content: a.sessionNote.content } : null }))} />}
     </div>
   );
 }

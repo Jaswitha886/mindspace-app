@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { InputField } from "@/components/ui/field";
 import { UserIcon } from "@/components/icons";
 
-// The counsellor's walk-in picker: type a name or register number, pick a
+// The counsellor's walk-in picker: type a name, register number, or email, pick a
 // student, and their session starts immediately.
 //
 // Search is debounced and fired against /api/students. Picking a result posts
@@ -75,7 +75,7 @@ export function WalkInSearch() {
         id="walkin-search"
         value={query}
         onChange={(e) => onChange(e.target.value)}
-        placeholder="Name or register number"
+        placeholder="Name, register number, or email"
         autoComplete="off"
         spellCheck={false}
       />

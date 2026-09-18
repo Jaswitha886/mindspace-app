@@ -1,6 +1,7 @@
-import { WordmarkMark } from "@/components/wordmark";
+import { BrandLockup } from "@/components/brand-lockup";
 import { Card } from "@/components/ui/card";
 import { AuthBackdrop } from "@/components/auth-backdrop";
+import Link from "next/link";
 
 export function AuthShell({
   headline,
@@ -18,7 +19,7 @@ export function AuthShell({
       <AuthBackdrop />
       <div className="relative z-10 w-full max-w-[460px]">
         <div className="flex flex-col items-center gap-4 text-center">
-          <WordmarkMark />
+          <BrandLockup />
           <div>
             <h1 className="text-xl font-bold text-ink-strong">
               {headline}
@@ -35,6 +36,11 @@ export function AuthShell({
             <div className="mt-6 border-t border-line pt-5 text-center">{footer}</div>
           )}
         </Card>
+        <div className="mt-5 text-center">
+          <Link href="/" className="text-sm font-semibold text-white/85 transition-colors hover:text-white hover:underline">
+            Back to home
+          </Link>
+        </div>
       </div>
     </main>
   );

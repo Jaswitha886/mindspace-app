@@ -39,19 +39,8 @@ export default async function CounsellorDashboard() {
   // Additional stats
   const today = new Date();
   today.setUTCHours(0, 0, 0, 0);
-  const monthStart = new Date(today);
-  monthStart.setUTCDate(1);
-
-  const [totalStudentsThisMonth, completedToday, walkInsToday, recentAffirmations] =
+  const [completedToday, walkInsToday, recentAffirmations] =
     await Promise.all([
-      prisma.appointment.findMany({
-        where: {
-          counsellorId: session.userId,
-          appointmentDate: { gte: monthStart },
-        },
-        select: { studentId: true },
-        distinct: ["studentId"],
-      }).then((r) => r.length),
       prisma.appointment.count({
         where: {
           counsellorId: session.userId,
@@ -185,7 +174,6 @@ export default async function CounsellorDashboard() {
         }
       : undefined,
     now: now.toISOString(),
-    totalStudentsThisMonth,
     walkInsCount,
     completedToday,
     upcomingToday: upcomingCount,

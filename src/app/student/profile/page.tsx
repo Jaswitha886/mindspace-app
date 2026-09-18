@@ -4,6 +4,7 @@ import { Card } from "@/components/ui/card";
 import { PageTitle } from "@/components/ui/page-title";
 import { ProfileForm } from "@/features/profile/ProfileForm";
 import { ThemeToggle } from "@/features/theme/ThemeToggle";
+import { RelaxModeToggle } from "@/features/theme/RelaxModeToggle";
 
 export default async function StudentProfilePage() {
   const session = await requirePageRole("STUDENT");
@@ -45,6 +46,7 @@ export default async function StudentProfilePage() {
           tends to get written.
         </p>
         <ThemeToggle />
+        <div className="mt-3"><RelaxModeToggle /></div>
       </Card>
     </div>
   );

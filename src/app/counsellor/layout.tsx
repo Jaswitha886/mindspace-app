@@ -7,8 +7,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/counsellor", label: "Home", icon: "home", exact: true },
   { href: "/counsellor/schedule", label: "Sessions", icon: "calendar" },
   { href: "/counsellor/availability", label: "Availability", icon: "clock" },
-  { href: "/counsellor/students", label: "Students", icon: "user-circle" },
-  { href: "/counsellor/resources", label: "Resources", icon: "folder" },
+  { href: "/counsellor/resources", label: "Resources", icon: "folder", mobileHidden: true },
   { href: "/counsellor/profile", label: "Profile", icon: "user" },
 ];
 

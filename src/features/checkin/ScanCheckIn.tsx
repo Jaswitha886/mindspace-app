@@ -224,6 +224,9 @@ export function EndSessionButton({ appointmentId }: { appointmentId: string }) {
             setError(json.message ?? "Couldn't end the session.");
             return;
           }
+          // Notes belong immediately after a session ends, not in a separate
+          // scavenger hunt through history.
+          router.push(`/counsellor/notes/${appointmentId}`);
           router.refresh();
         }}
       >

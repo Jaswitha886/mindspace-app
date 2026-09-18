@@ -262,6 +262,18 @@
   --shadow-btn: 0 8px 22px rgba(2, 6, 23, 0.22);
 }
 
+:root[data-relax] * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  scroll-behavior: auto !important;
+  transition-duration: 0.01ms !important;
+}
+:root[data-relax] .student-hero,
+:root[data-relax] .breathe,
+:root[data-relax] .breathe-teal {
+  filter: saturate(0.72);
+}
+
 /* ─────────────────────────────────────────────────────────────────────────────
    Tailwind v4 theme mapping
    

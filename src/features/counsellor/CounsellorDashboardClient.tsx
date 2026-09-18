@@ -5,11 +5,14 @@ import { useState, useCallback } from "react";
 import { motion, type Variants } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { QuoteOfDayForm } from "@/features/counsellor/QuoteOfDayForm";
+import { RequestActions } from "@/features/counsellor/RequestActions";
+import { NotificationAction } from "@/features/counsellor/NotificationActions";
+import { CounsellorNotificationAlerts } from "@/features/counsellor/CounsellorNotificationAlerts";
+import { PwaControls } from "@/components/pwa/PwaControls";
 import {
   CalendarIcon,
   UsersIcon,
   ClockIcon,
-  SmileIcon,
   ArrowRightIcon,
   QrIcon,
   BellIcon,
@@ -160,7 +163,6 @@ export type CounsellorDashboardClientProps = {
     | { student: { name: string }; startTime: string; appointmentDate: Date }
     | undefined;
   now: string;
-  totalStudentsThisMonth: number;
   walkInsCount: number;
   completedToday: number;
   upcomingToday: number;
@@ -357,7 +359,6 @@ export function CounsellorDashboardClient({
   live,
   next,
   now,
-  totalStudentsThisMonth,
   walkInsCount,
   completedToday,
   upcomingToday,
@@ -405,24 +406,14 @@ export function CounsellorDashboardClient({
       tone: "orange" as const,
     },
     {
-      icon: <UsersIcon className="h-5 w-5" />,
-      label: "Total Students",
-      value: totalStudentsThisMonth,
-      sub: "This month",
-      iconBg: "bg-brand-tint text-brand-ink",
-      href: "/counsellor/students",
+      icon: <CalendarIcon className="h-5 w-5" />,
+      label: "Requests",
+      value: pendingRequests.length,
+      sub: pendingRequests.length ? "Need a response" : "All caught up",
+      iconBg: "bg-gold text-gold-ink",
+      href: "/counsellor/requests",
       arrow: true,
-      tone: "blue" as const,
-    },
-    {
-      icon: <SmileIcon className="h-5 w-5" />,
-      label: "Average Feedback",
-      value: "4.8",
-      sub: `From ${totalStudentsThisMonth} responses`,
-      iconBg: "bg-success-tint text-success-ink",
-      href: "/counsellor/history",
-      arrow: true,
-      tone: "green" as const,
+      tone: "orange" as const,
     },
   ];
 
@@ -433,6 +424,7 @@ export function CounsellorDashboardClient({
       initial="hidden"
       animate="visible"
     >
+      <CounsellorNotificationAlerts alerts={notifications} />
       {/* ── Hero Header ──────────────────────────────────────────────── */}
       <motion.header
         variants={fadeUp}
@@ -484,6 +476,39 @@ export function CounsellorDashboardClient({
         <BotanicalSprig className="absolute -right-4 -top-4 h-[140px] w-[170px] opacity-50 sm:right-4 sm:top-0 sm:h-[180px] sm:w-[220px]" />
       </motion.header>
 
+      <motion.div variants={fadeUp}>
+        <Card tone={pendingRequests.length ? "gold" : "paper"}>
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-2.5">
+              <CalendarIcon className="h-5 w-5 text-brand-ink" />
+              <div>
+                <h2 className="t-h2">Appointment requests</h2>
+                <p className="t-meta mt-0.5">
+                  {pendingRequests.length ? `${pendingRequests.length} request${pendingRequests.length === 1 ? "" : "s"} waiting for a response.` : "No requests are waiting for a response."}
+                </p>
+              </div>
+            </div>
+            <Link href="/counsellor/requests" className="inline-flex shrink-0 items-center gap-1 text-sm font-semibold text-brand-ink hover:underline">
+              Open inbox <ArrowRightIcon className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+          {pendingRequests.length > 0 && (
+            <div className="mt-4 grid gap-3 md:grid-cols-2">
+              {pendingRequests.slice(0, 2).map((request) => (
+                <div key={request.id} className="rounded-(--radius-input) border border-line bg-surface/70 p-4">
+                  <p className="text-sm font-semibold text-ink">{request.student.name}</p>
+                  <p className="t-meta mt-1">
+                    {new Date(request.appointmentDate).toLocaleDateString("en-IN", { day: "numeric", month: "short", timeZone: "UTC" })} · {formatTime(request.startTime)}–{formatTime(request.endTime)}
+                  </p>
+                  {request.reason && <p className="mt-2 text-sm text-ink-secondary">“{request.reason}”</p>}
+                  <RequestActions appointmentId={request.id} />
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+      </motion.div>
+
       {/* ── Notifications ─────────────────────────────────────────────── */}
       <motion.div variants={fadeUp}>
         <Card>
@@ -498,17 +523,9 @@ export function CounsellorDashboardClient({
               )}
             </div>
             <div className="flex items-center gap-3">
-              {unreadNotificationCount > 0 && (
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1.5 text-xs font-semibold text-brand-ink hover:underline"
-                >
-                  <CheckIcon className="h-3.5 w-3.5" />
-                  Mark all as read
-                </button>
-              )}
+              {unreadNotificationCount > 0 && <NotificationAction label="Mark all as read" />}
               <Link
-                href="/counsellor/history"
+                href="/counsellor/notifications"
                 className="inline-flex items-center gap-1 text-xs font-semibold text-brand-ink hover:underline"
               >
                 View all <ArrowRightIcon className="h-3 w-3" />
@@ -531,14 +548,14 @@ export function CounsellorDashboardClient({
                       {n.studentName} has been suspended.
                     </p>
                     <p className="text-xs text-ink-muted">
-                      {n.registerNumber && <>{n.registerNumber} \u00b7 </>}
-                      {n.studentEmail} \u00b7{" "}
+                      {n.registerNumber && <>{n.registerNumber} | </>}
+                      {n.studentEmail} |{" "}
                       {new Date(n.startDate).toLocaleDateString("en-IN", {
                         day: "numeric",
                         month: "short",
                         timeZone: "UTC",
                       })}{" "}
-                      \u2013{" "}
+                      to{" "}
                       {new Date(n.endDate).toLocaleDateString("en-IN", {
                         day: "numeric",
                         month: "short",
@@ -564,6 +581,9 @@ export function CounsellorDashboardClient({
               ))}
             </ul>
           )}
+          <div className="mt-4 border-t border-line pt-3">
+            <PwaControls />
+          </div>
         </Card>
       </motion.div>
 
@@ -632,14 +652,15 @@ export function CounsellorDashboardClient({
         <div className="flex flex-col gap-5">
           {/* Scan QR for Walk-in */}
           <motion.div variants={fadeUp}>
-            <Link href="/counsellor/qr-scanner" className="block">
               <Card>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-3">
                   <div className="flex items-center gap-2">
                     <QrIcon className="h-4 w-4 text-brand-ink" />
                     <h2 className="t-h3">Scan Session QR</h2>
                   </div>
-                  <ArrowRightIcon className="h-3.5 w-3.5 text-ink-muted" />
+                  <Link href="/counsellor/qr-scanner" className="inline-flex items-center gap-1 text-xs font-semibold text-brand-ink hover:underline">
+                    Open scanner <ArrowRightIcon className="h-3.5 w-3.5" />
+                  </Link>
                 </div>
                 <p className="t-meta mt-1">
                   Scan the QR code displayed on the student&apos;s dashboard, or type their
@@ -660,7 +681,6 @@ export function CounsellorDashboardClient({
                   </div>
                 </div>
               </Card>
-            </Link>
           </motion.div>
 
           {/* Recent Walk-ins */}

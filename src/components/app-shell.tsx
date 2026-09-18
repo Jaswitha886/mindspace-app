@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { LogoutButton } from "@/features/auth/LogoutButton";
-import { WordmarkMark, Wordmark } from "@/components/wordmark";
+import { BrandLockup } from "@/components/brand-lockup";
 import { BottomNav, SideNav, type NavItem } from "@/components/app-nav";
 import { BackButton } from "@/components/ui/back-button";
 import { AppAssistant } from "@/features/assistant/AppAssistant";
@@ -26,7 +25,7 @@ export function AppShell({
       {/* Desktop sidebar — unified design for all roles */}
       <aside className="sticky top-0 hidden h-screen w-[260px] shrink-0 flex-col border-r border-sidebar-border bg-sidebar px-5 py-7 lg:flex">
         <div className="px-2">
-          <Wordmark href={home} />
+          <BrandLockup href={home} />
         </div>
         <div className="mt-8 flex-1">
           <SideNav items={items} />
@@ -48,9 +47,7 @@ export function AppShell({
       <div className="flex min-w-0 flex-1 flex-col">
         {/* Mobile top bar */}
         <header className="sticky top-0 z-20 flex items-center justify-between gap-3 border-b border-sidebar-border bg-sidebar px-4 py-3 lg:hidden">
-          <Link href={home} aria-label="MindSpace home">
-            <WordmarkMark size="sm" />
-          </Link>
+          <BrandLockup href={home} />
           <div className="flex items-center gap-2.5">
             <span className="text-right">
               <span className="block text-sm font-semibold leading-tight text-sidebar-text">
