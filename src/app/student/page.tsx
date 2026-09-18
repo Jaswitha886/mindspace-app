@@ -1,4 +1,5 @@
-import { requirePageRole } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { getSession } from "@/lib/auth";
 import { getStudentDashboardData } from "@/features/student/dashboard-data";
 import {
   isWithinCheckInWindow,
@@ -25,7 +26,8 @@ async function qrSvg(payload: string): Promise<string> {
 }
 
 export default async function StudentDashboard() {
-  const session = await requirePageRole("STUDENT");
+  const session = await getSession();
+  if (!session) redirect("/login");
   const { upcoming, recentMoods, affirmations, counsellors, isNewUser } =
     await getStudentDashboardData(session.userId);
 

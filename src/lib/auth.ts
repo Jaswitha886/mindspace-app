@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import type { UserRole } from "@prisma/client";
+import type { Prisma, UserRole } from "@prisma/client";
 import { prisma } from "@/lib/prisma";
 import {
   SESSION_COOKIE,
@@ -110,6 +110,46 @@ export async function requireRole(...roles: UserRole[]): Promise<SessionPayload>
   const session = await requireAuth();
   if (!roles.includes(session.role)) throw new AuthError(403, "Access denied");
   return session;
+}
+
+/**
+ * Like requireRole, but merges the reconcile check with an extra select so
+ * routes only hit the database once instead of twice (reconcile + profile).
+ *
+ * Usage:
+ *   const { session, user } = await requireRoleWith("STUDENT", {
+ *     department: { select: { name: true } },
+ *     studentProfile: { select: { registerNumber: true } },
+ *   });
+ */
+export async function requireRoleWith<T extends Prisma.UserSelect>(
+  role: UserRole,
+  extraSelect: T,
+): Promise<{ session: SessionPayload; user: Prisma.UserGetPayload<{ select: T }> }> {
+  const session = await getSession();
+  if (!session) throw new AuthError(401, "Not authenticated");
+
+  const user = await prisma.user.findUnique({
+    where: { id: session.userId },
+    select: extraSelect,
+  });
+  if (!user) throw new AuthError(401, "Not authenticated");
+  if (!(user as Record<string, unknown>).isActive) {
+    throw new AuthError(403, DEACTIVATED_MESSAGE);
+  }
+  if ((user as Record<string, unknown>).role !== role) {
+    throw new AuthError(403, "Access denied");
+  }
+
+  return {
+    session: {
+      userId: session.userId,
+      role,
+      name: (user as Record<string, unknown>).name as string,
+      email: (user as Record<string, unknown>).email as string,
+    },
+    user,
+  };
 }
 
 /**

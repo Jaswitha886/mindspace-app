@@ -44,6 +44,7 @@ export function serializeAppointment(row: AppointmentRow) {
     endTime: slotDateTime(row.appointmentDate, row.endTime).toISOString(),
     status: row.status,
     reason: row.reason,
+    checkedInAt: row.checkedInAt?.toISOString() ?? null,
     createdAt: row.createdAt.toISOString(),
     student: {
       user: { name: row.student.name, email: row.student.email },

@@ -1,4 +1,5 @@
-import { requirePageRole } from "@/lib/auth";
+import { redirect } from "next/navigation";
+import { getSession } from "@/lib/auth";
 import { getCounsellorDashboardData } from "@/features/counsellor/dashboard-data";
 import { isInSession } from "@/features/checkin/checkin";
 import { OnboardingSlides } from "@/features/student/OnboardingSlides";
@@ -9,7 +10,8 @@ import {
 import { prisma } from "@/lib/prisma";
 
 export default async function CounsellorDashboard() {
-  const session = await requirePageRole("COUNSELLOR");
+  const session = await getSession();
+  if (!session) redirect("/login");
   const {
     todaysSessions,
     pendingRequests,
